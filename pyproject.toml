@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "truconsts"
+version = "0.0.5"
+authors = [
+    { name = "Jim Chng", email = "jimchng@outlook.com" },
+]
+description = "Manage all your constants in your Python application"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Environment :: Web Environment",
+    "Operating System :: OS Independent",
+    "Framework :: AsyncIO",
+]
+keywords = ["truconsts", "truly constants", "constants"]
+dependencies = [
+]
+
+[tool.setuptools]
+packages = ["truconsts", "cy_src"]
+
+
+[project.optional-dependencies]
+
+[project.urls]
+
+[tool.bumpver]
+current_version = "0.0.5"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message = "bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    'current_version = "{version}"',
+    'version = "{version}"'
+]
+
+"README.md" = [
+    "Version: {version}",
+]
+
+"setup.py" = [
+    'version="{version}"',
+]
+
+"truconsts/__init__.py" = [
+    '__VERSION__ = version = Version = __version__ = "{version}"',
+]
