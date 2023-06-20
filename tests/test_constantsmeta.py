@@ -1,7 +1,6 @@
 import pytest
-import cython_src
-from cython_src.meta import MetaForConstants
-from mlops.types import Immutable, Mutable, Lazy
+from cy_scr.meta import MetaForConstants
+from truconsts import Immutable, Mutable, Lazy
 
 class BaseConstants(metaclass=MetaForConstants):
     ...
