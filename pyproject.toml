@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "truconsts"
-version = "0.0.5"
+version = "0.0.6"
 authors = [
     { name = "Jim Chng", email = "jimchng@outlook.com" },
 ]
@@ -35,7 +35,7 @@ packages = ["truconsts", "cy_src"]
 [project.urls]
 
 [tool.bumpver]
-current_version = "0.0.5"
+current_version = "0.0.6"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true

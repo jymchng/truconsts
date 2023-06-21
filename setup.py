@@ -30,7 +30,7 @@ print("Extension modules are: ", ext_modules)
 
 setup(
     # name='truconsts',
-    # version="0.0.5",
+    # version="0.0.6",
     # description='Manage all your constants in your Python application',
     # author='Jim Chng',
     # author_email='jimchng@outlook.com',
