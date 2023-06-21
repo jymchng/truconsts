@@ -7,9 +7,7 @@ from cpython cimport \
     PyObject_GetAttrString, PyObject_CallFunction, PyTypeObject, PyObject_IsInstance, \
     PyObject_Type, Py_TPFLAGS_BASETYPE, PySet_Add, PySet_New, PyTuple_New, \
     PySequence_Contains, Py_EQ, PyObject_RichCompareBool, PyDict_Items, PySet_Discard, PyMapping_HasKeyString, \
-    unaryfunc, Py_XINCREF, PyObject, Py_TYPE
-from libc.stdlib cimport malloc, free
-from cpython.mem cimport PyMem_Malloc, PyMem_Realloc, PyMem_Free
+    unaryfunc, Py_XINCREF, PyObject, Py_TYPE, PySet_Pop
 import asyncio
 
 
@@ -18,7 +16,7 @@ cdef extern from "Python.h":
     ctypedef int (*setattrofunc)(type, object, object) except -1
     ctypedef object (*getattrofunc)(type, object)
     # ctypedef PySendResult (*sendfunc)(PyObject*, PyObject*, PyObject**)
-    int PyCoro_CheckExact(object o)
+    # int PyCoro_CheckExact(object o)
 
     # typedef struct {
     #     unaryfunc am_await;
@@ -34,16 +32,11 @@ cdef extern from "Python.h":
         unaryfunc am_anext
         # sendfunc am_send
 
-    ctypedef struct PyCoro_Type "PyTypeObject":
-        PyAsyncMethods* tp_as_async
-    ctypedef struct PyCoroObject
-
     ctypedef struct PyTypeObject_PythonType "PyTypeObject":
         setattrofunc tp_setattro
         getattrofunc tp_getattro
 
     cdef PyTypeObject_PythonType PyType_Type
-    cdef PyAsyncMethods PyAsyncMeths
 
 
 cdef class MetaForConstants(type):
@@ -93,7 +86,7 @@ cdef class MetaForConstants(type):
         mcls._init = True
         return
         
-    def __setattr__(cls, object __name, object __value):
+    def __setattr__(cls, str __name, object __value):
         cdef const char* ANNOTATION_STRING = '__annotations__'
         if not PySequence_Contains(cls._attrs, __name):
             raise AttributeError(f"Cannot add `{__name}` class variable to `{cls.__name__}`")
@@ -102,17 +95,14 @@ cdef class MetaForConstants(type):
             return
         if PySequence_Contains(cls._immutable, __name):
             raise AttributeError(f"`{cls.__name__}.{__name}` cannot be mutated")
+        if PySequence_Contains(cls._async, __name):
+            PySet_Discard(cls._async, __name)
         PyType_Type.tp_setattro(cls, __name, __value)
 
     def __getattribute__(cls, __name: str):
-        cdef PyAsyncMethods* async_meths_struct = <PyAsyncMethods*>PyMem_Malloc(sizeof(PyAsyncMethods))
-        if not async_meths_struct:
-            raise MemoryError("Unable to allocate memory to struct `PyAsyncMethods`")
         cdef object _value
-        cdef PyCoro_Type coro_type
 
         if not cls._init:
-            PyMem_Free(async_meths_struct)
             return PyType_Type.tp_getattro(cls, __name)
         if PySequence_Contains(cls._lazy, __name):
             func = PyType_Type.tp_getattro(cls, __name)
@@ -125,22 +115,11 @@ cdef class MetaForConstants(type):
             #     PyMem_Free(async_meths_struct)
             PyType_Type.tp_setattro(cls, __name, _value)
             PySet_Discard(cls._lazy, __name)
-            PyMem_Free(async_meths_struct)
             return _value
         if PySequence_Contains(cls._async, __name):
             func = PyType_Type.tp_getattro(cls, __name)
-            _value = PyObject_CallFunction(func, NULL)
-            if PyCoro_CheckExact(_value):
-                value_type = Py_TYPE(_value)
-                async_meths_struct = value_type.tp_as_async
-                _value = PyAsyncMeths.am_await(_value)
-                PyMem_Free(async_meths_struct)
-                return _value
-            else:
-                PyMem_Free(async_meths_struct)
-                _value = PyObject_CallFunction(func, NULL)
-            # PyType_Type.tp_setattro(cls, __name, _value)
-            # PySet_Discard(cls._async, __name)
-                return _value
-        PyMem_Free(async_meths_struct)
+            coroutine = PyObject_CallFunction(func, NULL)
+            loop = asyncio.get_event_loop()
+            _value = loop.run_until_complete(coroutine)
+            return _value
         return PyType_Type.tp_getattro(cls, __name)
