@@ -10,6 +10,14 @@ def get_root_dir():
 
 async def get_async_root_dir():
     return 'THIS_IS_AN_ASYNC_ROOT_DIR'
+
+# to avoid RuntimeError: cannot reuse already awaited coroutine
+async def another_coroutine():
+    return 'THIS_IS_AN_ASYNC_ROOT_DIR'
+
+# to avoid RuntimeError: cannot reuse already awaited coroutine
+async def yet_another_coroutine():
+    return 'THIS_IS_AN_ASYNC_ROOT_DIR'
     
 class Constants(BaseConstants):
     ROOT_DIR: Immutable[str] = 'HELLO' # Immutable
@@ -152,8 +160,8 @@ def test_constants_meta_can_be_inherited():
             ...
         
 class AsyncConstants(BaseConstants):
-    ASYNC_STR: Async[str] = get_async_root_dir
-    ASYNC_IMMU_STR: Async[Immutable[str]] = get_async_root_dir
+    ASYNC_STR: Async[str] = get_async_root_dir()
+    ASYNC_IMMU_STR: Async[Immutable[str]] = another_coroutine()
     
 def test_async_immutable_sets():
     assert AsyncConstants._async == set(('ASYNC_STR', 'ASYNC_IMMU_STR'))
@@ -183,8 +191,12 @@ def test_subclass_instance_can_be_mutated_but_not_the_class():
         assert Constants.LAZY_IMMUTABLE_STR == 'THIS_IS_A_ROOT_DIR'
         
 def test_subclass_instance_has_no_dict_two():
-    for i in range(1000):
-        inst = AsyncConstants()
+    # refresh the class to avoid RuntimeError: cannot reuse already awaited coroutine
+    class AnotherAsyncConstants(BaseConstants):
+        ASYNC_IMMU_STR: Async[Immutable[str]] = yet_another_coroutine()
+    
+    for i in range(10):
+        inst = AnotherAsyncConstants()
         inst.ASYNC_IMMU_STR = '555'
         assert inst.ASYNC_IMMU_STR == '555'
-        assert AsyncConstants.ASYNC_IMMU_STR == 'THIS_IS_AN_ASYNC_ROOT_DIR'
+        assert AnotherAsyncConstants.ASYNC_IMMU_STR == 'THIS_IS_AN_ASYNC_ROOT_DIR'
