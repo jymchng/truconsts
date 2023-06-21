@@ -1,12 +1,15 @@
 import pytest
 from cy_src.meta import MetaForConstants
-from truconsts import Immutable, Mutable, Lazy
+from truconsts import Immutable, Mutable, Lazy, Async
 
 class BaseConstants(metaclass=MetaForConstants):
     ...
     
 def get_root_dir():
     return 'THIS_IS_A_ROOT_DIR'
+
+async def get_async_root_dir():
+    return 'THIS_IS_AN_ASYNC_ROOT_DIR'
     
 class Constants(BaseConstants):
     ROOT_DIR: Immutable[str] = 'HELLO' # Immutable
@@ -146,3 +149,27 @@ def test_constants_can_be_inherited():
 def test_constants_meta_can_be_inherited():
     class ChildConstantsMeta(MetaForConstants):
         ...
+        
+class AsyncConstants(BaseConstants):
+    ASYNC_STR: Async[str] = get_async_root_dir
+    ASYNC_IMMU_STR: Async[Immutable[str]] = get_async_root_dir
+    
+def test_async_immutable_sets():
+    assert AsyncConstants._async == set(('ASYNC_STR', 'ASYNC_IMMU_STR'))
+    assert AsyncConstants._immutable == set(('ASYNC_IMMU_STR', ))
+    assert AsyncConstants._lazy == set()
+    
+def test_async_consts_correct():
+    assert AsyncConstants.ASYNC_STR == 'THIS_IS_AN_ASYNC_ROOT_DIR'
+    
+def test_async_consts_correct_two():
+    assert AsyncConstants.ASYNC_IMMU_STR == 'THIS_IS_AN_ASYNC_ROOT_DIR'
+    
+def test_async_consts_mutability():
+    for _ in range(2000):
+        with pytest.raises(AttributeError):
+            AsyncConstants.ASYNC_IMMU_STR = 'NEW_ASYNC_ROOT_DIR'
+            assert AsyncConstants.ASYNC_IMMU_STR == 'NEW_ASYNC_ROOT_DIR'
+            
+        AsyncConstants.ASYNC_STR = 'NEW_ASYNC_ROOT_DIR'
+        assert AsyncConstants.ASYNC_STR == 'NEW_ASYNC_ROOT_DIR'

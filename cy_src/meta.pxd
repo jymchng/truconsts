@@ -5,6 +5,6 @@ cdef class MetaForConstants(type):
     cdef readonly set _immutable
     cdef readonly set _attrs
     cdef readonly set _lazy
-    cdef readonly dict _cache
+    cdef readonly set _async
     cdef readonly bint _init
     cdef PyTypeObject * pytype_ptr

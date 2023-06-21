@@ -4,7 +4,7 @@ from types import MethodType
 
 def patch_cls_getitem(cls):
     def __cls_getitem__(cls, index):
-        if isinstance(index, (Type, Tuple)) or index == Lazy:
+        if isinstance(index, (Type, Tuple)) or index == Lazy or index == Async:
             return (cls, *index) if isinstance(index, tuple) else (cls, index)
         raise Exception(f"`{index}` is not a type or tuple(type) or `Lazy`")
     cls.__class_getitem__ = MethodType(__cls_getitem__, cls)
@@ -32,3 +32,9 @@ class Mutable:
 @patch_cls_getitem
 class Lazy:
     ...
+    
+    
+@patch_cls_getitem
+class Async:
+    ...
+
