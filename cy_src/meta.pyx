@@ -96,7 +96,8 @@ cdef class MetaForConstants(type):
             PySet_Discard(cls._lazy, __name)
             return _value
         if PySequence_Contains(cls._async, __name):
-            coroutine = PyType_Type.tp_getattro(cls, __name)
+            func = PyType_Type.tp_getattro(cls, __name)
+            coroutine = PyObject_CallFunction(func, NULL)
             loop = asyncio.get_event_loop()
             _value = loop.run_until_complete(coroutine)
             return _value

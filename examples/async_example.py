@@ -38,6 +38,9 @@ class AsyncConstants(BaseConstants):
     # should be `awaited` every time the attribute `LATEST_CHECKPOINT_SEQUENCE_NUMBER`
     # is accessed, i.e. when 'calling'
     # `AsyncConstants.LATEST_CHECKPOINT_SEQUENCE_NUMBER`
+    # you'll have to use `partial` because an exhausted coroutine cannot be reused
+    # so you'll need something that always gives you a fresh coroutine when
+    # called
     LATEST_CHECKPOINT_SEQUENCE_NUMBER: Async[str] = partial(
         network_getter,
         SUI_FULL_NODE_URL.format(NETWORK),
