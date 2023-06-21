@@ -1,13 +1,14 @@
 #cython: language_level=3
 # cython: c_string_type=unicode, c_string_encoding=ascii
+# Py_TPFLAGS_BASETYPE
 
 from truconsts._types import Immutable, Lazy, Async
 from cpython cimport \
     PyObject_HasAttrString, \
-    PyObject_GetAttrString, PyObject_CallFunction, PyTypeObject, PyObject_IsInstance, \
-    PyObject_Type, Py_TPFLAGS_BASETYPE, PySet_Add, PySet_New, PyTuple_New, \
+    PyObject_GetAttrString, PyObject_CallFunction, PyObject_IsInstance, \
+    Py_TYPE, PySet_Add, PySet_New, PyTuple_New, \
     PySequence_Contains, Py_EQ, PyObject_RichCompareBool, PyDict_Items, PySet_Discard, PyMapping_HasKeyString, \
-    unaryfunc, Py_XINCREF, PyObject, Py_TYPE, PySet_Pop
+    Py_TPFLAGS_BASETYPE
 import asyncio
 
 
@@ -15,22 +16,6 @@ cdef extern from "Python.h":
     # https://docs.python.org/3/c-api/typeobj.html#c.PyTypeObject
     ctypedef int (*setattrofunc)(type, object, object) except -1
     ctypedef object (*getattrofunc)(type, object)
-    # ctypedef PySendResult (*sendfunc)(PyObject*, PyObject*, PyObject**)
-    # int PyCoro_CheckExact(object o)
-
-    # typedef struct {
-    #     unaryfunc am_await;
-    #     unaryfunc am_aiter;
-    #     unaryfunc am_anext;
-    #     sendfunc am_send;
-    # } PyAsyncMethods;
-    # https://cython.readthedocs.io/en/latest/src/userguide/external_C_code.html#styles-of-struct-union-and-enum-declaration
-    # https://docs.python.org/3/c-api/typeobj.html?highlight=await#async-object-structures
-    ctypedef struct PyAsyncMethods:
-        unaryfunc am_await
-        unaryfunc am_aiter
-        unaryfunc am_anext
-        # sendfunc am_send
 
     ctypedef struct PyTypeObject_PythonType "PyTypeObject":
         setattrofunc tp_setattro
@@ -58,9 +43,9 @@ cdef class MetaForConstants(type):
                 continue
             PySet_Add(mcls._attrs, k)
         
-        # pytype_ptr = Py_TYPE(mcls)
-        # clear the bit `Py_TPFLAGS_BASETYPE` if you don't want this type to be inheritable
-        # pytype_ptr.tp_flags &= ~Py_TPFLAGS_BASETYPE
+        pytype_ptr = Py_TYPE(mcls)
+        pytype_ptr.tp_flags &= ~Py_TPFLAGS_BASETYPE
+        
 
         if not PyMapping_HasKeyString(attrs, ANNOTATION_STRING):
             return
@@ -107,12 +92,6 @@ cdef class MetaForConstants(type):
         if PySequence_Contains(cls._lazy, __name):
             func = PyType_Type.tp_getattro(cls, __name)
             _value = PyObject_CallFunction(func, NULL)
-            # if PyCoro_CheckExact(_value):
-            #     async_meths_struct = PyType_Type.tp_as_async
-            #     if async_meths_struct == NULL:
-            #         raise TypeError(f"`async_meths_struct` is a NULL pointer; `{cls.__name__}.{__name}` is marked as `Lazy`")
-            #     _value = async_meths_struct.am_await(_value)
-            #     PyMem_Free(async_meths_struct)
             PyType_Type.tp_setattro(cls, __name, _value)
             PySet_Discard(cls._lazy, __name)
             return _value

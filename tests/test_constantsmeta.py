@@ -147,8 +147,9 @@ def test_constants_can_be_inherited():
         ...
         
 def test_constants_meta_can_be_inherited():
-    class ChildConstantsMeta(MetaForConstants):
-        ...
+    with pytest.raises(TypeError):
+        class ChildConstantsMeta(MetaForConstants):
+            ...
         
 class AsyncConstants(BaseConstants):
     ASYNC_STR: Async[str] = get_async_root_dir
@@ -173,3 +174,17 @@ def test_async_consts_mutability():
             
         AsyncConstants.ASYNC_STR = 'NEW_ASYNC_ROOT_DIR'
         assert AsyncConstants.ASYNC_STR == 'NEW_ASYNC_ROOT_DIR'
+        
+def test_subclass_instance_can_be_mutated_but_not_the_class():
+    for i in range(1000):
+        inst = Constants()
+        inst.LAZY_IMMUTABLE_STR = '555'
+        assert inst.LAZY_IMMUTABLE_STR == '555'
+        assert Constants.LAZY_IMMUTABLE_STR == 'THIS_IS_A_ROOT_DIR'
+        
+def test_subclass_instance_has_no_dict_two():
+    for i in range(1000):
+        inst = AsyncConstants()
+        inst.ASYNC_IMMU_STR = '555'
+        assert inst.ASYNC_IMMU_STR == '555'
+        assert AsyncConstants.ASYNC_IMMU_STR == 'THIS_IS_AN_ASYNC_ROOT_DIR'
