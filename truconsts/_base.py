@@ -8,6 +8,4 @@ except ImportError:
 
 
 class BaseConstants(metaclass=MetaForConstants):
-    
-    def __getattribute__(self, __name: str) -> Any:
-        return self.__class__.__getattribute__(self.__class__, __name)
+    ...
