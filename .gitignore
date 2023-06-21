@@ -2,6 +2,7 @@
 notebooks/
 scripts/
 build/
+cy_src/*.html
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

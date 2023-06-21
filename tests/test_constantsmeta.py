@@ -1,5 +1,5 @@
 import pytest
-from cy_scr.meta import MetaForConstants
+from cy_src.meta import MetaForConstants
 from truconsts import Immutable, Mutable, Lazy
 
 class BaseConstants(metaclass=MetaForConstants):
@@ -95,6 +95,7 @@ def test_consts_wo_anno_immutable():
 def test_consts_wo_anno_lazy():
     assert ConstantsWithoutAnnotations._lazy == set()
 
+@pytest.mark.skip
 def test_consts_wo_anno_cache():
     assert ConstantsWithoutAnnotations._cache == dict()
     
@@ -102,7 +103,7 @@ def test_two_classes_dont_share_same_class_vars():
     assert Constants._attrs != ConstantsWithoutAnnotations._attrs
     assert Constants._immutable != ConstantsWithoutAnnotations._immutable
     assert Constants._lazy != ConstantsWithoutAnnotations._lazy
-    # assert Constants._cache != ConstantsWithoutAnnotations._cache
+    # assert Constants._cache != ConstantsWithoutAnnotations._cache # .cache removed
     
 def test_cannot_add_to_consts_tp_dict():
     with pytest.raises(TypeError):
@@ -110,7 +111,8 @@ def test_cannot_add_to_consts_tp_dict():
         Constants.__dict__.update({'HI': 'BYE'})
     
 def test_consts_lazy():
-    assert 'LAZY_IMMUTABLE_STR' not in Constants._cache
+    # _cache removed
+    # assert 'LAZY_IMMUTABLE_STR' not in Constants._cache
     for _ in range(200):
         assert Constants.LAZY_IMMUTABLE_STR == 'THIS_IS_A_ROOT_DIR'
         assert Constants.ONLY_LAZY == 'THIS_IS_A_ROOT_DIR'
@@ -136,3 +138,11 @@ def test_consts_lazy():
         
         Constants.ONLY_LAZY = 'YOU ARE LAZY'
         assert Constants.ONLY_LAZY == 'YOU ARE LAZY'
+        
+def test_constants_can_be_inherited():
+    class ChildConstants(Constants):
+        ...
+        
+def test_constants_meta_can_be_inherited():
+    class ChildConstantsMeta(MetaForConstants):
+        ...
