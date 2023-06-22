@@ -40,7 +40,6 @@ cdef class MetaForConstants(type):
         
 
         if not PyMapping_HasKeyString(attrs, ANNOTATION_STRING):
-            free(ANNOTATION_STRING)
             return
 
         annotations = PyObject_GetAttrString(mcls, ANNOTATION_STRING)
@@ -62,34 +61,31 @@ cdef class MetaForConstants(type):
                     PySet_Add(mcls._async, k)
 
         mcls._init = True
-        free(ANNOTATION_STRING)
         return
         
     def __setattr__(cls, str __name, object __value):
         cdef const char* ANNOTATION_STRING = '__annotations__'
         # basic checks
         if not PySequence_Contains(cls._attrs, __name):
-            free(ANNOTATION_STRING)
             raise AttributeError(f"Cannot add `{__name}` class variable to `{cls.__name__}`")
         if not PyObject_HasAttrString(cls, ANNOTATION_STRING):
             PyType_Type.tp_setattro(cls, __name, __value)
-            free(ANNOTATION_STRING)
             return
         if PySequence_Contains(cls._immutable, __name):
-            free(ANNOTATION_STRING)
             raise AttributeError(f"`{cls.__name__}.{__name}` cannot be mutated")
 
         # not-so-basic checks
         # mutability in python means anything goes
         if PyCoro_CheckExact(__value):
-            PySet_Add(cls._async, __value)
+            print("CoroCheck", __name)
+            PySet_Add(cls._async, __name)
         elif PyCallable_Check(__value):
-            PySet_Add(cls._lazy, __value)
+            print("CallableCheck", __name)
+            PySet_Add(cls._lazy, __name)
         elif PySequence_Contains(cls._async, __name):
             # for the case of assignment non-async value to variable that was previously async
             PySet_Discard(cls._async, __name)
         PyType_Type.tp_setattro(cls, __name, __value)
-        free(ANNOTATION_STRING)
 
     def __getattribute__(cls, __name: str):
         cdef object _value
