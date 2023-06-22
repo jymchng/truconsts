@@ -2,9 +2,9 @@ from typing import Any
 
 
 try:
-    from .meta import MetaForConstants
+    from .constmeta import MetaForConstants
 except ImportError:
-    from cy_src.meta import MetaForConstants
+    from cy_src.constmeta import MetaForConstants
 
 
 class BaseConstants(metaclass=MetaForConstants):

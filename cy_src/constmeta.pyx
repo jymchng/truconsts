@@ -16,12 +16,18 @@ cdef extern from "Python.h":
     # https://docs.python.org/3/c-api/typeobj.html#c.PyTypeObject
     ctypedef int (*setattrofunc)(type, object, object) except -1
     ctypedef object (*getattrofunc)(type, object)
+    int PyCoro_CheckExact(object o)
+    int PyCallable_Check(object o)
 
     ctypedef struct PyTypeObject_PythonType "PyTypeObject":
         setattrofunc tp_setattro
         getattrofunc tp_getattro
 
     cdef PyTypeObject_PythonType PyType_Type
+
+
+cdef tuple init_sets(Py_ssize_t len):
+    return PySet_New(PyTuple_New(len)), PySet_New(PyTuple_New(len)), PySet_New(PyTuple_New(len)), PySet_New(PyTuple_New(len))
 
 
 cdef class MetaForConstants(type):
@@ -73,6 +79,7 @@ cdef class MetaForConstants(type):
         
     def __setattr__(cls, str __name, object __value):
         cdef const char* ANNOTATION_STRING = '__annotations__'
+        # basic checks
         if not PySequence_Contains(cls._attrs, __name):
             raise AttributeError(f"Cannot add `{__name}` class variable to `{cls.__name__}`")
         if not PyObject_HasAttrString(cls, ANNOTATION_STRING):
@@ -80,7 +87,15 @@ cdef class MetaForConstants(type):
             return
         if PySequence_Contains(cls._immutable, __name):
             raise AttributeError(f"`{cls.__name__}.{__name}` cannot be mutated")
-        if PySequence_Contains(cls._async, __name):
+
+        # not-so-basic checks
+        # mutability in python means anything goes
+        if PyCoro_CheckExact(__value):
+            PySet_Add(cls._async, __value)
+        elif PyCallable_Check(__value):
+            PySet_Add(cls._lazy, __value)
+        elif PySequence_Contains(cls._async, __name):
+            # for the case of assignment non-async value to variable that was previously async
             PySet_Discard(cls._async, __name)
         PyType_Type.tp_setattro(cls, __name, __value)
 
@@ -93,12 +108,13 @@ cdef class MetaForConstants(type):
             func = PyType_Type.tp_getattro(cls, __name)
             _value = PyObject_CallFunction(func, NULL)
             PyType_Type.tp_setattro(cls, __name, _value)
-            PySet_Discard(cls._lazy, __name)
+            PySet_Discard(cls._lazy, __name) # value is already gotten from call to function
             return _value
         if PySequence_Contains(cls._async, __name):
             func = PyType_Type.tp_getattro(cls, __name)
-            coroutine = PyObject_CallFunction(func, NULL)
+            coroutine = PyObject_CallFunction(func, NULL) # get the coroutine
             loop = asyncio.get_event_loop()
-            _value = loop.run_until_complete(coroutine)
+            _value = loop.run_until_complete(coroutine) # resolve the future but not setting it as class variable
             return _value
+        # assumption: lazy and async are mutually exclusive - guaranteed by exception raised with Async[Lazy]
         return PyType_Type.tp_getattro(cls, __name)
