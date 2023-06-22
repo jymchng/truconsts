@@ -34,6 +34,7 @@ cdef class MetaForConstants(type):
 
     def __cinit__(mcls, str name, tuple bases, dict attrs):
         cdef const char* ANNOTATION_STRING = '__annotations__'
+        cdef const char* CONST_AS_STRING = 'const_as'
         cdef Py_ssize_t set_init_size = 0
         cdef str k
         cdef dict annotations
