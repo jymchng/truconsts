@@ -15,10 +15,17 @@ cdef extern from "Python.h":
     int PyCoro_CheckExact(object o)
     int PyAsyncGen_CheckExact(object o)
     object _PyCoro_GetAwaitableIter(object o)
+    object _PyGen_yf(PyGenObject *o)
+    # cdef object coro_await(PyCoroObject *coro)
+    # cdef object coro_get_cr_await(PyCoroObject *coro, void *unused)
+    # cdef object gen_iternext(PyGenObject *gen)
+    # cdef int gen_is_coroutine(object o)
 
     # Types
     ctypedef int (*setattrofunc)(type, object, object) except -1
     ctypedef object (*getattrofunc)(type, object)
+
+    # No need the `ctypedef struct PyTypeObject_PythonType:`
     ctypedef struct PyTypeObject_PythonType:
         setattrofunc tp_setattro
         getattrofunc tp_getattro

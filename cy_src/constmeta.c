@@ -2582,7 +2582,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  *         # mutability in python means anything goes
  *         if PyCoro_CheckExact(__value):             # <<<<<<<<<<<<<<
  *             print("CoroCheck", __name)
- *             PySet_Add(cls._async, __value)
+ *             PySet_Add(cls._async, __name)
  */
   __pyx_t_3 = (PyCoro_CheckExact(__pyx_v___value) != 0);
   if (__pyx_t_3) {
@@ -2591,7 +2591,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  *         # mutability in python means anything goes
  *         if PyCoro_CheckExact(__value):
  *             print("CoroCheck", __name)             # <<<<<<<<<<<<<<
- *             PySet_Add(cls._async, __value)
+ *             PySet_Add(cls._async, __name)
  *         elif PyCallable_Check(__value):
  */
     __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
@@ -2610,13 +2610,13 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
     /* "cy_src/constmeta.pyx":81
  *         if PyCoro_CheckExact(__value):
  *             print("CoroCheck", __name)
- *             PySet_Add(cls._async, __value)             # <<<<<<<<<<<<<<
+ *             PySet_Add(cls._async, __name)             # <<<<<<<<<<<<<<
  *         elif PyCallable_Check(__value):
  *             print("CallableCheck", __name)
  */
     __pyx_t_6 = __pyx_v_cls->_async;
     __Pyx_INCREF(__pyx_t_6);
-    __pyx_t_2 = PySet_Add(__pyx_t_6, __pyx_v___value); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_2 = PySet_Add(__pyx_t_6, __pyx_v___name); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 81, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
     /* "cy_src/constmeta.pyx":79
@@ -2624,26 +2624,26 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  *         # mutability in python means anything goes
  *         if PyCoro_CheckExact(__value):             # <<<<<<<<<<<<<<
  *             print("CoroCheck", __name)
- *             PySet_Add(cls._async, __value)
+ *             PySet_Add(cls._async, __name)
  */
     goto __pyx_L6;
   }
 
   /* "cy_src/constmeta.pyx":82
  *             print("CoroCheck", __name)
- *             PySet_Add(cls._async, __value)
+ *             PySet_Add(cls._async, __name)
  *         elif PyCallable_Check(__value):             # <<<<<<<<<<<<<<
  *             print("CallableCheck", __name)
- *             PySet_Add(cls._lazy, __value)
+ *             PySet_Add(cls._lazy, __name)
  */
   __pyx_t_3 = (PyCallable_Check(__pyx_v___value) != 0);
   if (__pyx_t_3) {
 
     /* "cy_src/constmeta.pyx":83
- *             PySet_Add(cls._async, __value)
+ *             PySet_Add(cls._async, __name)
  *         elif PyCallable_Check(__value):
  *             print("CallableCheck", __name)             # <<<<<<<<<<<<<<
- *             PySet_Add(cls._lazy, __value)
+ *             PySet_Add(cls._lazy, __name)
  *         elif PySequence_Contains(cls._async, __name):
  */
     __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 83, __pyx_L1_error)
@@ -2662,28 +2662,28 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
     /* "cy_src/constmeta.pyx":84
  *         elif PyCallable_Check(__value):
  *             print("CallableCheck", __name)
- *             PySet_Add(cls._lazy, __value)             # <<<<<<<<<<<<<<
+ *             PySet_Add(cls._lazy, __name)             # <<<<<<<<<<<<<<
  *         elif PySequence_Contains(cls._async, __name):
  *             # for the case of assignment non-async value to variable that was previously async
  */
     __pyx_t_1 = __pyx_v_cls->_lazy;
     __Pyx_INCREF(__pyx_t_1);
-    __pyx_t_2 = PySet_Add(__pyx_t_1, __pyx_v___value); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_2 = PySet_Add(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 84, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
     /* "cy_src/constmeta.pyx":82
  *             print("CoroCheck", __name)
- *             PySet_Add(cls._async, __value)
+ *             PySet_Add(cls._async, __name)
  *         elif PyCallable_Check(__value):             # <<<<<<<<<<<<<<
  *             print("CallableCheck", __name)
- *             PySet_Add(cls._lazy, __value)
+ *             PySet_Add(cls._lazy, __name)
  */
     goto __pyx_L6;
   }
 
   /* "cy_src/constmeta.pyx":85
  *             print("CallableCheck", __name)
- *             PySet_Add(cls._lazy, __value)
+ *             PySet_Add(cls._lazy, __name)
  *         elif PySequence_Contains(cls._async, __name):             # <<<<<<<<<<<<<<
  *             # for the case of assignment non-async value to variable that was previously async
  *             PySet_Discard(cls._async, __name)
@@ -2709,7 +2709,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
 
     /* "cy_src/constmeta.pyx":85
  *             print("CallableCheck", __name)
- *             PySet_Add(cls._lazy, __value)
+ *             PySet_Add(cls._lazy, __name)
  *         elif PySequence_Contains(cls._async, __name):             # <<<<<<<<<<<<<<
  *             # for the case of assignment non-async value to variable that was previously async
  *             PySet_Discard(cls._async, __name)
@@ -2780,8 +2780,8 @@ static PyObject *__pyx_pw_6cy_src_9constmeta_16MetaForConstants_5__getattribute_
 static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute__(struct __pyx_obj_6cy_src_9constmeta_MetaForConstants *__pyx_v_cls, PyObject *__pyx_v___name) {
   PyObject *__pyx_v__value = 0;
   PyObject *__pyx_v_func = NULL;
-  PyObject *__pyx_v_coroutine = NULL;
   PyObject *__pyx_v_loop = NULL;
+  PyObject *__pyx_v_coroutine = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -2846,7 +2846,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  *         if PySequence_Contains(cls._lazy, __name):
  *             func = PyType_Type.tp_getattro(cls, __name)             # <<<<<<<<<<<<<<
  *             _value = PyObject_CallFunction(func, NULL)
- *             PyType_Type.tp_setattro(cls, __name, _value)
+ *             if PyCoro_CheckExact(_value):
  */
     __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
@@ -2857,8 +2857,8 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  *         if PySequence_Contains(cls._lazy, __name):
  *             func = PyType_Type.tp_getattro(cls, __name)
  *             _value = PyObject_CallFunction(func, NULL)             # <<<<<<<<<<<<<<
- *             PyType_Type.tp_setattro(cls, __name, _value)
- *             PySet_Discard(cls._lazy, __name) # value is already gotten from call to function
+ *             if PyCoro_CheckExact(_value):
+ *                 PySet_Discard(cls._lazy, __name)
  */
     __pyx_t_2 = PyObject_CallFunction(__pyx_v_func, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
@@ -2868,14 +2868,126 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
     /* "cy_src/constmeta.pyx":98
  *             func = PyType_Type.tp_getattro(cls, __name)
  *             _value = PyObject_CallFunction(func, NULL)
+ *             if PyCoro_CheckExact(_value):             # <<<<<<<<<<<<<<
+ *                 PySet_Discard(cls._lazy, __name)
+ *                 PySet_Add(cls._async, __name)
+ */
+    __pyx_t_1 = (PyCoro_CheckExact(__pyx_v__value) != 0);
+    if (__pyx_t_1) {
+
+      /* "cy_src/constmeta.pyx":99
+ *             _value = PyObject_CallFunction(func, NULL)
+ *             if PyCoro_CheckExact(_value):
+ *                 PySet_Discard(cls._lazy, __name)             # <<<<<<<<<<<<<<
+ *                 PySet_Add(cls._async, __name)
+ *                 loop = asyncio.get_event_loop()
+ */
+      __pyx_t_2 = __pyx_v_cls->_lazy;
+      __Pyx_INCREF(__pyx_t_2);
+      __pyx_t_1 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 99, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+      /* "cy_src/constmeta.pyx":100
+ *             if PyCoro_CheckExact(_value):
+ *                 PySet_Discard(cls._lazy, __name)
+ *                 PySet_Add(cls._async, __name)             # <<<<<<<<<<<<<<
+ *                 loop = asyncio.get_event_loop()
+ *                 _value = loop.run_until_complete(_value)
+ */
+      __pyx_t_2 = __pyx_v_cls->_async;
+      __Pyx_INCREF(__pyx_t_2);
+      __pyx_t_3 = PySet_Add(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 100, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+      /* "cy_src/constmeta.pyx":101
+ *                 PySet_Discard(cls._lazy, __name)
+ *                 PySet_Add(cls._async, __name)
+ *                 loop = asyncio.get_event_loop()             # <<<<<<<<<<<<<<
+ *                 _value = loop.run_until_complete(_value)
+ *                 return _value
+ */
+      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_asyncio); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_get_event_loop); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 101, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_4 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
+        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
+        if (likely(__pyx_t_4)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+          __Pyx_INCREF(__pyx_t_4);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_5, function);
+        }
+      }
+      __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_v_loop = __pyx_t_2;
+      __pyx_t_2 = 0;
+
+      /* "cy_src/constmeta.pyx":102
+ *                 PySet_Add(cls._async, __name)
+ *                 loop = asyncio.get_event_loop()
+ *                 _value = loop.run_until_complete(_value)             # <<<<<<<<<<<<<<
+ *                 return _value
+ *             # (TODO) add check for Generator here
+ */
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_loop, __pyx_n_s_run_until_complete); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 102, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_4 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
+        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
+        if (likely(__pyx_t_4)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+          __Pyx_INCREF(__pyx_t_4);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_5, function);
+        }
+      }
+      __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_4, __pyx_v__value) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v__value);
+      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 102, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
+      __pyx_t_2 = 0;
+
+      /* "cy_src/constmeta.pyx":103
+ *                 loop = asyncio.get_event_loop()
+ *                 _value = loop.run_until_complete(_value)
+ *                 return _value             # <<<<<<<<<<<<<<
+ *             # (TODO) add check for Generator here
+ *             PyType_Type.tp_setattro(cls, __name, _value)
+ */
+      __Pyx_XDECREF(__pyx_r);
+      __Pyx_INCREF(__pyx_v__value);
+      __pyx_r = __pyx_v__value;
+      goto __pyx_L0;
+
+      /* "cy_src/constmeta.pyx":98
+ *             func = PyType_Type.tp_getattro(cls, __name)
+ *             _value = PyObject_CallFunction(func, NULL)
+ *             if PyCoro_CheckExact(_value):             # <<<<<<<<<<<<<<
+ *                 PySet_Discard(cls._lazy, __name)
+ *                 PySet_Add(cls._async, __name)
+ */
+    }
+
+    /* "cy_src/constmeta.pyx":105
+ *                 return _value
+ *             # (TODO) add check for Generator here
  *             PyType_Type.tp_setattro(cls, __name, _value)             # <<<<<<<<<<<<<<
  *             PySet_Discard(cls._lazy, __name) # value is already gotten from call to function
  *             return _value
  */
-    __pyx_t_3 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v__value); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_3 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v__value); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 105, __pyx_L1_error)
 
-    /* "cy_src/constmeta.pyx":99
- *             _value = PyObject_CallFunction(func, NULL)
+    /* "cy_src/constmeta.pyx":106
+ *             # (TODO) add check for Generator here
  *             PyType_Type.tp_setattro(cls, __name, _value)
  *             PySet_Discard(cls._lazy, __name) # value is already gotten from call to function             # <<<<<<<<<<<<<<
  *             return _value
@@ -2883,10 +2995,10 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
     __pyx_t_2 = __pyx_v_cls->_lazy;
     __Pyx_INCREF(__pyx_t_2);
-    __pyx_t_1 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 99, __pyx_L1_error)
+    __pyx_t_1 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 106, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "cy_src/constmeta.pyx":100
+    /* "cy_src/constmeta.pyx":107
  *             PyType_Type.tp_setattro(cls, __name, _value)
  *             PySet_Discard(cls._lazy, __name) # value is already gotten from call to function
  *             return _value             # <<<<<<<<<<<<<<
@@ -2907,7 +3019,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
   }
 
-  /* "cy_src/constmeta.pyx":101
+  /* "cy_src/constmeta.pyx":108
  *             PySet_Discard(cls._lazy, __name) # value is already gotten from call to function
  *             return _value
  *         if PySequence_Contains(cls._async, __name):             # <<<<<<<<<<<<<<
@@ -2916,93 +3028,93 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
   __pyx_t_2 = __pyx_v_cls->_async;
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_3 = PySequence_Contains(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_3 = PySequence_Contains(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_1 = (__pyx_t_3 != 0);
   if (__pyx_t_1) {
 
-    /* "cy_src/constmeta.pyx":102
+    /* "cy_src/constmeta.pyx":109
  *             return _value
  *         if PySequence_Contains(cls._async, __name):
  *             func = PyType_Type.tp_getattro(cls, __name)             # <<<<<<<<<<<<<<
  *             coroutine = PyObject_CallFunction(func, NULL) # get the coroutine
  *             # if gen_is_coroutine(coroutine) or PyCoro_CheckExact(coroutine):
  */
-    __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 102, __pyx_L1_error)
+    __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_v_func = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "cy_src/constmeta.pyx":103
+    /* "cy_src/constmeta.pyx":110
  *         if PySequence_Contains(cls._async, __name):
  *             func = PyType_Type.tp_getattro(cls, __name)
  *             coroutine = PyObject_CallFunction(func, NULL) # get the coroutine             # <<<<<<<<<<<<<<
  *             # if gen_is_coroutine(coroutine) or PyCoro_CheckExact(coroutine):
  *             #     coroutine_ptr = <PyCoroObject*>coroutine
  */
-    __pyx_t_2 = PyObject_CallFunction(__pyx_v_func, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_2 = PyObject_CallFunction(__pyx_v_func, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_v_coroutine = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "cy_src/constmeta.pyx":111
+    /* "cy_src/constmeta.pyx":118
  *             #         _value = coro_get_cr_await(coroutine_ptr, NULL)
  *             #         PyMem_Free(coroutine_ptr)
  *             loop = asyncio.get_event_loop()             # <<<<<<<<<<<<<<
  *             _value = loop.run_until_complete(coroutine) # resolve the future but not setting it as class variable
  *             return _value
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_asyncio); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_get_event_loop); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 111, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_asyncio); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 118, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_4)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_4);
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_get_event_loop); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_5 = NULL;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+      if (likely(__pyx_t_5)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+        __Pyx_INCREF(__pyx_t_5);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
+        __Pyx_DECREF_SET(__pyx_t_4, function);
       }
     }
-    __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
+    __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
+    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_loop = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "cy_src/constmeta.pyx":112
+    /* "cy_src/constmeta.pyx":119
  *             #         PyMem_Free(coroutine_ptr)
  *             loop = asyncio.get_event_loop()
  *             _value = loop.run_until_complete(coroutine) # resolve the future but not setting it as class variable             # <<<<<<<<<<<<<<
  *             return _value
  *         # assumption: lazy and async are mutually exclusive - guaranteed by exception raised with Async[Lazy]
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_loop, __pyx_n_s_run_until_complete); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 112, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_4 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_4)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_4);
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_loop, __pyx_n_s_run_until_complete); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 119, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = NULL;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+      if (likely(__pyx_t_5)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+        __Pyx_INCREF(__pyx_t_5);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
+        __Pyx_DECREF_SET(__pyx_t_4, function);
       }
     }
-    __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_4, __pyx_v_coroutine) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_coroutine);
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 112, __pyx_L1_error)
+    __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_v_coroutine) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_coroutine);
+    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v__value = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "cy_src/constmeta.pyx":113
+    /* "cy_src/constmeta.pyx":120
  *             loop = asyncio.get_event_loop()
  *             _value = loop.run_until_complete(coroutine) # resolve the future but not setting it as class variable
  *             return _value             # <<<<<<<<<<<<<<
@@ -3014,7 +3126,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
     __pyx_r = __pyx_v__value;
     goto __pyx_L0;
 
-    /* "cy_src/constmeta.pyx":101
+    /* "cy_src/constmeta.pyx":108
  *             PySet_Discard(cls._lazy, __name) # value is already gotten from call to function
  *             return _value
  *         if PySequence_Contains(cls._async, __name):             # <<<<<<<<<<<<<<
@@ -3023,13 +3135,13 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
   }
 
-  /* "cy_src/constmeta.pyx":115
+  /* "cy_src/constmeta.pyx":122
  *             return _value
  *         # assumption: lazy and async are mutually exclusive - guaranteed by exception raised with Async[Lazy]
  *         return PyType_Type.tp_getattro(cls, __name)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -3053,8 +3165,8 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v__value);
   __Pyx_XDECREF(__pyx_v_func);
-  __Pyx_XDECREF(__pyx_v_coroutine);
   __Pyx_XDECREF(__pyx_v_loop);
+  __Pyx_XDECREF(__pyx_v_coroutine);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;

@@ -95,6 +95,13 @@ cdef class MetaForConstants(type):
         if PySequence_Contains(cls._lazy, __name):
             func = PyType_Type.tp_getattro(cls, __name)
             _value = PyObject_CallFunction(func, NULL)
+            if PyCoro_CheckExact(_value):
+                PySet_Discard(cls._lazy, __name)
+                PySet_Add(cls._async, __name)
+                loop = asyncio.get_event_loop()
+                _value = loop.run_until_complete(_value)
+                return _value
+            # (TODO) add check for Generator here
             PyType_Type.tp_setattro(cls, __name, _value)
             PySet_Discard(cls._lazy, __name) # value is already gotten from call to function
             return _value

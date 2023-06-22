@@ -229,20 +229,87 @@ The `.h` header file contains forward-declarations e.g. https://github.com/pytho
 
 ![Alt text](cyimplfuncfromc.png)
 
+Reference: https://cython.readthedocs.io/en/latest/src/userguide/external_C_code.html?highlight=static#implementing-functions-in-c
+
 To import a `.c` into Cython, must do the following:
 
 1. Must be `cdef extern from "sage/graphs/cliquer/cl.c":` `.c` instead of `cdef extern from "sage/graphs/cliquer/cl.h":` `.h`
-2. Must add `cdef` in front of all declarations
+2. Must add `cdef` in front of all declarations for all function that are declared as `static`
+3. Probably need to have a way to refer them
 
 Example: https://github.com/sagemath/sage/blob/3230f00aeb49802f99b0a3b76e770fa9d628c4e1/src/sage/graphs/cliquer.pyx#L38
 ```
-cdef extern from "sage/graphs/cliquer/cl.c":
+cdef extern from "sage/graphs/cliquer/cl.c": # give the path to where they are
     cdef int sage_clique_max(graph_t *g, int ** list_of_vertices)
     cdef int sage_all_clique_max(graph_t *g, int ** list_of_vertices)
     cdef int sage_clique_number(graph_t *g)
     cdef int sage_find_all_clique(graph_t *g, int ** list_of_vertices, int min_size, int max_size)
 ```
-Reference: https://cython.readthedocs.io/en/latest/src/userguide/external_C_code.html?highlight=static#implementing-functions-in-c
+
+```
+int sage_clique_max(graph_t *g,int **list){
+  sage_reset_global_variables();
+  quiet++;
+  set_t s;
+  int i,l;
+  clique_options *opts = sage_init_clique_opt();
+  s=clique_unweighted_find_single(g,/*min_weight*/0,
+				  /*max_weight*/0,/*maximal*/TRUE,
+				  opts);
+  free(opts);
+
+  // Writing the answer into a int [] to be read by Sage
+  int size=set_size(s);
+  *list=malloc(sizeof(int)*size);
+  l=0;
+  for (i=0; i<SET_MAX_SIZE(s); i++) {
+    if (SET_CONTAINS(s,i)) {
+      *((*list)+l)=i;
+      l++;
+    }
+  }
+  return size;
+}
+
+int sage_all_clique_max(graph_t *g,int **list){
+  sage_reset_global_variables();
+  quiet++;
+  maximal=TRUE;
+  int i,j,l;
+
+  clique_options *opts = sage_init_clique_opt();
+  clique_unweighted_find_all(g,/*min_weight*/0,/*max_weight*/0,
+			     maximal,opts);
+  free(opts);
+
+  int size=set_size(sage_clique_list[0]);
+  *list=malloc(sizeof(int)*(size+1)*sage_clique_count);
+  l=0;
+
+  for (j=0; j<sage_clique_count; j++) {
+    for (i=0; i<SET_MAX_SIZE(sage_clique_list[j]); i++) {
+      if (SET_CONTAINS(sage_clique_list[j],i)) {
+        *((*list)+l)=i;
+        l++;
+      }
+    }
+    set_free(sage_clique_list[j]);
+    *((*list)+l)=-1;
+    l++;
+  }
+  return (1+size)*sage_clique_count;
+}
+```
+
+
+Another Example:
+```
+# because they are `static type func_name` that's why must use `cdef` at front
+    cdef object coro_await(PyCoroObject *coro)
+    cdef object coro_get_cr_await(PyCoroObject *coro, void *unused)
+    cdef object gen_iternext(PyGenObject *gen)
+    cdef int gen_is_coroutine(object o)
+```
 
 ```
 static int
