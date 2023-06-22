@@ -198,3 +198,27 @@ def test_subclass_instance_has_no_dict_two():
         inst.ASYNC_IMMU_STR = '555'
         assert inst.ASYNC_IMMU_STR == '555'
         assert AsyncConstants.ASYNC_IMMU_STR == 'THIS_IS_AN_ASYNC_ROOT_DIR'
+        
+class LazyAsyncConstants(BaseConstants):
+    LAZY_CONST: Lazy = get_root_dir
+    ASYNC_CONST: Async = get_async_root_dir
+    
+def test_switch_async_and_lazy():
+    
+    assert LazyAsyncConstants._lazy == set(('LAZY_CONST', ))
+    assert LazyAsyncConstants._async == set(('ASYNC_CONST', ))
+    
+    assert LazyAsyncConstants.LAZY_CONST == 'THIS_IS_A_ROOT_DIR'
+    assert LazyAsyncConstants.ASYNC_CONST == 'THIS_IS_AN_ASYNC_ROOT_DIR'
+    
+    assert LazyAsyncConstants._lazy == set()
+    assert LazyAsyncConstants._async == set(('ASYNC_CONST',))
+    
+    LazyAsyncConstants.ASYNC_CONST = get_root_dir
+    LazyAsyncConstants.LAZY_CONST = get_async_root_dir
+    
+    assert LazyAsyncConstants._lazy == set(('ASYNC_CONST', ))
+    assert LazyAsyncConstants._async == set(('LAZY_CONST', ))
+    
+    assert LazyAsyncConstants.LAZY_CONST == 'THIS_IS_AN_ASYNC_ROOT_DIR'
+    assert LazyAsyncConstants.ASYNC_CONST == 'THIS_IS_A_ROOT_DIR'

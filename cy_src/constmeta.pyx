@@ -3,21 +3,23 @@
 # Py_TPFLAGS_BASETYPE
 
 from truconsts._types import Immutable, Lazy, Async
+from libc.stdlib cimport free
 from cpython cimport \
     PyObject_HasAttrString, \
     PyObject_GetAttrString, PyObject_CallFunction, PyObject_IsInstance, \
-    Py_TYPE, PySet_Add, PySet_New, PyTuple_New, \
+    Py_TYPE, PySet_Add, PySet_New, PyTuple_New, PyMem_Free, \
     PySequence_Contains, Py_EQ, PyObject_RichCompareBool, PyDict_Items, PySet_Discard, PyMapping_HasKeyString, \
-    Py_TPFLAGS_BASETYPE
+    Py_TPFLAGS_BASETYPE, PyCallable_Check
+from cpython.genobject cimport PyGen_Check
 import asyncio
-from .cpy cimport setattrofunc, getattrofunc, PyCoro_CheckExact, PyCallable_Check, PyTypeObject_PythonType, PyType_Type
+from .cpy cimport setattrofunc, getattrofunc, PyCoro_CheckExact, PyTypeObject_PythonType, PyType_Type, \
+    gen_is_coroutine, coro_get_cr_await, PyCoroObject, coro_await, gen_iternext
 
 
 cdef class MetaForConstants(type):
 
     def __cinit__(mcls, str name, tuple bases, dict attrs):
         cdef const char* ANNOTATION_STRING = '__annotations__'
-        cdef const char* CONST_AS_STRING = 'const_as'
         cdef Py_ssize_t set_init_size = 0
         cdef str k
         cdef dict annotations
@@ -38,6 +40,7 @@ cdef class MetaForConstants(type):
         
 
         if not PyMapping_HasKeyString(attrs, ANNOTATION_STRING):
+            free(ANNOTATION_STRING)
             return
 
         annotations = PyObject_GetAttrString(mcls, ANNOTATION_STRING)
@@ -59,17 +62,21 @@ cdef class MetaForConstants(type):
                     PySet_Add(mcls._async, k)
 
         mcls._init = True
+        free(ANNOTATION_STRING)
         return
         
     def __setattr__(cls, str __name, object __value):
         cdef const char* ANNOTATION_STRING = '__annotations__'
         # basic checks
         if not PySequence_Contains(cls._attrs, __name):
+            free(ANNOTATION_STRING)
             raise AttributeError(f"Cannot add `{__name}` class variable to `{cls.__name__}`")
         if not PyObject_HasAttrString(cls, ANNOTATION_STRING):
             PyType_Type.tp_setattro(cls, __name, __value)
+            free(ANNOTATION_STRING)
             return
         if PySequence_Contains(cls._immutable, __name):
+            free(ANNOTATION_STRING)
             raise AttributeError(f"`{cls.__name__}.{__name}` cannot be mutated")
 
         # not-so-basic checks
@@ -82,6 +89,7 @@ cdef class MetaForConstants(type):
             # for the case of assignment non-async value to variable that was previously async
             PySet_Discard(cls._async, __name)
         PyType_Type.tp_setattro(cls, __name, __value)
+        free(ANNOTATION_STRING)
 
     def __getattribute__(cls, __name: str):
         cdef object _value
@@ -97,8 +105,15 @@ cdef class MetaForConstants(type):
         if PySequence_Contains(cls._async, __name):
             func = PyType_Type.tp_getattro(cls, __name)
             coroutine = PyObject_CallFunction(func, NULL) # get the coroutine
-            loop = asyncio.get_event_loop()
-            _value = loop.run_until_complete(coroutine) # resolve the future but not setting it as class variable
+            if gen_is_coroutine(coroutine) or PyCoro_CheckExact(coroutine):
+                coroutine_ptr = <PyCoroObject*>coroutine
+                if coroutine_ptr == NULL:
+                    raise TypeError(f"`{cls.__name__}.{__name}` cannot be casted to a `PyCoroObject` pointer")
+                else:
+                    _value = coro_get_cr_await(coroutine_ptr, NULL)
+                    PyMem_Free(coroutine_ptr)
+            # loop = asyncio.get_event_loop()
+            # _value = loop.run_until_complete(coroutine) # resolve the future but not setting it as class variable
             return _value
         # assumption: lazy and async are mutually exclusive - guaranteed by exception raised with Async[Lazy]
         return PyType_Type.tp_getattro(cls, __name)
