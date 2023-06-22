@@ -51,7 +51,9 @@ cdef class MetaForImmutables(type):
         mcls._lazy = PySet_New(PyTuple_New(set_init_size))
         mcls._async = PySet_New(PyTuple_New(set_init_size))
         mcls._attrs = PySet_New(PyTuple_New(set_init_size))
-        # put MethodType here = (MetaForImmutables.__init_subclass__)
+        # put MethodType here = 
+        
+        PyType_Type.tp_setattro(mcls, '__init_subclass__', MetaForImmutables.__init_subclass__)
 
         if (PySequence_Contains(bases, Lazy) and PySequence_Contains(bases, Async)) or PySequence_Contains(bases, Mutable):
             raise ValueError(f"Cannot inherit both `Lazy` and `Async` or from `Mutable` when `{name}` subclasses `Immutable`")

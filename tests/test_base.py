@@ -1,4 +1,4 @@
-from truconsts import Lazy, Mutable, Immutable, Async
+from truconsts._types import Lazy, Mutable, Immutable, Async
 import pytest
 
 def test_unable_to_inherit():

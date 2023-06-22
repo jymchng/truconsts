@@ -1,5 +1,6 @@
 from typing import Type, Tuple
 from types import MethodType
+from ._base_immu import BaseImmutable
 
 
 def patch_cls(cls):
@@ -12,20 +13,16 @@ def patch_cls(cls):
         raise Exception(f"`{index}` is not a type or tuple(type) or `Lazy`")
     def __init__(self, *args, **kwargs):
         raise Exception(f"`{self.__name__}` cannot be instantiated")
-    def __init_subclass__(self, *args, **kwargs):
-        raise Exception(f"`{self.__name__}` cannot be subclassed")
+    # def __init_subclass__(self, *args, **kwargs):
+    #     raise Exception(f"`{self.__name__}` cannot be subclassed")
     cls.__init__ = MethodType(__init__, cls)
-    cls.__init_subclass__ = MethodType(__init_subclass__, cls)
+    # cls.__init_subclass__ = MethodType(__init_subclass__, cls)
     cls.__class_getitem__ = MethodType(__cls_getitem__, cls)
     return cls
 
 
-class MetaForImmutable(type):
-    ...
-    
-
-class BaseImmutable(metaclass=MetaForImmutable):
-    ...
+# class MetaForImmutable(type):
+#     ...
 
 
 @patch_cls

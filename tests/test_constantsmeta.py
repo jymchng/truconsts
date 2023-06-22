@@ -1,6 +1,6 @@
 import pytest
 from cy_src.constmeta import MetaForConstants
-from truconsts import Immutable, Mutable, Lazy, Async
+from truconsts._types import Immutable, Mutable, Lazy, Async
 
 class BaseConstants(metaclass=MetaForConstants):
     ...
