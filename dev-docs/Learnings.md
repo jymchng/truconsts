@@ -235,7 +235,9 @@ To import a `.c` into Cython, must do the following:
 
 1. Must be `cdef extern from "sage/graphs/cliquer/cl.c":` `.c` instead of `cdef extern from "sage/graphs/cliquer/cl.h":` `.h`
 2. Must add `cdef` in front of all declarations for all function that are declared as `static`
-3. Probably need to have a way to refer them
+3. Need to have a way to refer to the exact `.c` file
+4. Functions declared in for e.g. `genobject.h` are also declared (through the [#include "genobject.c"](https://github.com/python/cpython/blob/3.8/Include/Python.h#L121)) in `Python.h`
+   hence it is possible to import functions like `PyGen_Check` that are declared in `genobject.h` using `cdef extern from "Python.h":`
 
 Example: https://github.com/sagemath/sage/blob/3230f00aeb49802f99b0a3b76e770fa9d628c4e1/src/sage/graphs/cliquer.pyx#L38
 ```
