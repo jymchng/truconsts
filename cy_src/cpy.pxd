@@ -37,12 +37,12 @@ cdef extern from "Python.h":
 
     cdef PyTypeObject_PythonType PyType_Type
 
-cdef extern from "genobject.c": # to import pure C functions; 1. extern from "genobject.c" NOT "Python.h"
-    # declarations
-    cdef object coro_await(PyCoroObject *coro)
-    cdef object coro_get_cr_await(PyCoroObject *coro, void *unused)
-    cdef object gen_iternext(PyGenObject *gen)
-    cdef int gen_is_coroutine(object o)
+# cdef extern from "genobject.c": # to import pure C functions; 1. extern from "genobject.c" NOT "Python.h"
+#     # declarations
+#     cdef object coro_await(PyCoroObject *coro)
+#     cdef object coro_get_cr_await(PyCoroObject *coro, void *unused)
+#     cdef object gen_iternext(PyGenObject *gen)
+#     cdef int gen_is_coroutine(object o)
 
 # to enable export https://cython.readthedocs.io/en/latest/src/userguide/external_C_code.html?highlight=static#implementing-functions-in-c
     

@@ -762,7 +762,6 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <stdio.h>
 #include "pythread.h"
 #include <stdlib.h>
-#include "genobject.c"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -973,8 +972,8 @@ static const char *__pyx_filename;
 
 static const char *__pyx_f[] = {
   "cy_src\\constmeta.pyx",
-  "cy_src\\constmeta.pxd",
   "stringsource",
+  "cy_src\\constmeta.pxd",
   "type.pxd",
   "bool.pxd",
   "complex.pxd",
@@ -1317,8 +1316,8 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
-/* None.proto */
-static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname);
+/* PyObjectCall2Args.proto */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
 
 /* PyErrExceptionMatches.proto */
 #if CYTHON_FAST_THREAD_STATE
@@ -1423,9 +1422,6 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 
 /* CheckBinaryVersion.proto */
 static int __Pyx_check_binary_version(void);
-
-/* FunctionImport.proto */
-static int __Pyx_ImportFunction_0_29_35(PyObject *module, const char *funcname, void (**f)(void), const char *sig);
 
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
@@ -1555,6 +1551,7 @@ static const char __pyx_k_Cannot_add[] = "Cannot add `";
 static const char __pyx_k_asyncio_tasks[] = "asyncio.tasks";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_AttributeError[] = "AttributeError";
+static const char __pyx_k_get_event_loop[] = "get_event_loop";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_MetaForConstants[] = "MetaForConstants";
 static const char __pyx_k_truconsts__types[] = "truconsts._types";
@@ -1562,7 +1559,7 @@ static const char __pyx_k_cannot_be_mutated[] = "` cannot be mutated";
 static const char __pyx_k_class_variable_to[] = "` class variable to `";
 static const char __pyx_k_asyncio_coroutines[] = "asyncio.coroutines";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_cannot_be_casted_to_a_PyCoroObj[] = "` cannot be casted to a `PyCoroObject` pointer";
+static const char __pyx_k_run_until_complete[] = "run_until_complete";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static PyObject *__pyx_n_u_;
 static PyObject *__pyx_n_s_Async;
@@ -1580,10 +1577,10 @@ static PyObject *__pyx_n_s_asyncio_coroutines;
 static PyObject *__pyx_n_s_asyncio_tasks;
 static PyObject *__pyx_n_s_attrs;
 static PyObject *__pyx_n_s_bases;
-static PyObject *__pyx_kp_u_cannot_be_casted_to_a_PyCoroObj;
 static PyObject *__pyx_kp_u_cannot_be_mutated;
 static PyObject *__pyx_kp_u_class_variable_to;
 static PyObject *__pyx_n_s_cline_in_traceback;
+static PyObject *__pyx_n_s_get_event_loop;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_inspect;
@@ -1595,6 +1592,7 @@ static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
+static PyObject *__pyx_n_s_run_until_complete;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_test;
@@ -2790,17 +2788,14 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
   PyObject *__pyx_v__value = 0;
   PyObject *__pyx_v_func = NULL;
   PyObject *__pyx_v_coroutine = NULL;
-  PyCoroObject *__pyx_v_coroutine_ptr;
+  PyObject *__pyx_v_loop = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
   int __pyx_t_3;
-  int __pyx_t_4;
-  Py_ssize_t __pyx_t_5;
-  Py_UCS4 __pyx_t_6;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2938,7 +2933,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  *         if PySequence_Contains(cls._async, __name):
  *             func = PyType_Type.tp_getattro(cls, __name)             # <<<<<<<<<<<<<<
  *             coroutine = PyObject_CallFunction(func, NULL) # get the coroutine
- *             if gen_is_coroutine(coroutine) or PyCoro_CheckExact(coroutine):
+ *             # if gen_is_coroutine(coroutine) or PyCoro_CheckExact(coroutine):
  */
     __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
@@ -2949,151 +2944,79 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  *         if PySequence_Contains(cls._async, __name):
  *             func = PyType_Type.tp_getattro(cls, __name)
  *             coroutine = PyObject_CallFunction(func, NULL) # get the coroutine             # <<<<<<<<<<<<<<
- *             if gen_is_coroutine(coroutine) or PyCoro_CheckExact(coroutine):
- *                 coroutine_ptr = <PyCoroObject*>coroutine
+ *             # if gen_is_coroutine(coroutine) or PyCoro_CheckExact(coroutine):
+ *             #     coroutine_ptr = <PyCoroObject*>coroutine
  */
     __pyx_t_2 = PyObject_CallFunction(__pyx_v_func, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_v_coroutine = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "cy_src/constmeta.pyx":108
- *             func = PyType_Type.tp_getattro(cls, __name)
- *             coroutine = PyObject_CallFunction(func, NULL) # get the coroutine
- *             if gen_is_coroutine(coroutine) or PyCoro_CheckExact(coroutine):             # <<<<<<<<<<<<<<
- *                 coroutine_ptr = <PyCoroObject*>coroutine
- *                 if coroutine_ptr == NULL:
+    /* "cy_src/constmeta.pyx":115
+ *             #         _value = coro_get_cr_await(coroutine_ptr, NULL)
+ *             #         PyMem_Free(coroutine_ptr)
+ *             loop = asyncio.get_event_loop()             # <<<<<<<<<<<<<<
+ *             _value = loop.run_until_complete(coroutine) # resolve the future but not setting it as class variable
+ *             return _value
  */
-    __pyx_t_4 = (gen_is_coroutine(__pyx_v_coroutine) != 0);
-    if (!__pyx_t_4) {
-    } else {
-      __pyx_t_1 = __pyx_t_4;
-      goto __pyx_L7_bool_binop_done;
-    }
-    __pyx_t_4 = (PyCoro_CheckExact(__pyx_v_coroutine) != 0);
-    __pyx_t_1 = __pyx_t_4;
-    __pyx_L7_bool_binop_done:;
-    if (__pyx_t_1) {
-
-      /* "cy_src/constmeta.pyx":109
- *             coroutine = PyObject_CallFunction(func, NULL) # get the coroutine
- *             if gen_is_coroutine(coroutine) or PyCoro_CheckExact(coroutine):
- *                 coroutine_ptr = <PyCoroObject*>coroutine             # <<<<<<<<<<<<<<
- *                 if coroutine_ptr == NULL:
- *                     raise TypeError(f"`{cls.__name__}.{__name}` cannot be casted to a `PyCoroObject` pointer")
- */
-      __pyx_v_coroutine_ptr = ((PyCoroObject *)__pyx_v_coroutine);
-
-      /* "cy_src/constmeta.pyx":110
- *             if gen_is_coroutine(coroutine) or PyCoro_CheckExact(coroutine):
- *                 coroutine_ptr = <PyCoroObject*>coroutine
- *                 if coroutine_ptr == NULL:             # <<<<<<<<<<<<<<
- *                     raise TypeError(f"`{cls.__name__}.{__name}` cannot be casted to a `PyCoroObject` pointer")
- *                 else:
- */
-      __pyx_t_1 = ((__pyx_v_coroutine_ptr == NULL) != 0);
-      if (unlikely(__pyx_t_1)) {
-
-        /* "cy_src/constmeta.pyx":111
- *                 coroutine_ptr = <PyCoroObject*>coroutine
- *                 if coroutine_ptr == NULL:
- *                     raise TypeError(f"`{cls.__name__}.{__name}` cannot be casted to a `PyCoroObject` pointer")             # <<<<<<<<<<<<<<
- *                 else:
- *                     _value = coro_get_cr_await(coroutine_ptr, NULL)
- */
-        __pyx_t_2 = PyTuple_New(5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_5 = 0;
-        __pyx_t_6 = 127;
-        __Pyx_INCREF(__pyx_kp_u__2);
-        __pyx_t_5 += 1;
-        __Pyx_GIVEREF(__pyx_kp_u__2);
-        PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_kp_u__2);
-        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_cls), __pyx_n_s_name_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 111, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_t_7, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 111, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_8);
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_8) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_8) : __pyx_t_6;
-        __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_8);
-        __Pyx_GIVEREF(__pyx_t_8);
-        PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_8);
-        __pyx_t_8 = 0;
-        __Pyx_INCREF(__pyx_kp_u__3);
-        __pyx_t_5 += 1;
-        __Pyx_GIVEREF(__pyx_kp_u__3);
-        PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_kp_u__3);
-        __pyx_t_8 = __Pyx_PyUnicode_Unicode(__pyx_v___name); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 111, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_8);
-        __pyx_t_6 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_8) > __pyx_t_6) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_8) : __pyx_t_6;
-        __pyx_t_5 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_8);
-        __Pyx_GIVEREF(__pyx_t_8);
-        PyTuple_SET_ITEM(__pyx_t_2, 3, __pyx_t_8);
-        __pyx_t_8 = 0;
-        __Pyx_INCREF(__pyx_kp_u_cannot_be_casted_to_a_PyCoroObj);
-        __pyx_t_5 += 46;
-        __Pyx_GIVEREF(__pyx_kp_u_cannot_be_casted_to_a_PyCoroObj);
-        PyTuple_SET_ITEM(__pyx_t_2, 4, __pyx_kp_u_cannot_be_casted_to_a_PyCoroObj);
-        __pyx_t_8 = __Pyx_PyUnicode_Join(__pyx_t_2, 5, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 111, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_8);
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        __Pyx_Raise(__pyx_t_2, 0, 0, 0);
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __PYX_ERR(0, 111, __pyx_L1_error)
-
-        /* "cy_src/constmeta.pyx":110
- *             if gen_is_coroutine(coroutine) or PyCoro_CheckExact(coroutine):
- *                 coroutine_ptr = <PyCoroObject*>coroutine
- *                 if coroutine_ptr == NULL:             # <<<<<<<<<<<<<<
- *                     raise TypeError(f"`{cls.__name__}.{__name}` cannot be casted to a `PyCoroObject` pointer")
- *                 else:
- */
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_asyncio); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_get_event_loop); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 115, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = NULL;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
+      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
+      if (likely(__pyx_t_4)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+        __Pyx_INCREF(__pyx_t_4);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_5, function);
       }
-
-      /* "cy_src/constmeta.pyx":113
- *                     raise TypeError(f"`{cls.__name__}.{__name}` cannot be casted to a `PyCoroObject` pointer")
- *                 else:
- *                     _value = coro_get_cr_await(coroutine_ptr, NULL)             # <<<<<<<<<<<<<<
- *                     PyMem_Free(coroutine_ptr)
- *             # loop = asyncio.get_event_loop()
- */
-      /*else*/ {
-        __pyx_t_2 = coro_get_cr_await(__pyx_v_coroutine_ptr, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __pyx_v__value = __pyx_t_2;
-        __pyx_t_2 = 0;
-
-        /* "cy_src/constmeta.pyx":114
- *                 else:
- *                     _value = coro_get_cr_await(coroutine_ptr, NULL)
- *                     PyMem_Free(coroutine_ptr)             # <<<<<<<<<<<<<<
- *             # loop = asyncio.get_event_loop()
- *             # _value = loop.run_until_complete(coroutine) # resolve the future but not setting it as class variable
- */
-        PyMem_Free(__pyx_v_coroutine_ptr);
-      }
-
-      /* "cy_src/constmeta.pyx":108
- *             func = PyType_Type.tp_getattro(cls, __name)
- *             coroutine = PyObject_CallFunction(func, NULL) # get the coroutine
- *             if gen_is_coroutine(coroutine) or PyCoro_CheckExact(coroutine):             # <<<<<<<<<<<<<<
- *                 coroutine_ptr = <PyCoroObject*>coroutine
- *                 if coroutine_ptr == NULL:
- */
     }
+    __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_v_loop = __pyx_t_2;
+    __pyx_t_2 = 0;
+
+    /* "cy_src/constmeta.pyx":116
+ *             #         PyMem_Free(coroutine_ptr)
+ *             loop = asyncio.get_event_loop()
+ *             _value = loop.run_until_complete(coroutine) # resolve the future but not setting it as class variable             # <<<<<<<<<<<<<<
+ *             return _value
+ *         # assumption: lazy and async are mutually exclusive - guaranteed by exception raised with Async[Lazy]
+ */
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_loop, __pyx_n_s_run_until_complete); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_4 = NULL;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
+      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
+      if (likely(__pyx_t_4)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+        __Pyx_INCREF(__pyx_t_4);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_5, function);
+      }
+    }
+    __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_4, __pyx_v_coroutine) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_coroutine);
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_v__value = __pyx_t_2;
+    __pyx_t_2 = 0;
 
     /* "cy_src/constmeta.pyx":117
- *             # loop = asyncio.get_event_loop()
- *             # _value = loop.run_until_complete(coroutine) # resolve the future but not setting it as class variable
+ *             loop = asyncio.get_event_loop()
+ *             _value = loop.run_until_complete(coroutine) # resolve the future but not setting it as class variable
  *             return _value             # <<<<<<<<<<<<<<
  *         # assumption: lazy and async are mutually exclusive - guaranteed by exception raised with Async[Lazy]
  *         return PyType_Type.tp_getattro(cls, __name)
  */
     __Pyx_XDECREF(__pyx_r);
-    if (unlikely(!__pyx_v__value)) { __Pyx_RaiseUnboundLocalError("_value"); __PYX_ERR(0, 117, __pyx_L1_error) }
     __Pyx_INCREF(__pyx_v__value);
     __pyx_r = __pyx_v__value;
     goto __pyx_L0;
@@ -3130,14 +3053,15 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_AddTraceback("cy_src.constmeta.MetaForConstants.__getattribute__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v__value);
   __Pyx_XDECREF(__pyx_v_func);
   __Pyx_XDECREF(__pyx_v_coroutine);
+  __Pyx_XDECREF(__pyx_v_loop);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -3320,7 +3244,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_5_init___get__(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->_init); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 9, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->_init); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3371,11 +3295,11 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_6__reduce_cython
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(2, 2, __pyx_L1_error)
+  __PYX_ERR(1, 2, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -3427,11 +3351,11 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_8__setstate_cyth
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(2, 4, __pyx_L1_error)
+  __PYX_ERR(1, 4, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -3705,10 +3629,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_asyncio_tasks, __pyx_k_asyncio_tasks, sizeof(__pyx_k_asyncio_tasks), 0, 0, 1, 1},
   {&__pyx_n_s_attrs, __pyx_k_attrs, sizeof(__pyx_k_attrs), 0, 0, 1, 1},
   {&__pyx_n_s_bases, __pyx_k_bases, sizeof(__pyx_k_bases), 0, 0, 1, 1},
-  {&__pyx_kp_u_cannot_be_casted_to_a_PyCoroObj, __pyx_k_cannot_be_casted_to_a_PyCoroObj, sizeof(__pyx_k_cannot_be_casted_to_a_PyCoroObj), 0, 1, 0, 0},
   {&__pyx_kp_u_cannot_be_mutated, __pyx_k_cannot_be_mutated, sizeof(__pyx_k_cannot_be_mutated), 0, 1, 0, 0},
   {&__pyx_kp_u_class_variable_to, __pyx_k_class_variable_to, sizeof(__pyx_k_class_variable_to), 0, 1, 0, 0},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
+  {&__pyx_n_s_get_event_loop, __pyx_k_get_event_loop, sizeof(__pyx_k_get_event_loop), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_inspect, __pyx_k_inspect, sizeof(__pyx_k_inspect), 0, 0, 1, 1},
@@ -3720,6 +3644,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
+  {&__pyx_n_s_run_until_complete, __pyx_k_run_until_complete, sizeof(__pyx_k_run_until_complete), 0, 0, 1, 1},
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
@@ -3728,7 +3653,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_AttributeError = __Pyx_GetBuiltinName(__pyx_n_s_AttributeError); if (!__pyx_builtin_AttributeError) __PYX_ERR(0, 73, __pyx_L1_error)
-  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -3744,7 +3669,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(2, 2, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
@@ -3753,7 +3678,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(2, 4, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
   __Pyx_RefNannyFinishContext();
@@ -3868,25 +3793,10 @@ static int __Pyx_modinit_variable_import_code(void) {
 
 static int __Pyx_modinit_function_import_code(void) {
   __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_import_code", 0);
   /*--- Function import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("cy_src.cpy"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportFunction_0_29_35(__pyx_t_1, "coro_await", (void (**)(void))&coro_await, "PyObject *(PyCoroObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction_0_29_35(__pyx_t_1, "coro_get_cr_await", (void (**)(void))&coro_get_cr_await, "PyObject *(PyCoroObject *, void *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction_0_29_35(__pyx_t_1, "gen_iternext", (void (**)(void))&gen_iternext, "PyObject *(PyGenObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction_0_29_35(__pyx_t_1, "gen_is_coroutine", (void (**)(void))&gen_is_coroutine, "int (PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_RefNannyFinishContext();
-  return -1;
 }
 
 
@@ -4084,7 +3994,7 @@ if (!__Pyx_RefNanny) {
   if (unlikely(__Pyx_modinit_type_init_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
   if (unlikely(__Pyx_modinit_type_import_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
   (void)__Pyx_modinit_variable_import_code();
-  if (unlikely(__Pyx_modinit_function_import_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+  (void)__Pyx_modinit_function_import_code();
   /*--- Execution code ---*/
   #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -4129,8 +4039,8 @@ if (!__Pyx_RefNanny) {
  *     Py_TPFLAGS_BASETYPE, PyCallable_Check
  * from cpython.genobject cimport PyGen_Check
  * import asyncio             # <<<<<<<<<<<<<<
- * from .cpy cimport setattrofunc, getattrofunc, PyCoro_CheckExact, PyTypeObject_PythonType, PyType_Type, \
- *     gen_is_coroutine, coro_get_cr_await, PyCoroObject, coro_await, gen_iternext
+ * from .cpy cimport setattrofunc, getattrofunc, PyCoro_CheckExact, PyTypeObject_PythonType, PyType_Type \
+ *     # gen_is_coroutine, coro_get_cr_await, PyCoroObject, coro_await, gen_iternext
  */
   __pyx_t_2 = __Pyx_patch_asyncio(__Pyx_Import(__pyx_n_s_asyncio, 0, 0)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -5318,9 +5228,33 @@ bad:
 }
 #endif
 
-/* None */
-static CYTHON_INLINE void __Pyx_RaiseUnboundLocalError(const char *varname) {
-    PyErr_Format(PyExc_UnboundLocalError, "local variable '%s' referenced before assignment", varname);
+/* PyObjectCall2Args */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
+    PyObject *args, *result = NULL;
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyFunction_FastCall(function, args, 2);
+    }
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyCFunction_FastCall(function, args, 2);
+    }
+    #endif
+    args = PyTuple_New(2);
+    if (unlikely(!args)) goto done;
+    Py_INCREF(arg1);
+    PyTuple_SET_ITEM(args, 0, arg1);
+    Py_INCREF(arg2);
+    PyTuple_SET_ITEM(args, 1, arg2);
+    Py_INCREF(function);
+    result = __Pyx_PyObject_Call(function, args, NULL);
+    Py_DECREF(args);
+    Py_DECREF(function);
+done:
+    return result;
 }
 
 /* PyErrExceptionMatches */
@@ -6598,60 +6532,6 @@ static int __Pyx_check_binary_version(void) {
     }
     return 0;
 }
-
-/* FunctionImport */
-#ifndef __PYX_HAVE_RT_ImportFunction_0_29_35
-#define __PYX_HAVE_RT_ImportFunction_0_29_35
-static int __Pyx_ImportFunction_0_29_35(PyObject *module, const char *funcname, void (**f)(void), const char *sig) {
-    PyObject *d = 0;
-    PyObject *cobj = 0;
-    union {
-        void (*fp)(void);
-        void *p;
-    } tmp;
-    d = PyObject_GetAttrString(module, (char *)"__pyx_capi__");
-    if (!d)
-        goto bad;
-    cobj = PyDict_GetItemString(d, funcname);
-    if (!cobj) {
-        PyErr_Format(PyExc_ImportError,
-            "%.200s does not export expected C function %.200s",
-                PyModule_GetName(module), funcname);
-        goto bad;
-    }
-#if PY_VERSION_HEX >= 0x02070000
-    if (!PyCapsule_IsValid(cobj, sig)) {
-        PyErr_Format(PyExc_TypeError,
-            "C function %.200s.%.200s has wrong signature (expected %.500s, got %.500s)",
-             PyModule_GetName(module), funcname, sig, PyCapsule_GetName(cobj));
-        goto bad;
-    }
-    tmp.p = PyCapsule_GetPointer(cobj, sig);
-#else
-    {const char *desc, *s1, *s2;
-    desc = (const char *)PyCObject_GetDesc(cobj);
-    if (!desc)
-        goto bad;
-    s1 = desc; s2 = sig;
-    while (*s1 != '\0' && *s1 == *s2) { s1++; s2++; }
-    if (*s1 != *s2) {
-        PyErr_Format(PyExc_TypeError,
-            "C function %.200s.%.200s has wrong signature (expected %.500s, got %.500s)",
-             PyModule_GetName(module), funcname, sig, desc);
-        goto bad;
-    }
-    tmp.p = PyCObject_AsVoidPtr(cobj);}
-#endif
-    *f = tmp.fp;
-    if (!(*f))
-        goto bad;
-    Py_DECREF(d);
-    return 0;
-bad:
-    Py_XDECREF(d);
-    return -1;
-}
-#endif
 
 /* InitStrings */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
