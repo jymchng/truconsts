@@ -77,10 +77,10 @@ cdef class MetaForConstants(type):
         # not-so-basic checks
         # mutability in python means anything goes
         if PyCoro_CheckExact(__value):
-            print("CoroCheck", __name)
+            # print("CoroCheck", __name)
             PySet_Add(cls._async, __name)
         elif PyCallable_Check(__value):
-            print("CallableCheck", __name)
+            # print("CallableCheck", __name)
             PySet_Add(cls._lazy, __name)
         elif PySequence_Contains(cls._async, __name):
             # for the case of assignment non-async value to variable that was previously async
