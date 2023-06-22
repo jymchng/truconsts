@@ -10,24 +10,7 @@ from cpython cimport \
     PySequence_Contains, Py_EQ, PyObject_RichCompareBool, PyDict_Items, PySet_Discard, PyMapping_HasKeyString, \
     Py_TPFLAGS_BASETYPE
 import asyncio
-
-
-cdef extern from "Python.h":
-    # https://docs.python.org/3/c-api/typeobj.html#c.PyTypeObject
-    ctypedef int (*setattrofunc)(type, object, object) except -1
-    ctypedef object (*getattrofunc)(type, object)
-    int PyCoro_CheckExact(object o)
-    int PyCallable_Check(object o)
-
-    ctypedef struct PyTypeObject_PythonType "PyTypeObject":
-        setattrofunc tp_setattro
-        getattrofunc tp_getattro
-
-    cdef PyTypeObject_PythonType PyType_Type
-
-
-cdef tuple init_sets(Py_ssize_t len):
-    return PySet_New(PyTuple_New(len)), PySet_New(PyTuple_New(len)), PySet_New(PyTuple_New(len)), PySet_New(PyTuple_New(len))
+from .cpy cimport setattrofunc, getattrofunc, PyCoro_CheckExact, PyCallable_Check, PyTypeObject_PythonType, PyType_Type
 
 
 cdef class MetaForConstants(type):
