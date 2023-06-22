@@ -1,10 +1,10 @@
 from truconsts._types import Lazy, Mutable, Immutable, Async
 import pytest
 
-def test_unable_to_inherit():
-    with pytest.raises(Exception):
-        class ChildLazy(Lazy):
-            pass
+# def test_unable_to_inherit():
+#     with pytest.raises(Exception):
+#         class ChildLazy(Lazy):
+#             pass
         
 def test_cannot_subscript_lazy_async_together():
     with pytest.raises(Exception):

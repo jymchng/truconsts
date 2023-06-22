@@ -1,9 +1,10 @@
 import pytest
 from cy_src.constmeta import MetaForConstants
 from truconsts._types import Immutable, Mutable, Lazy, Async
+from truconsts._base_const import BaseConstants
 
-class BaseConstants(metaclass=MetaForConstants):
-    ...
+# class BaseConstants(metaclass=MetaForConstants):
+#     ...
     
 def get_root_dir():
     return 'THIS_IS_A_ROOT_DIR'

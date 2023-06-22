@@ -1,6 +1,5 @@
 from typing import Type, Tuple
 from types import MethodType
-from ._base_immu import BaseImmutable
 
 
 def patch_cls(cls):
@@ -21,8 +20,12 @@ def patch_cls(cls):
     return cls
 
 
-# class MetaForImmutable(type):
-#     ...
+class MetaForImmutable(type):
+    ...
+    
+
+class BaseImmutable(metaclass=MetaForImmutable):
+    ...
 
 
 @patch_cls
