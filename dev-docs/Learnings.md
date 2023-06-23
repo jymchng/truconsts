@@ -1,3 +1,5 @@
+# VERY MESSY as it contains ad-hoc trials and reasonings!
+
 # Learning One
 
 Always `git remote` the repo first!
