@@ -9,11 +9,11 @@ from cpython cimport \
     PyObject_GetAttrString, PyObject_CallFunction, PyObject_IsInstance, \
     Py_TYPE, PySet_Add, PySet_New, PyTuple_New, PyMem_Free, \
     PySet_Contains, Py_EQ, PyObject_RichCompareBool, PyDict_Items, PySet_Discard, PyMapping_HasKeyString, \
-    Py_TPFLAGS_BASETYPE, PyCallable_Check, PyMapping_Keys, PyIter_Next, PyObject_GetIter
+    Py_TPFLAGS_BASETYPE, PyCallable_Check, PyMapping_Keys, PyIter_Next, PyObject_GetIter, PySequence_Contains
 from cpython.genobject cimport PyGen_CheckExact
 import asyncio
 from .cpy cimport PyCoro_CheckExact, PyType_Type, PyAsyncGen_CheckExact, \
-    PyAsyncMethods, AsyncGeneratorType
+    PyAsyncMethods, PyAsyncGen_Type
     # gen_is_coroutine, coro_get_cr_await, PyCoroObject, coro_await, gen_iternext
 
 
@@ -39,7 +39,6 @@ cdef class MetaForConstants(type):
         pytype_ptr = Py_TYPE(mcls)
         pytype_ptr.tp_flags &= ~Py_TPFLAGS_BASETYPE
         
-
         if not PyMapping_HasKeyString(attrs, ANNOTATION_STRING):
             return
 
@@ -47,11 +46,11 @@ cdef class MetaForConstants(type):
 
         for (k, v) in PyDict_Items(annotations):
             if PyObject_IsInstance(v, tuple):
-                if PySet_Contains(v, Immutable):
+                if PySequence_Contains(v, Immutable):
                     PySet_Add(mcls._immutable, k)
-                if PySet_Contains(v, Lazy):
+                if PySequence_Contains(v, Lazy):
                     PySet_Add(mcls._lazy, k)
-                elif PySet_Contains(v, Yield):
+                elif PySequence_Contains(v, Yield):
                     PySet_Add(mcls._yield, k)
             else:
                 if PyObject_RichCompareBool(v, Immutable, Py_EQ):
@@ -85,9 +84,9 @@ cdef class MetaForConstants(type):
 
     def __getattribute__(cls, __name: str):
         cdef object _value
-        cdef PyAsyncMethods* async_meths
+        # cdef PyAsyncGen_Type async_gen_type
+        cdef PyAsyncMethods *async_meths
         
-
         if not cls._init:
             return PyType_Type.tp_getattro(cls, __name)
 
@@ -115,8 +114,9 @@ cdef class MetaForConstants(type):
                 return _value
 
             if PyAsyncGen_CheckExact(_value):
-                
-                async_meths = <PyAsyncMethods*?>AsyncGeneratorType.async_gen_as_async
+                # value_type = Py_TYPE(_value)[0]
+                # async_gen_type = <PyAsyncGen_Type?>value_type
+                async_meths = PyAsyncGen_Type.tp_as_async
                 _value = async_meths.am_aiter(_value)
                 _value = async_meths.am_anext(_value)
                 loop = asyncio.get_event_loop()
@@ -142,11 +142,10 @@ cdef class MetaForConstants(type):
                 return _value
 
             # if PyAsyncGen_CheckExact(_value):
-            #     _async_gen_tp = <PyAsyncGen_Type*>Py_TYPE(_value)
-            #     _async_meths = _async_gen_tp.tp_as_async
-            #     _value = _async_meths.am_aiter(_value)
-            #     _value = _async_meths.am_anext(_value)
-            #     loop = asyncio.get_event_loop()
-            #     _value = loop.run_until_complete(_value)
-            #     return _value
+                # async_meths = <PyAsyncMethods*?>AsyncGeneratorType.async_gen_as_async
+                # _value = async_meths.am_aiter(_value)
+                # _value = async_meths.am_anext(_value)
+                # loop = asyncio.get_event_loop()
+                # _value = loop.run_until_complete(_value)
+                # return _value
         return PyType_Type.tp_getattro(cls, __name)

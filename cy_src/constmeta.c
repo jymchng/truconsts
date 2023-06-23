@@ -978,7 +978,6 @@ static const char *__pyx_f[] = {
   "type.pxd",
   "bool.pxd",
   "complex.pxd",
-  "cy_src\\cpy.pxd",
 };
 
 /*--- Type declarations ---*/
@@ -1486,10 +1485,7 @@ static PyTypeObject *__pyx_ptype_7cpython_7complex_complex = 0;
 
 /* Module declarations from 'cpython.genobject' */
 
-/* Module declarations from 'types' */
-
 /* Module declarations from 'cy_src.cpy' */
-static PyTypeObject *__pyx_ptype_6cy_src_3cpy_AsyncGeneratorType = 0;
 
 /* Module declarations from 'cy_src.constmeta' */
 static PyTypeObject *__pyx_ptype_6cy_src_9constmeta_MetaForConstants = 0;
@@ -1522,7 +1518,6 @@ static const char __pyx_k_Immutable[] = "Immutable";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
 static const char __pyx_k_Cannot_add[] = "Cannot add `";
-static const char __pyx_k_tp_as_async[] = "tp_as_async";
 static const char __pyx_k_asyncio_tasks[] = "asyncio.tasks";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_AttributeError[] = "AttributeError";
@@ -1570,7 +1565,6 @@ static PyObject *__pyx_n_s_run_until_complete;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_n_s_tp_as_async;
 static PyObject *__pyx_n_s_truconsts__types;
 static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx_obj_6cy_src_9constmeta_MetaForConstants *__pyx_v_mcls, CYTHON_UNUSED PyObject *__pyx_v_name, CYTHON_UNUSED PyObject *__pyx_v_bases, PyObject *__pyx_v_attrs); /* proto */
 static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __pyx_obj_6cy_src_9constmeta_MetaForConstants *__pyx_v_cls, PyObject *__pyx_v___name, PyObject *__pyx_v___value); /* proto */
@@ -1927,12 +1921,12 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  *         pytype_ptr = Py_TYPE(mcls)
  *         pytype_ptr.tp_flags &= ~Py_TPFLAGS_BASETYPE             # <<<<<<<<<<<<<<
  * 
- * 
+ *         if not PyMapping_HasKeyString(attrs, ANNOTATION_STRING):
  */
   __pyx_v_pytype_ptr->tp_flags = (__pyx_v_pytype_ptr->tp_flags & (~Py_TPFLAGS_BASETYPE));
 
-  /* "cy_src/constmeta.pyx":43
- * 
+  /* "cy_src/constmeta.pyx":42
+ *         pytype_ptr.tp_flags &= ~Py_TPFLAGS_BASETYPE
  * 
  *         if not PyMapping_HasKeyString(attrs, ANNOTATION_STRING):             # <<<<<<<<<<<<<<
  *             return
@@ -1941,7 +1935,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
   __pyx_t_5 = ((!(PyMapping_HasKeyString(__pyx_v_attrs, __pyx_v_ANNOTATION_STRING) != 0)) != 0);
   if (__pyx_t_5) {
 
-    /* "cy_src/constmeta.pyx":44
+    /* "cy_src/constmeta.pyx":43
  * 
  *         if not PyMapping_HasKeyString(attrs, ANNOTATION_STRING):
  *             return             # <<<<<<<<<<<<<<
@@ -1951,8 +1945,8 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "cy_src/constmeta.pyx":43
- * 
+    /* "cy_src/constmeta.pyx":42
+ *         pytype_ptr.tp_flags &= ~Py_TPFLAGS_BASETYPE
  * 
  *         if not PyMapping_HasKeyString(attrs, ANNOTATION_STRING):             # <<<<<<<<<<<<<<
  *             return
@@ -1960,40 +1954,40 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  */
   }
 
-  /* "cy_src/constmeta.pyx":46
+  /* "cy_src/constmeta.pyx":45
  *             return
  * 
  *         annotations = PyObject_GetAttrString(mcls, ANNOTATION_STRING)             # <<<<<<<<<<<<<<
  * 
  *         for (k, v) in PyDict_Items(annotations):
  */
-  __pyx_t_2 = PyObject_GetAttrString(((PyObject *)__pyx_v_mcls), __pyx_v_ANNOTATION_STRING); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_2 = PyObject_GetAttrString(((PyObject *)__pyx_v_mcls), __pyx_v_ANNOTATION_STRING); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (!(likely(PyDict_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 46, __pyx_L1_error)
+  if (!(likely(PyDict_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 45, __pyx_L1_error)
   __pyx_v_annotations = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "cy_src/constmeta.pyx":48
+  /* "cy_src/constmeta.pyx":47
  *         annotations = PyObject_GetAttrString(mcls, ANNOTATION_STRING)
  * 
  *         for (k, v) in PyDict_Items(annotations):             # <<<<<<<<<<<<<<
  *             if PyObject_IsInstance(v, tuple):
- *                 if PySet_Contains(v, Immutable):
+ *                 if PySequence_Contains(v, Immutable):
  */
-  __pyx_t_2 = PyDict_Items(__pyx_v_annotations); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_t_2 = PyDict_Items(__pyx_v_annotations); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (unlikely(__pyx_t_2 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 48, __pyx_L1_error)
+    __PYX_ERR(0, 47, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (;;) {
     if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 48, __pyx_L1_error)
+    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_2); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 47, __pyx_L1_error)
     #else
-    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     #endif
     if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
@@ -2002,7 +1996,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 48, __pyx_L1_error)
+        __PYX_ERR(0, 47, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -2015,15 +2009,15 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
       __Pyx_INCREF(__pyx_t_7);
       __Pyx_INCREF(__pyx_t_8);
       #else
-      __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 48, __pyx_L1_error)
+      __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 47, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 48, __pyx_L1_error)
+      __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 47, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       #endif
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_9 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 48, __pyx_L1_error)
+      __pyx_t_9 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 47, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_10 = Py_TYPE(__pyx_t_9)->tp_iternext;
@@ -2031,7 +2025,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
       __Pyx_GOTREF(__pyx_t_7);
       index = 1; __pyx_t_8 = __pyx_t_10(__pyx_t_9); if (unlikely(!__pyx_t_8)) goto __pyx_L9_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_8);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(0, 48, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
       __pyx_t_10 = NULL;
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       goto __pyx_L10_unpacking_done;
@@ -2039,144 +2033,144 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __pyx_t_10 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 48, __pyx_L1_error)
+      __PYX_ERR(0, 47, __pyx_L1_error)
       __pyx_L10_unpacking_done:;
     }
-    if (!(likely(PyUnicode_CheckExact(__pyx_t_7))||((__pyx_t_7) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_7)->tp_name), 0))) __PYX_ERR(0, 48, __pyx_L1_error)
+    if (!(likely(PyUnicode_CheckExact(__pyx_t_7))||((__pyx_t_7) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_7)->tp_name), 0))) __PYX_ERR(0, 47, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_k, ((PyObject*)__pyx_t_7));
     __pyx_t_7 = 0;
     __Pyx_XDECREF_SET(__pyx_v_v, __pyx_t_8);
     __pyx_t_8 = 0;
 
-    /* "cy_src/constmeta.pyx":49
+    /* "cy_src/constmeta.pyx":48
  * 
  *         for (k, v) in PyDict_Items(annotations):
  *             if PyObject_IsInstance(v, tuple):             # <<<<<<<<<<<<<<
- *                 if PySet_Contains(v, Immutable):
+ *                 if PySequence_Contains(v, Immutable):
  *                     PySet_Add(mcls._immutable, k)
  */
-    __pyx_t_5 = PyObject_IsInstance(__pyx_v_v, ((PyObject *)(&PyTuple_Type))); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 49, __pyx_L1_error)
+    __pyx_t_5 = PyObject_IsInstance(__pyx_v_v, ((PyObject *)(&PyTuple_Type))); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 48, __pyx_L1_error)
     __pyx_t_11 = (__pyx_t_5 != 0);
     if (__pyx_t_11) {
 
-      /* "cy_src/constmeta.pyx":50
+      /* "cy_src/constmeta.pyx":49
  *         for (k, v) in PyDict_Items(annotations):
  *             if PyObject_IsInstance(v, tuple):
- *                 if PySet_Contains(v, Immutable):             # <<<<<<<<<<<<<<
+ *                 if PySequence_Contains(v, Immutable):             # <<<<<<<<<<<<<<
  *                     PySet_Add(mcls._immutable, k)
- *                 if PySet_Contains(v, Lazy):
+ *                 if PySequence_Contains(v, Lazy):
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Immutable); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Immutable); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_11 = PySet_Contains(__pyx_v_v, __pyx_t_2); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 50, __pyx_L1_error)
+      __pyx_t_6 = PySequence_Contains(__pyx_v_v, __pyx_t_2); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 49, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_5 = (__pyx_t_11 != 0);
-      if (__pyx_t_5) {
+      __pyx_t_11 = (__pyx_t_6 != 0);
+      if (__pyx_t_11) {
 
-        /* "cy_src/constmeta.pyx":51
+        /* "cy_src/constmeta.pyx":50
  *             if PyObject_IsInstance(v, tuple):
- *                 if PySet_Contains(v, Immutable):
+ *                 if PySequence_Contains(v, Immutable):
  *                     PySet_Add(mcls._immutable, k)             # <<<<<<<<<<<<<<
- *                 if PySet_Contains(v, Lazy):
+ *                 if PySequence_Contains(v, Lazy):
  *                     PySet_Add(mcls._lazy, k)
  */
         __pyx_t_2 = __pyx_v_mcls->_immutable;
         __Pyx_INCREF(__pyx_t_2);
-        __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 51, __pyx_L1_error)
+        __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 50, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "cy_src/constmeta.pyx":50
+        /* "cy_src/constmeta.pyx":49
  *         for (k, v) in PyDict_Items(annotations):
  *             if PyObject_IsInstance(v, tuple):
- *                 if PySet_Contains(v, Immutable):             # <<<<<<<<<<<<<<
+ *                 if PySequence_Contains(v, Immutable):             # <<<<<<<<<<<<<<
  *                     PySet_Add(mcls._immutable, k)
- *                 if PySet_Contains(v, Lazy):
+ *                 if PySequence_Contains(v, Lazy):
  */
       }
 
-      /* "cy_src/constmeta.pyx":52
- *                 if PySet_Contains(v, Immutable):
+      /* "cy_src/constmeta.pyx":51
+ *                 if PySequence_Contains(v, Immutable):
  *                     PySet_Add(mcls._immutable, k)
- *                 if PySet_Contains(v, Lazy):             # <<<<<<<<<<<<<<
+ *                 if PySequence_Contains(v, Lazy):             # <<<<<<<<<<<<<<
  *                     PySet_Add(mcls._lazy, k)
- *                 elif PySet_Contains(v, Yield):
+ *                 elif PySequence_Contains(v, Yield):
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Lazy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Lazy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_5 = PySet_Contains(__pyx_v_v, __pyx_t_2); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 52, __pyx_L1_error)
+      __pyx_t_6 = PySequence_Contains(__pyx_v_v, __pyx_t_2); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 51, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_11 = (__pyx_t_5 != 0);
+      __pyx_t_11 = (__pyx_t_6 != 0);
       if (__pyx_t_11) {
 
-        /* "cy_src/constmeta.pyx":53
+        /* "cy_src/constmeta.pyx":52
  *                     PySet_Add(mcls._immutable, k)
- *                 if PySet_Contains(v, Lazy):
+ *                 if PySequence_Contains(v, Lazy):
  *                     PySet_Add(mcls._lazy, k)             # <<<<<<<<<<<<<<
- *                 elif PySet_Contains(v, Yield):
+ *                 elif PySequence_Contains(v, Yield):
  *                     PySet_Add(mcls._yield, k)
  */
         __pyx_t_2 = __pyx_v_mcls->_lazy;
         __Pyx_INCREF(__pyx_t_2);
-        __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 52, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "cy_src/constmeta.pyx":52
- *                 if PySet_Contains(v, Immutable):
+        /* "cy_src/constmeta.pyx":51
+ *                 if PySequence_Contains(v, Immutable):
  *                     PySet_Add(mcls._immutable, k)
- *                 if PySet_Contains(v, Lazy):             # <<<<<<<<<<<<<<
+ *                 if PySequence_Contains(v, Lazy):             # <<<<<<<<<<<<<<
  *                     PySet_Add(mcls._lazy, k)
- *                 elif PySet_Contains(v, Yield):
+ *                 elif PySequence_Contains(v, Yield):
  */
         goto __pyx_L13;
       }
 
-      /* "cy_src/constmeta.pyx":54
- *                 if PySet_Contains(v, Lazy):
+      /* "cy_src/constmeta.pyx":53
+ *                 if PySequence_Contains(v, Lazy):
  *                     PySet_Add(mcls._lazy, k)
- *                 elif PySet_Contains(v, Yield):             # <<<<<<<<<<<<<<
+ *                 elif PySequence_Contains(v, Yield):             # <<<<<<<<<<<<<<
  *                     PySet_Add(mcls._yield, k)
  *             else:
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Yield); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Yield); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_11 = PySet_Contains(__pyx_v_v, __pyx_t_2); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 54, __pyx_L1_error)
+      __pyx_t_6 = PySequence_Contains(__pyx_v_v, __pyx_t_2); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 53, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_5 = (__pyx_t_11 != 0);
-      if (__pyx_t_5) {
+      __pyx_t_11 = (__pyx_t_6 != 0);
+      if (__pyx_t_11) {
 
-        /* "cy_src/constmeta.pyx":55
+        /* "cy_src/constmeta.pyx":54
  *                     PySet_Add(mcls._lazy, k)
- *                 elif PySet_Contains(v, Yield):
+ *                 elif PySequence_Contains(v, Yield):
  *                     PySet_Add(mcls._yield, k)             # <<<<<<<<<<<<<<
  *             else:
  *                 if PyObject_RichCompareBool(v, Immutable, Py_EQ):
  */
         __pyx_t_2 = __pyx_v_mcls->_yield;
         __Pyx_INCREF(__pyx_t_2);
-        __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 55, __pyx_L1_error)
+        __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 54, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "cy_src/constmeta.pyx":54
- *                 if PySet_Contains(v, Lazy):
+        /* "cy_src/constmeta.pyx":53
+ *                 if PySequence_Contains(v, Lazy):
  *                     PySet_Add(mcls._lazy, k)
- *                 elif PySet_Contains(v, Yield):             # <<<<<<<<<<<<<<
+ *                 elif PySequence_Contains(v, Yield):             # <<<<<<<<<<<<<<
  *                     PySet_Add(mcls._yield, k)
  *             else:
  */
       }
       __pyx_L13:;
 
-      /* "cy_src/constmeta.pyx":49
+      /* "cy_src/constmeta.pyx":48
  * 
  *         for (k, v) in PyDict_Items(annotations):
  *             if PyObject_IsInstance(v, tuple):             # <<<<<<<<<<<<<<
- *                 if PySet_Contains(v, Immutable):
+ *                 if PySequence_Contains(v, Immutable):
  *                     PySet_Add(mcls._immutable, k)
  */
       goto __pyx_L11;
     }
 
-    /* "cy_src/constmeta.pyx":57
+    /* "cy_src/constmeta.pyx":56
  *                     PySet_Add(mcls._yield, k)
  *             else:
  *                 if PyObject_RichCompareBool(v, Immutable, Py_EQ):             # <<<<<<<<<<<<<<
@@ -2184,14 +2178,14 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  *                 elif PyObject_RichCompareBool(v, Lazy, Py_EQ):
  */
     /*else*/ {
-      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Immutable); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Immutable); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_5 = PyObject_RichCompareBool(__pyx_v_v, __pyx_t_2, Py_EQ); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 57, __pyx_L1_error)
+      __pyx_t_11 = PyObject_RichCompareBool(__pyx_v_v, __pyx_t_2, Py_EQ); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_11 = (__pyx_t_5 != 0);
-      if (__pyx_t_11) {
+      __pyx_t_5 = (__pyx_t_11 != 0);
+      if (__pyx_t_5) {
 
-        /* "cy_src/constmeta.pyx":58
+        /* "cy_src/constmeta.pyx":57
  *             else:
  *                 if PyObject_RichCompareBool(v, Immutable, Py_EQ):
  *                     PySet_Add(mcls._immutable, k)             # <<<<<<<<<<<<<<
@@ -2200,10 +2194,10 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  */
         __pyx_t_2 = __pyx_v_mcls->_immutable;
         __Pyx_INCREF(__pyx_t_2);
-        __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 58, __pyx_L1_error)
+        __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 57, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "cy_src/constmeta.pyx":57
+        /* "cy_src/constmeta.pyx":56
  *                     PySet_Add(mcls._yield, k)
  *             else:
  *                 if PyObject_RichCompareBool(v, Immutable, Py_EQ):             # <<<<<<<<<<<<<<
@@ -2213,21 +2207,21 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
         goto __pyx_L14;
       }
 
-      /* "cy_src/constmeta.pyx":59
+      /* "cy_src/constmeta.pyx":58
  *                 if PyObject_RichCompareBool(v, Immutable, Py_EQ):
  *                     PySet_Add(mcls._immutable, k)
  *                 elif PyObject_RichCompareBool(v, Lazy, Py_EQ):             # <<<<<<<<<<<<<<
  *                     PySet_Add(mcls._lazy, k)
  *                 elif PyObject_RichCompareBool(v, Yield, Py_EQ):
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Lazy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Lazy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_11 = PyObject_RichCompareBool(__pyx_v_v, __pyx_t_2, Py_EQ); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 59, __pyx_L1_error)
+      __pyx_t_5 = PyObject_RichCompareBool(__pyx_v_v, __pyx_t_2, Py_EQ); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 58, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_5 = (__pyx_t_11 != 0);
-      if (__pyx_t_5) {
+      __pyx_t_11 = (__pyx_t_5 != 0);
+      if (__pyx_t_11) {
 
-        /* "cy_src/constmeta.pyx":60
+        /* "cy_src/constmeta.pyx":59
  *                     PySet_Add(mcls._immutable, k)
  *                 elif PyObject_RichCompareBool(v, Lazy, Py_EQ):
  *                     PySet_Add(mcls._lazy, k)             # <<<<<<<<<<<<<<
@@ -2236,10 +2230,10 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  */
         __pyx_t_2 = __pyx_v_mcls->_lazy;
         __Pyx_INCREF(__pyx_t_2);
-        __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 60, __pyx_L1_error)
+        __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 59, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "cy_src/constmeta.pyx":59
+        /* "cy_src/constmeta.pyx":58
  *                 if PyObject_RichCompareBool(v, Immutable, Py_EQ):
  *                     PySet_Add(mcls._immutable, k)
  *                 elif PyObject_RichCompareBool(v, Lazy, Py_EQ):             # <<<<<<<<<<<<<<
@@ -2249,21 +2243,21 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
         goto __pyx_L14;
       }
 
-      /* "cy_src/constmeta.pyx":61
+      /* "cy_src/constmeta.pyx":60
  *                 elif PyObject_RichCompareBool(v, Lazy, Py_EQ):
  *                     PySet_Add(mcls._lazy, k)
  *                 elif PyObject_RichCompareBool(v, Yield, Py_EQ):             # <<<<<<<<<<<<<<
  *                     PySet_Add(mcls._yield, k)
  * 
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Yield); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Yield); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_5 = PyObject_RichCompareBool(__pyx_v_v, __pyx_t_2, Py_EQ); if (unlikely(__pyx_t_5 == ((int)-1))) __PYX_ERR(0, 61, __pyx_L1_error)
+      __pyx_t_11 = PyObject_RichCompareBool(__pyx_v_v, __pyx_t_2, Py_EQ); if (unlikely(__pyx_t_11 == ((int)-1))) __PYX_ERR(0, 60, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_11 = (__pyx_t_5 != 0);
-      if (__pyx_t_11) {
+      __pyx_t_5 = (__pyx_t_11 != 0);
+      if (__pyx_t_5) {
 
-        /* "cy_src/constmeta.pyx":62
+        /* "cy_src/constmeta.pyx":61
  *                     PySet_Add(mcls._lazy, k)
  *                 elif PyObject_RichCompareBool(v, Yield, Py_EQ):
  *                     PySet_Add(mcls._yield, k)             # <<<<<<<<<<<<<<
@@ -2272,10 +2266,10 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  */
         __pyx_t_2 = __pyx_v_mcls->_yield;
         __Pyx_INCREF(__pyx_t_2);
-        __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 62, __pyx_L1_error)
+        __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 61, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "cy_src/constmeta.pyx":61
+        /* "cy_src/constmeta.pyx":60
  *                 elif PyObject_RichCompareBool(v, Lazy, Py_EQ):
  *                     PySet_Add(mcls._lazy, k)
  *                 elif PyObject_RichCompareBool(v, Yield, Py_EQ):             # <<<<<<<<<<<<<<
@@ -2287,17 +2281,17 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
     }
     __pyx_L11:;
 
-    /* "cy_src/constmeta.pyx":48
+    /* "cy_src/constmeta.pyx":47
  *         annotations = PyObject_GetAttrString(mcls, ANNOTATION_STRING)
  * 
  *         for (k, v) in PyDict_Items(annotations):             # <<<<<<<<<<<<<<
  *             if PyObject_IsInstance(v, tuple):
- *                 if PySet_Contains(v, Immutable):
+ *                 if PySequence_Contains(v, Immutable):
  */
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cy_src/constmeta.pyx":64
+  /* "cy_src/constmeta.pyx":63
  *                     PySet_Add(mcls._yield, k)
  * 
  *         mcls._init = True             # <<<<<<<<<<<<<<
@@ -2306,7 +2300,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  */
   __pyx_v_mcls->_init = 1;
 
-  /* "cy_src/constmeta.pyx":65
+  /* "cy_src/constmeta.pyx":64
  * 
  *         mcls._init = True
  *         return             # <<<<<<<<<<<<<<
@@ -2341,7 +2335,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
   return __pyx_r;
 }
 
-/* "cy_src/constmeta.pyx":67
+/* "cy_src/constmeta.pyx":66
  *         return
  * 
  *     def __setattr__(cls, str __name, object __value):             # <<<<<<<<<<<<<<
@@ -2358,7 +2352,7 @@ static int __pyx_pw_6cy_src_9constmeta_16MetaForConstants_3__setattr__(PyObject 
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setattr__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v___name), (&PyUnicode_Type), 1, "__name", 1))) __PYX_ERR(0, 67, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v___name), (&PyUnicode_Type), 1, "__name", 1))) __PYX_ERR(0, 66, __pyx_L1_error)
   __pyx_r = __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(((struct __pyx_obj_6cy_src_9constmeta_MetaForConstants *)__pyx_v_cls), ((PyObject*)__pyx_v___name), ((PyObject *)__pyx_v___value));
 
   /* function exit code */
@@ -2387,7 +2381,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__setattr__", 0);
 
-  /* "cy_src/constmeta.pyx":68
+  /* "cy_src/constmeta.pyx":67
  * 
  *     def __setattr__(cls, str __name, object __value):
  *         cdef const char* ANNOTATION_STRING = '__annotations__'             # <<<<<<<<<<<<<<
@@ -2396,7 +2390,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  */
   __pyx_v_ANNOTATION_STRING = ((char const *)"__annotations__");
 
-  /* "cy_src/constmeta.pyx":71
+  /* "cy_src/constmeta.pyx":70
  * 
  *         # basic checks
  *         if not PySet_Contains(cls._attrs, __name):             # <<<<<<<<<<<<<<
@@ -2405,19 +2399,19 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  */
   __pyx_t_1 = __pyx_v_cls->_attrs;
   __Pyx_INCREF(__pyx_t_1);
-  __pyx_t_2 = PySet_Contains(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_t_2 = PySet_Contains(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = ((!(__pyx_t_2 != 0)) != 0);
   if (unlikely(__pyx_t_3)) {
 
-    /* "cy_src/constmeta.pyx":72
+    /* "cy_src/constmeta.pyx":71
  *         # basic checks
  *         if not PySet_Contains(cls._attrs, __name):
  *             raise AttributeError(f"Cannot add `{__name}` class variable to `{cls.__name__}`")             # <<<<<<<<<<<<<<
  *         if not PyObject_HasAttrString(cls, ANNOTATION_STRING):
  *             PyType_Type.tp_setattro(cls, __name, __value)
  */
-    __pyx_t_1 = PyTuple_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_4 = 0;
     __pyx_t_5 = 127;
@@ -2425,7 +2419,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
     __pyx_t_4 += 12;
     __Pyx_GIVEREF(__pyx_kp_u_Cannot_add);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_Cannot_add);
-    __pyx_t_6 = __Pyx_PyUnicode_Unicode(__pyx_v___name); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 72, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyUnicode_Unicode(__pyx_v___name); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_5 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_5) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_5;
     __pyx_t_4 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_6);
@@ -2436,9 +2430,9 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
     __pyx_t_4 += 21;
     __Pyx_GIVEREF(__pyx_kp_u_class_variable_to);
     PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_class_variable_to);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_cls), __pyx_n_s_name_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 72, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_cls), __pyx_n_s_name_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 72, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_FormatSimple(__pyx_t_6, __pyx_empty_unicode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_5 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) > __pyx_t_5) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_7) : __pyx_t_5;
@@ -2450,17 +2444,17 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
     __pyx_t_4 += 1;
     __Pyx_GIVEREF(__pyx_kp_u__2);
     PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u__2);
-    __pyx_t_7 = __Pyx_PyUnicode_Join(__pyx_t_1, 5, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 72, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyUnicode_Join(__pyx_t_1, 5, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_AttributeError, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_AttributeError, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 72, __pyx_L1_error)
+    __PYX_ERR(0, 71, __pyx_L1_error)
 
-    /* "cy_src/constmeta.pyx":71
+    /* "cy_src/constmeta.pyx":70
  * 
  *         # basic checks
  *         if not PySet_Contains(cls._attrs, __name):             # <<<<<<<<<<<<<<
@@ -2469,7 +2463,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  */
   }
 
-  /* "cy_src/constmeta.pyx":73
+  /* "cy_src/constmeta.pyx":72
  *         if not PySet_Contains(cls._attrs, __name):
  *             raise AttributeError(f"Cannot add `{__name}` class variable to `{cls.__name__}`")
  *         if not PyObject_HasAttrString(cls, ANNOTATION_STRING):             # <<<<<<<<<<<<<<
@@ -2479,16 +2473,16 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
   __pyx_t_3 = ((!(PyObject_HasAttrString(((PyObject *)__pyx_v_cls), __pyx_v_ANNOTATION_STRING) != 0)) != 0);
   if (__pyx_t_3) {
 
-    /* "cy_src/constmeta.pyx":74
+    /* "cy_src/constmeta.pyx":73
  *             raise AttributeError(f"Cannot add `{__name}` class variable to `{cls.__name__}`")
  *         if not PyObject_HasAttrString(cls, ANNOTATION_STRING):
  *             PyType_Type.tp_setattro(cls, __name, __value)             # <<<<<<<<<<<<<<
  *             return
  *         if PySet_Contains(cls._immutable, __name):
  */
-    __pyx_t_8 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v___value); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 74, __pyx_L1_error)
+    __pyx_t_8 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v___value); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 73, __pyx_L1_error)
 
-    /* "cy_src/constmeta.pyx":75
+    /* "cy_src/constmeta.pyx":74
  *         if not PyObject_HasAttrString(cls, ANNOTATION_STRING):
  *             PyType_Type.tp_setattro(cls, __name, __value)
  *             return             # <<<<<<<<<<<<<<
@@ -2498,7 +2492,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "cy_src/constmeta.pyx":73
+    /* "cy_src/constmeta.pyx":72
  *         if not PySet_Contains(cls._attrs, __name):
  *             raise AttributeError(f"Cannot add `{__name}` class variable to `{cls.__name__}`")
  *         if not PyObject_HasAttrString(cls, ANNOTATION_STRING):             # <<<<<<<<<<<<<<
@@ -2507,7 +2501,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  */
   }
 
-  /* "cy_src/constmeta.pyx":76
+  /* "cy_src/constmeta.pyx":75
  *             PyType_Type.tp_setattro(cls, __name, __value)
  *             return
  *         if PySet_Contains(cls._immutable, __name):             # <<<<<<<<<<<<<<
@@ -2516,19 +2510,19 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  */
   __pyx_t_1 = __pyx_v_cls->_immutable;
   __Pyx_INCREF(__pyx_t_1);
-  __pyx_t_3 = PySet_Contains(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_3 = PySet_Contains(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_2 = (__pyx_t_3 != 0);
   if (unlikely(__pyx_t_2)) {
 
-    /* "cy_src/constmeta.pyx":77
+    /* "cy_src/constmeta.pyx":76
  *             return
  *         if PySet_Contains(cls._immutable, __name):
  *             raise AttributeError(f"`{cls.__name__}.{__name}` cannot be mutated")             # <<<<<<<<<<<<<<
  * 
  *         # once can set attribute, remove __name from the sets
  */
-    __pyx_t_1 = PyTuple_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_4 = 0;
     __pyx_t_5 = 127;
@@ -2536,9 +2530,9 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
     __pyx_t_4 += 1;
     __Pyx_GIVEREF(__pyx_kp_u__2);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u__2);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_cls), __pyx_n_s_name_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_cls), __pyx_n_s_name_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_7, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_FormatSimple(__pyx_t_7, __pyx_empty_unicode); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __pyx_t_5 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_5) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_5;
@@ -2550,7 +2544,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
     __pyx_t_4 += 1;
     __Pyx_GIVEREF(__pyx_kp_u__3);
     PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u__3);
-    __pyx_t_6 = __Pyx_PyUnicode_Unicode(__pyx_v___name); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyUnicode_Unicode(__pyx_v___name); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_5 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) > __pyx_t_5) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_6) : __pyx_t_5;
     __pyx_t_4 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_6);
@@ -2561,17 +2555,17 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
     __pyx_t_4 += 19;
     __Pyx_GIVEREF(__pyx_kp_u_cannot_be_mutated);
     PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u_cannot_be_mutated);
-    __pyx_t_6 = __Pyx_PyUnicode_Join(__pyx_t_1, 5, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyUnicode_Join(__pyx_t_1, 5, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_AttributeError, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_AttributeError, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 77, __pyx_L1_error)
+    __PYX_ERR(0, 76, __pyx_L1_error)
 
-    /* "cy_src/constmeta.pyx":76
+    /* "cy_src/constmeta.pyx":75
  *             PyType_Type.tp_setattro(cls, __name, __value)
  *             return
  *         if PySet_Contains(cls._immutable, __name):             # <<<<<<<<<<<<<<
@@ -2580,7 +2574,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  */
   }
 
-  /* "cy_src/constmeta.pyx":80
+  /* "cy_src/constmeta.pyx":79
  * 
  *         # once can set attribute, remove __name from the sets
  *         if PySet_Contains(cls._lazy, __name):             # <<<<<<<<<<<<<<
@@ -2589,12 +2583,12 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  */
   __pyx_t_1 = __pyx_v_cls->_lazy;
   __Pyx_INCREF(__pyx_t_1);
-  __pyx_t_2 = PySet_Contains(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_2 = PySet_Contains(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "cy_src/constmeta.pyx":81
+    /* "cy_src/constmeta.pyx":80
  *         # once can set attribute, remove __name from the sets
  *         if PySet_Contains(cls._lazy, __name):
  *             PySet_Discard(cls._lazy, __name)             # <<<<<<<<<<<<<<
@@ -2603,10 +2597,10 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  */
     __pyx_t_1 = __pyx_v_cls->_lazy;
     __Pyx_INCREF(__pyx_t_1);
-    __pyx_t_3 = PySet_Discard(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 81, __pyx_L1_error)
+    __pyx_t_3 = PySet_Discard(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cy_src/constmeta.pyx":80
+    /* "cy_src/constmeta.pyx":79
  * 
  *         # once can set attribute, remove __name from the sets
  *         if PySet_Contains(cls._lazy, __name):             # <<<<<<<<<<<<<<
@@ -2615,7 +2609,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  */
   }
 
-  /* "cy_src/constmeta.pyx":82
+  /* "cy_src/constmeta.pyx":81
  *         if PySet_Contains(cls._lazy, __name):
  *             PySet_Discard(cls._lazy, __name)
  *         if PySet_Contains(cls._yield, __name):             # <<<<<<<<<<<<<<
@@ -2624,12 +2618,12 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  */
   __pyx_t_1 = __pyx_v_cls->_yield;
   __Pyx_INCREF(__pyx_t_1);
-  __pyx_t_3 = PySet_Contains(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 82, __pyx_L1_error)
+  __pyx_t_3 = PySet_Contains(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_2 = (__pyx_t_3 != 0);
   if (__pyx_t_2) {
 
-    /* "cy_src/constmeta.pyx":83
+    /* "cy_src/constmeta.pyx":82
  *             PySet_Discard(cls._lazy, __name)
  *         if PySet_Contains(cls._yield, __name):
  *             PySet_Discard(cls._yield, __name)             # <<<<<<<<<<<<<<
@@ -2638,10 +2632,10 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  */
     __pyx_t_1 = __pyx_v_cls->_yield;
     __Pyx_INCREF(__pyx_t_1);
-    __pyx_t_2 = PySet_Discard(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 83, __pyx_L1_error)
+    __pyx_t_2 = PySet_Discard(__pyx_t_1, __pyx_v___name); if (unlikely(__pyx_t_2 == ((int)-1))) __PYX_ERR(0, 82, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cy_src/constmeta.pyx":82
+    /* "cy_src/constmeta.pyx":81
  *         if PySet_Contains(cls._lazy, __name):
  *             PySet_Discard(cls._lazy, __name)
  *         if PySet_Contains(cls._yield, __name):             # <<<<<<<<<<<<<<
@@ -2650,16 +2644,16 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
  */
   }
 
-  /* "cy_src/constmeta.pyx":84
+  /* "cy_src/constmeta.pyx":83
  *         if PySet_Contains(cls._yield, __name):
  *             PySet_Discard(cls._yield, __name)
  *         PyType_Type.tp_setattro(cls, __name, __value)             # <<<<<<<<<<<<<<
  * 
  *     def __getattribute__(cls, __name: str):
  */
-  __pyx_t_8 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v___value); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 84, __pyx_L1_error)
+  __pyx_t_8 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v___value); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 83, __pyx_L1_error)
 
-  /* "cy_src/constmeta.pyx":67
+  /* "cy_src/constmeta.pyx":66
  *         return
  * 
  *     def __setattr__(cls, str __name, object __value):             # <<<<<<<<<<<<<<
@@ -2681,12 +2675,12 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __
   return __pyx_r;
 }
 
-/* "cy_src/constmeta.pyx":86
+/* "cy_src/constmeta.pyx":85
  *         PyType_Type.tp_setattro(cls, __name, __value)
  * 
  *     def __getattribute__(cls, __name: str):             # <<<<<<<<<<<<<<
  *         cdef object _value
- *         cdef AsyncGeneratorType async_gen_tp
+ *         # cdef PyAsyncGen_Type async_gen_type
  */
 
 /* Python wrapper */
@@ -2698,7 +2692,7 @@ static PyObject *__pyx_pw_6cy_src_9constmeta_16MetaForConstants_5__getattribute_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__getattribute__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v___name), (&PyUnicode_Type), 1, "__name", 1))) __PYX_ERR(0, 86, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v___name), (&PyUnicode_Type), 1, "__name", 1))) __PYX_ERR(0, 85, __pyx_L1_error)
   __pyx_r = __pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute__(((struct __pyx_obj_6cy_src_9constmeta_MetaForConstants *)__pyx_v_cls), ((PyObject*)__pyx_v___name));
 
   /* function exit code */
@@ -2722,13 +2716,14 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
   int __pyx_t_4;
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
+  PyAsyncMethods *__pyx_t_7;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__getattribute__", 0);
 
-  /* "cy_src/constmeta.pyx":92
- * 
+  /* "cy_src/constmeta.pyx":90
+ *         cdef PyAsyncMethods *async_meths
  * 
  *         if not cls._init:             # <<<<<<<<<<<<<<
  *             return PyType_Type.tp_getattro(cls, __name)
@@ -2737,7 +2732,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
   __pyx_t_1 = ((!(__pyx_v_cls->_init != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "cy_src/constmeta.pyx":93
+    /* "cy_src/constmeta.pyx":91
  * 
  *         if not cls._init:
  *             return PyType_Type.tp_getattro(cls, __name)             # <<<<<<<<<<<<<<
@@ -2745,14 +2740,14 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  *         if PySet_Contains(cls._lazy, __name):
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "cy_src/constmeta.pyx":92
- * 
+    /* "cy_src/constmeta.pyx":90
+ *         cdef PyAsyncMethods *async_meths
  * 
  *         if not cls._init:             # <<<<<<<<<<<<<<
  *             return PyType_Type.tp_getattro(cls, __name)
@@ -2760,7 +2755,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
   }
 
-  /* "cy_src/constmeta.pyx":95
+  /* "cy_src/constmeta.pyx":93
  *             return PyType_Type.tp_getattro(cls, __name)
  * 
  *         if PySet_Contains(cls._lazy, __name):             # <<<<<<<<<<<<<<
@@ -2769,24 +2764,24 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
   __pyx_t_2 = __pyx_v_cls->_lazy;
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_1 = PySet_Contains(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 95, __pyx_L1_error)
+  __pyx_t_1 = PySet_Contains(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_3 = (__pyx_t_1 != 0);
   if (__pyx_t_3) {
 
-    /* "cy_src/constmeta.pyx":96
+    /* "cy_src/constmeta.pyx":94
  * 
  *         if PySet_Contains(cls._lazy, __name):
  *             _value = PyType_Type.tp_getattro(cls, __name)             # <<<<<<<<<<<<<<
  * 
  *             if PyCallable_Check(_value):
  */
-    __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 96, __pyx_L1_error)
+    __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_v__value = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "cy_src/constmeta.pyx":98
+    /* "cy_src/constmeta.pyx":96
  *             _value = PyType_Type.tp_getattro(cls, __name)
  * 
  *             if PyCallable_Check(_value):             # <<<<<<<<<<<<<<
@@ -2796,28 +2791,28 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
     __pyx_t_3 = (PyCallable_Check(__pyx_v__value) != 0);
     if (__pyx_t_3) {
 
-      /* "cy_src/constmeta.pyx":99
+      /* "cy_src/constmeta.pyx":97
  * 
  *             if PyCallable_Check(_value):
  *                 _value = PyObject_CallFunction(_value, NULL)             # <<<<<<<<<<<<<<
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  *                 PySet_Discard(cls._lazy, __name)
  */
-      __pyx_t_2 = PyObject_CallFunction(__pyx_v__value, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 99, __pyx_L1_error)
+      __pyx_t_2 = PyObject_CallFunction(__pyx_v__value, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":100
+      /* "cy_src/constmeta.pyx":98
  *             if PyCallable_Check(_value):
  *                 _value = PyObject_CallFunction(_value, NULL)
  *                 PyType_Type.tp_setattro(cls, __name, _value)             # <<<<<<<<<<<<<<
  *                 PySet_Discard(cls._lazy, __name)
  *                 return _value
  */
-      __pyx_t_4 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v__value); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 100, __pyx_L1_error)
+      __pyx_t_4 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v__value); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 98, __pyx_L1_error)
 
-      /* "cy_src/constmeta.pyx":101
+      /* "cy_src/constmeta.pyx":99
  *                 _value = PyObject_CallFunction(_value, NULL)
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  *                 PySet_Discard(cls._lazy, __name)             # <<<<<<<<<<<<<<
@@ -2826,10 +2821,10 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
       __pyx_t_2 = __pyx_v_cls->_lazy;
       __Pyx_INCREF(__pyx_t_2);
-      __pyx_t_3 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 101, __pyx_L1_error)
+      __pyx_t_3 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 99, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":102
+      /* "cy_src/constmeta.pyx":100
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  *                 PySet_Discard(cls._lazy, __name)
  *                 return _value             # <<<<<<<<<<<<<<
@@ -2841,7 +2836,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       __pyx_r = __pyx_v__value;
       goto __pyx_L0;
 
-      /* "cy_src/constmeta.pyx":98
+      /* "cy_src/constmeta.pyx":96
  *             _value = PyType_Type.tp_getattro(cls, __name)
  * 
  *             if PyCallable_Check(_value):             # <<<<<<<<<<<<<<
@@ -2850,7 +2845,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
     }
 
-    /* "cy_src/constmeta.pyx":104
+    /* "cy_src/constmeta.pyx":102
  *                 return _value
  * 
  *             if PyCoro_CheckExact(_value):             # <<<<<<<<<<<<<<
@@ -2860,16 +2855,16 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
     __pyx_t_3 = (PyCoro_CheckExact(__pyx_v__value) != 0);
     if (__pyx_t_3) {
 
-      /* "cy_src/constmeta.pyx":105
+      /* "cy_src/constmeta.pyx":103
  * 
  *             if PyCoro_CheckExact(_value):
  *                 loop = asyncio.get_event_loop()             # <<<<<<<<<<<<<<
  *                 _value = loop.run_until_complete(_value)
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_asyncio); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 105, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_asyncio); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 103, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_get_event_loop); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 105, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_get_event_loop); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 103, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_5 = NULL;
@@ -2884,20 +2879,20 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       }
       __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_6);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __pyx_v_loop = __pyx_t_2;
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":106
+      /* "cy_src/constmeta.pyx":104
  *             if PyCoro_CheckExact(_value):
  *                 loop = asyncio.get_event_loop()
  *                 _value = loop.run_until_complete(_value)             # <<<<<<<<<<<<<<
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  *                 PySet_Discard(cls._lazy, __name)
  */
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_loop, __pyx_n_s_run_until_complete); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 106, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_loop, __pyx_n_s_run_until_complete); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 104, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __pyx_t_5 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -2911,22 +2906,22 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       }
       __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_5, __pyx_v__value) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_v__value);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 104, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":107
+      /* "cy_src/constmeta.pyx":105
  *                 loop = asyncio.get_event_loop()
  *                 _value = loop.run_until_complete(_value)
  *                 PyType_Type.tp_setattro(cls, __name, _value)             # <<<<<<<<<<<<<<
  *                 PySet_Discard(cls._lazy, __name)
  *                 return _value
  */
-      __pyx_t_4 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v__value); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 107, __pyx_L1_error)
+      __pyx_t_4 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v__value); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 105, __pyx_L1_error)
 
-      /* "cy_src/constmeta.pyx":108
+      /* "cy_src/constmeta.pyx":106
  *                 _value = loop.run_until_complete(_value)
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  *                 PySet_Discard(cls._lazy, __name)             # <<<<<<<<<<<<<<
@@ -2935,10 +2930,10 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
       __pyx_t_2 = __pyx_v_cls->_lazy;
       __Pyx_INCREF(__pyx_t_2);
-      __pyx_t_3 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 108, __pyx_L1_error)
+      __pyx_t_3 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 106, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":109
+      /* "cy_src/constmeta.pyx":107
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  *                 PySet_Discard(cls._lazy, __name)
  *                 return _value             # <<<<<<<<<<<<<<
@@ -2950,7 +2945,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       __pyx_r = __pyx_v__value;
       goto __pyx_L0;
 
-      /* "cy_src/constmeta.pyx":104
+      /* "cy_src/constmeta.pyx":102
  *                 return _value
  * 
  *             if PyCoro_CheckExact(_value):             # <<<<<<<<<<<<<<
@@ -2959,7 +2954,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
     }
 
-    /* "cy_src/constmeta.pyx":111
+    /* "cy_src/constmeta.pyx":109
  *                 return _value
  * 
  *             if PyGen_CheckExact(_value):             # <<<<<<<<<<<<<<
@@ -2969,40 +2964,40 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
     __pyx_t_3 = (PyGen_CheckExact(__pyx_v__value) != 0);
     if (__pyx_t_3) {
 
-      /* "cy_src/constmeta.pyx":112
+      /* "cy_src/constmeta.pyx":110
  * 
  *             if PyGen_CheckExact(_value):
  *                 _value = PyObject_GetIter(_value)             # <<<<<<<<<<<<<<
  *                 _value = PyIter_Next(_value)
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  */
-      __pyx_t_2 = PyObject_GetIter(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 112, __pyx_L1_error)
+      __pyx_t_2 = PyObject_GetIter(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":113
+      /* "cy_src/constmeta.pyx":111
  *             if PyGen_CheckExact(_value):
  *                 _value = PyObject_GetIter(_value)
  *                 _value = PyIter_Next(_value)             # <<<<<<<<<<<<<<
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  *                 PySet_Discard(cls._lazy, __name)
  */
-      __pyx_t_2 = PyIter_Next(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
+      __pyx_t_2 = PyIter_Next(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":114
+      /* "cy_src/constmeta.pyx":112
  *                 _value = PyObject_GetIter(_value)
  *                 _value = PyIter_Next(_value)
  *                 PyType_Type.tp_setattro(cls, __name, _value)             # <<<<<<<<<<<<<<
  *                 PySet_Discard(cls._lazy, __name)
  *                 return _value
  */
-      __pyx_t_4 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v__value); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 114, __pyx_L1_error)
+      __pyx_t_4 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v__value); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 112, __pyx_L1_error)
 
-      /* "cy_src/constmeta.pyx":115
+      /* "cy_src/constmeta.pyx":113
  *                 _value = PyIter_Next(_value)
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  *                 PySet_Discard(cls._lazy, __name)             # <<<<<<<<<<<<<<
@@ -3011,10 +3006,10 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
       __pyx_t_2 = __pyx_v_cls->_lazy;
       __Pyx_INCREF(__pyx_t_2);
-      __pyx_t_3 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 115, __pyx_L1_error)
+      __pyx_t_3 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 113, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":116
+      /* "cy_src/constmeta.pyx":114
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  *                 PySet_Discard(cls._lazy, __name)
  *                 return _value             # <<<<<<<<<<<<<<
@@ -3026,7 +3021,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       __pyx_r = __pyx_v__value;
       goto __pyx_L0;
 
-      /* "cy_src/constmeta.pyx":111
+      /* "cy_src/constmeta.pyx":109
  *                 return _value
  * 
  *             if PyGen_CheckExact(_value):             # <<<<<<<<<<<<<<
@@ -3035,62 +3030,60 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
     }
 
-    /* "cy_src/constmeta.pyx":118
+    /* "cy_src/constmeta.pyx":116
  *                 return _value
  * 
  *             if PyAsyncGen_CheckExact(_value):             # <<<<<<<<<<<<<<
- * 
- *                 async_meths = <PyAsyncMethods*?>AsyncGeneratorType.tp_as_async
+ *                 # value_type = Py_TYPE(_value)[0]
+ *                 # async_gen_type = <PyAsyncGen_Type?>value_type
  */
     __pyx_t_3 = (PyAsyncGen_CheckExact(__pyx_v__value) != 0);
     if (__pyx_t_3) {
 
-      /* "cy_src/constmeta.pyx":120
- *             if PyAsyncGen_CheckExact(_value):
- * 
- *                 async_meths = <PyAsyncMethods*?>AsyncGeneratorType.tp_as_async             # <<<<<<<<<<<<<<
+      /* "cy_src/constmeta.pyx":119
+ *                 # value_type = Py_TYPE(_value)[0]
+ *                 # async_gen_type = <PyAsyncGen_Type?>value_type
+ *                 async_meths = PyAsyncGen_Type.tp_as_async             # <<<<<<<<<<<<<<
  *                 _value = async_meths.am_aiter(_value)
  *                 _value = async_meths.am_anext(_value)
  */
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_6cy_src_3cpy_AsyncGeneratorType), __pyx_n_s_tp_as_async); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __pyx_v_async_meths = ((PyAsyncMethods *)__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_7 = PyAsyncGen_Type.tp_as_async;
+      __pyx_v_async_meths = __pyx_t_7;
 
-      /* "cy_src/constmeta.pyx":121
- * 
- *                 async_meths = <PyAsyncMethods*?>AsyncGeneratorType.tp_as_async
+      /* "cy_src/constmeta.pyx":120
+ *                 # async_gen_type = <PyAsyncGen_Type?>value_type
+ *                 async_meths = PyAsyncGen_Type.tp_as_async
  *                 _value = async_meths.am_aiter(_value)             # <<<<<<<<<<<<<<
  *                 _value = async_meths.am_anext(_value)
  *                 loop = asyncio.get_event_loop()
  */
-      __pyx_t_2 = __pyx_v_async_meths->am_aiter(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
+      __pyx_t_2 = __pyx_v_async_meths->am_aiter(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":122
- *                 async_meths = <PyAsyncMethods*?>AsyncGeneratorType.tp_as_async
+      /* "cy_src/constmeta.pyx":121
+ *                 async_meths = PyAsyncGen_Type.tp_as_async
  *                 _value = async_meths.am_aiter(_value)
  *                 _value = async_meths.am_anext(_value)             # <<<<<<<<<<<<<<
  *                 loop = asyncio.get_event_loop()
  *                 _value = loop.run_until_complete(_value)
  */
-      __pyx_t_2 = __pyx_v_async_meths->am_anext(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
+      __pyx_t_2 = __pyx_v_async_meths->am_anext(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":123
+      /* "cy_src/constmeta.pyx":122
  *                 _value = async_meths.am_aiter(_value)
  *                 _value = async_meths.am_anext(_value)
  *                 loop = asyncio.get_event_loop()             # <<<<<<<<<<<<<<
  *                 _value = loop.run_until_complete(_value)
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_asyncio); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 123, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_asyncio); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 122, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_get_event_loop); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 123, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_get_event_loop); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 122, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __pyx_t_6 = NULL;
@@ -3105,20 +3098,20 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       }
       __pyx_t_2 = (__pyx_t_6) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 123, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_v_loop = __pyx_t_2;
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":124
+      /* "cy_src/constmeta.pyx":123
  *                 _value = async_meths.am_anext(_value)
  *                 loop = asyncio.get_event_loop()
  *                 _value = loop.run_until_complete(_value)             # <<<<<<<<<<<<<<
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  *                 PySet_Discard(cls._lazy, __name)
  */
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_loop, __pyx_n_s_run_until_complete); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 124, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_loop, __pyx_n_s_run_until_complete); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 123, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_6 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -3132,22 +3125,22 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       }
       __pyx_t_2 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_6, __pyx_v__value) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v__value);
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 124, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 123, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":125
+      /* "cy_src/constmeta.pyx":124
  *                 loop = asyncio.get_event_loop()
  *                 _value = loop.run_until_complete(_value)
  *                 PyType_Type.tp_setattro(cls, __name, _value)             # <<<<<<<<<<<<<<
  *                 PySet_Discard(cls._lazy, __name)
  *                 return _value
  */
-      __pyx_t_4 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v__value); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 125, __pyx_L1_error)
+      __pyx_t_4 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v__value); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 124, __pyx_L1_error)
 
-      /* "cy_src/constmeta.pyx":126
+      /* "cy_src/constmeta.pyx":125
  *                 _value = loop.run_until_complete(_value)
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  *                 PySet_Discard(cls._lazy, __name)             # <<<<<<<<<<<<<<
@@ -3156,10 +3149,10 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
       __pyx_t_2 = __pyx_v_cls->_lazy;
       __Pyx_INCREF(__pyx_t_2);
-      __pyx_t_3 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 126, __pyx_L1_error)
+      __pyx_t_3 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 125, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":127
+      /* "cy_src/constmeta.pyx":126
  *                 PyType_Type.tp_setattro(cls, __name, _value)
  *                 PySet_Discard(cls._lazy, __name)
  *                 return _value             # <<<<<<<<<<<<<<
@@ -3171,16 +3164,16 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       __pyx_r = __pyx_v__value;
       goto __pyx_L0;
 
-      /* "cy_src/constmeta.pyx":118
+      /* "cy_src/constmeta.pyx":116
  *                 return _value
  * 
  *             if PyAsyncGen_CheckExact(_value):             # <<<<<<<<<<<<<<
- * 
- *                 async_meths = <PyAsyncMethods*?>AsyncGeneratorType.tp_as_async
+ *                 # value_type = Py_TYPE(_value)[0]
+ *                 # async_gen_type = <PyAsyncGen_Type?>value_type
  */
     }
 
-    /* "cy_src/constmeta.pyx":95
+    /* "cy_src/constmeta.pyx":93
  *             return PyType_Type.tp_getattro(cls, __name)
  * 
  *         if PySet_Contains(cls._lazy, __name):             # <<<<<<<<<<<<<<
@@ -3190,7 +3183,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
     goto __pyx_L4;
   }
 
-  /* "cy_src/constmeta.pyx":129
+  /* "cy_src/constmeta.pyx":128
  *                 return _value
  * 
  *         elif PySet_Contains(cls._yield, __name):             # <<<<<<<<<<<<<<
@@ -3199,24 +3192,24 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
   __pyx_t_2 = __pyx_v_cls->_yield;
   __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_3 = PySet_Contains(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_3 = PySet_Contains(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_1 = (__pyx_t_3 != 0);
   if (__pyx_t_1) {
 
-    /* "cy_src/constmeta.pyx":130
+    /* "cy_src/constmeta.pyx":129
  * 
  *         elif PySet_Contains(cls._yield, __name):
  *             _value = PyType_Type.tp_getattro(cls, __name)             # <<<<<<<<<<<<<<
  *             if PyCallable_Check(_value):
  *                 _value = PyObject_CallFunction(_value, NULL)
  */
-    __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 130, __pyx_L1_error)
+    __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 129, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_v__value = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "cy_src/constmeta.pyx":131
+    /* "cy_src/constmeta.pyx":130
  *         elif PySet_Contains(cls._yield, __name):
  *             _value = PyType_Type.tp_getattro(cls, __name)
  *             if PyCallable_Check(_value):             # <<<<<<<<<<<<<<
@@ -3226,19 +3219,19 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
     __pyx_t_1 = (PyCallable_Check(__pyx_v__value) != 0);
     if (__pyx_t_1) {
 
-      /* "cy_src/constmeta.pyx":132
+      /* "cy_src/constmeta.pyx":131
  *             _value = PyType_Type.tp_getattro(cls, __name)
  *             if PyCallable_Check(_value):
  *                 _value = PyObject_CallFunction(_value, NULL)             # <<<<<<<<<<<<<<
  *                 return _value
  * 
  */
-      __pyx_t_2 = PyObject_CallFunction(__pyx_v__value, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 132, __pyx_L1_error)
+      __pyx_t_2 = PyObject_CallFunction(__pyx_v__value, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 131, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":133
+      /* "cy_src/constmeta.pyx":132
  *             if PyCallable_Check(_value):
  *                 _value = PyObject_CallFunction(_value, NULL)
  *                 return _value             # <<<<<<<<<<<<<<
@@ -3250,7 +3243,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       __pyx_r = __pyx_v__value;
       goto __pyx_L0;
 
-      /* "cy_src/constmeta.pyx":131
+      /* "cy_src/constmeta.pyx":130
  *         elif PySet_Contains(cls._yield, __name):
  *             _value = PyType_Type.tp_getattro(cls, __name)
  *             if PyCallable_Check(_value):             # <<<<<<<<<<<<<<
@@ -3259,7 +3252,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
     }
 
-    /* "cy_src/constmeta.pyx":135
+    /* "cy_src/constmeta.pyx":134
  *                 return _value
  * 
  *             if PyCoro_CheckExact(_value):             # <<<<<<<<<<<<<<
@@ -3269,16 +3262,16 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
     __pyx_t_1 = (PyCoro_CheckExact(__pyx_v__value) != 0);
     if (__pyx_t_1) {
 
-      /* "cy_src/constmeta.pyx":136
+      /* "cy_src/constmeta.pyx":135
  * 
  *             if PyCoro_CheckExact(_value):
  *                 loop = asyncio.get_event_loop()             # <<<<<<<<<<<<<<
  *                 _value = loop.run_until_complete(_value)
  *                 return _value
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_asyncio); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 136, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_asyncio); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 135, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_get_event_loop); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 136, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_get_event_loop); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 135, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_5 = NULL;
@@ -3293,20 +3286,20 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       }
       __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_6);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 136, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 135, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __pyx_v_loop = __pyx_t_2;
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":137
+      /* "cy_src/constmeta.pyx":136
  *             if PyCoro_CheckExact(_value):
  *                 loop = asyncio.get_event_loop()
  *                 _value = loop.run_until_complete(_value)             # <<<<<<<<<<<<<<
  *                 return _value
  * 
  */
-      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_loop, __pyx_n_s_run_until_complete); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 137, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_loop, __pyx_n_s_run_until_complete); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 136, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __pyx_t_5 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
@@ -3320,13 +3313,13 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       }
       __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_5, __pyx_v__value) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_v__value);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 136, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":138
+      /* "cy_src/constmeta.pyx":137
  *                 loop = asyncio.get_event_loop()
  *                 _value = loop.run_until_complete(_value)
  *                 return _value             # <<<<<<<<<<<<<<
@@ -3338,7 +3331,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       __pyx_r = __pyx_v__value;
       goto __pyx_L0;
 
-      /* "cy_src/constmeta.pyx":135
+      /* "cy_src/constmeta.pyx":134
  *                 return _value
  * 
  *             if PyCoro_CheckExact(_value):             # <<<<<<<<<<<<<<
@@ -3347,7 +3340,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
     }
 
-    /* "cy_src/constmeta.pyx":140
+    /* "cy_src/constmeta.pyx":139
  *                 return _value
  * 
  *             if PyGen_CheckExact(_value):             # <<<<<<<<<<<<<<
@@ -3357,31 +3350,31 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
     __pyx_t_1 = (PyGen_CheckExact(__pyx_v__value) != 0);
     if (__pyx_t_1) {
 
-      /* "cy_src/constmeta.pyx":141
+      /* "cy_src/constmeta.pyx":140
  * 
  *             if PyGen_CheckExact(_value):
  *                 _value = PyObject_GetIter(_value)             # <<<<<<<<<<<<<<
  *                 _value = PyIter_Next(_value)
  *                 return _value
  */
-      __pyx_t_2 = PyObject_GetIter(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 141, __pyx_L1_error)
+      __pyx_t_2 = PyObject_GetIter(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 140, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":142
+      /* "cy_src/constmeta.pyx":141
  *             if PyGen_CheckExact(_value):
  *                 _value = PyObject_GetIter(_value)
  *                 _value = PyIter_Next(_value)             # <<<<<<<<<<<<<<
  *                 return _value
  * 
  */
-      __pyx_t_2 = PyIter_Next(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
+      __pyx_t_2 = PyIter_Next(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 141, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "cy_src/constmeta.pyx":143
+      /* "cy_src/constmeta.pyx":142
  *                 _value = PyObject_GetIter(_value)
  *                 _value = PyIter_Next(_value)
  *                 return _value             # <<<<<<<<<<<<<<
@@ -3393,7 +3386,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       __pyx_r = __pyx_v__value;
       goto __pyx_L0;
 
-      /* "cy_src/constmeta.pyx":140
+      /* "cy_src/constmeta.pyx":139
  *                 return _value
  * 
  *             if PyGen_CheckExact(_value):             # <<<<<<<<<<<<<<
@@ -3402,7 +3395,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
     }
 
-    /* "cy_src/constmeta.pyx":129
+    /* "cy_src/constmeta.pyx":128
  *                 return _value
  * 
  *         elif PySet_Contains(cls._yield, __name):             # <<<<<<<<<<<<<<
@@ -3412,24 +3405,24 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
   }
   __pyx_L4:;
 
-  /* "cy_src/constmeta.pyx":153
- *             #     _value = loop.run_until_complete(_value)
- *             #     return _value
+  /* "cy_src/constmeta.pyx":151
+ *                 # _value = loop.run_until_complete(_value)
+ *                 # return _value
  *         return PyType_Type.tp_getattro(cls, __name)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cy_src/constmeta.pyx":86
+  /* "cy_src/constmeta.pyx":85
  *         PyType_Type.tp_setattro(cls, __name, __value)
  * 
  *     def __getattribute__(cls, __name: str):             # <<<<<<<<<<<<<<
  *         cdef object _value
- *         cdef AsyncGeneratorType async_gen_tp
+ *         # cdef PyAsyncGen_Type async_gen_type
  */
 
   /* function exit code */
@@ -4027,12 +4020,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
-  {&__pyx_n_s_tp_as_async, __pyx_k_tp_as_async, sizeof(__pyx_k_tp_as_async), 0, 0, 1, 1},
   {&__pyx_n_s_truconsts__types, __pyx_k_truconsts__types, sizeof(__pyx_k_truconsts__types), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_AttributeError = __Pyx_GetBuiltinName(__pyx_n_s_AttributeError); if (!__pyx_builtin_AttributeError) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_builtin_AttributeError = __Pyx_GetBuiltinName(__pyx_n_s_AttributeError); if (!__pyx_builtin_AttributeError) __PYX_ERR(0, 71, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -4154,10 +4146,6 @@ static int __Pyx_modinit_type_import_code(void) {
   __pyx_t_1 = PyImport_ImportModule(__Pyx_BUILTIN_MODULE_NAME); if (unlikely(!__pyx_t_1)) __PYX_ERR(5, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_7cpython_7complex_complex = __Pyx_ImportType_0_29_35(__pyx_t_1, __Pyx_BUILTIN_MODULE_NAME, "complex", sizeof(PyComplexObject), __PYX_GET_STRUCT_ALIGNMENT_0_29_35(PyComplexObject),__Pyx_ImportType_CheckSize_Warn_0_29_35); if (!__pyx_ptype_7cpython_7complex_complex) __PYX_ERR(5, 15, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyImport_ImportModule("types"); if (unlikely(!__pyx_t_1)) __PYX_ERR(6, 60, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_ptype_6cy_src_3cpy_AsyncGeneratorType = __Pyx_ImportType_0_29_35(__pyx_t_1, "types", "AsyncGeneratorType", sizeof(PyAsyncGenObject), __PYX_GET_STRUCT_ALIGNMENT_0_29_35(PyAsyncGenObject),__Pyx_ImportType_CheckSize_Warn_0_29_35); if (!__pyx_ptype_6cy_src_3cpy_AsyncGeneratorType) __PYX_ERR(6, 60, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -4420,11 +4408,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "cy_src/constmeta.pyx":14
- *     Py_TPFLAGS_BASETYPE, PyCallable_Check, PyMapping_Keys, PyIter_Next, PyObject_GetIter
+ *     Py_TPFLAGS_BASETYPE, PyCallable_Check, PyMapping_Keys, PyIter_Next, PyObject_GetIter, PySequence_Contains
  * from cpython.genobject cimport PyGen_CheckExact
  * import asyncio             # <<<<<<<<<<<<<<
  * from .cpy cimport PyCoro_CheckExact, PyType_Type, PyAsyncGen_CheckExact, \
- *     PyAsyncMethods, AsyncGeneratorType
+ *     PyAsyncMethods, PyAsyncGen_Type
  */
   __pyx_t_2 = __Pyx_patch_asyncio(__Pyx_Import(__pyx_n_s_asyncio, 0, 0)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);

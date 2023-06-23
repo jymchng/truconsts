@@ -1,4 +1,4 @@
-from truconsts._types import Async, Lazy, Mutable, Immutable
+from truconsts._types import Yield, Lazy, Mutable, Immutable
 import pytest
 
 class Immutables(Immutable):

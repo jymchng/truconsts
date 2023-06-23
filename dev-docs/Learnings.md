@@ -334,7 +334,7 @@ cdef extern from "complexobject.h":
     # PyAPI_DATA(PyTypeObject) PyComplex_Type; PyComplexObject
     ctypedef class __builtin__.complex [object PyComplexObject]:
         # note the `cdef` declaration because it is a `ctypedef class` declaration
-        cdef Py_complex cval
+        cdef Py_complex cval # `Py_complex` must be a value of `PyComplexObject` See `Error Two` below
 
 # A function which uses the above type
 def spam(complex c):
@@ -355,4 +355,35 @@ typedef struct {
 } PyComplexObject;
 
 PyAPI_DATA(PyTypeObject) PyComplex_Type;
+```
+
+Error Two: 
+```
+F:\py_projects\truconsts\cy_src\constmeta.c(3071): error C2039: 'tp_as_async': is not a member of 'PyAsyncGenObject'
+C:\Users\Jym Chng.DESKTOP-N84UN90\AppData\Local\Programs\Python\Python310\include\genobject.h(64): note: see declaration of 'PyAsyncGenObject'
+```
+
+Reference: https://github.com/sagemath/sage/blob/3230f00aeb49802f99b0a3b76e770fa9d628c4e1/src/sage/cpython/builtin_types.pyx
+
+```
+from cpython.object cimport PyTypeObject
+
+cdef extern from *:
+    PyTypeObject PyWrapperDescr_Type
+
+wrapper_descriptor = <type>(&PyWrapperDescr_Type)
+```
+
+Seems like can just declare another `type` as `type`
+
+Another Example: https://github.com/sagemath/sage/blob/3230f00aeb49802f99b0a3b76e770fa9d628c4e1/src/doc/en/developer/sage_manuals.rst#L240
+
+```
+cdef extern from "descrobject.h":
+    ctypedef struct PyMethodDef:
+        void *ml_meth
+    ctypedef struct PyMethodDescrObject:
+        PyMethodDef *d_method
+    void* PyCFunction_GET_FUNCTION(object)
+    bint PyCFunction_Check(object)
 ```

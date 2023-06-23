@@ -26,6 +26,8 @@ cdef extern from "Python.h":
         setattrofunc tp_setattro
         getattrofunc tp_getattro
 
+    cdef PyTypeObject_PythonType PyType_Type
+
 cdef extern from "genobject.h":
     int PyCoro_CheckExact(object o)
     object PyCoro_New(PyFrameObject*, object name, object qualname)
@@ -57,15 +59,20 @@ cdef extern from "genobject.h":
         unaryfunc am_anext
 
     # PyAPI_DATA(PyTypeObject) PyComplex_Type; PyComplexObject
-    ctypedef class types.AsyncGeneratorType [object PyAsyncGenObject]:
-        # &async_gen_as_async,    <<< THIS                    /* tp_as_async */ <<< NOT THIS
-        cdef PyAsyncMethods* async_gen_as_async
-        
-    # ctypedef struct PyAsyncGen_Type :
-    #     PyAsyncMethods* tp_as_async
+    # ctypedef class types.AsyncGeneratorType [object PyAsyncGenObject]:
+        # &async_gen_as_async,    <<< NOT THIS                    /* tp_as_async */ <<< IT IS THIS
+        # cdef PyAsyncMethods *tp_as_async
+
+    ctypedef struct PyAsyncGen_PythonType:
+        PyAsyncMethods *tp_as_async
+
+    cdef PyAsyncGen_PythonType PyAsyncGen_Type
 
     ctypedef struct _PyAsyncGenASend_Type:
         PyAsyncMethods* tp_as_async
+
+    # ctypedef struct PyTypeObject* PyAsyncGen_Type:
+    #     PyAsyncMethods* tp_as_async
 
     # cdef _PyAsyncGenASend_Type PyAsyncGenSend_TypeType
 
@@ -75,7 +82,6 @@ cdef extern from "genobject.h":
     ctypedef struct _PyAsyncGenAThrow_Type:
         pass
 
-    cdef PyTypeObject_PythonType PyType_Type
 
 # cdef extern from "genobject.c": # to import pure C functions; 1. extern from "genobject.c" NOT "Python.h"
 #     # declarations
