@@ -3379,7 +3379,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  *                 _value = PyIter_Next(_value)
  *                 return _value             # <<<<<<<<<<<<<<
  * 
- *             # if PyAsyncGen_CheckExact(_value):
+ *             if PyAsyncGen_CheckExact(_value):
  */
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_v__value);
@@ -3395,6 +3395,136 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  */
     }
 
+    /* "cy_src/constmeta.pyx":144
+ *                 return _value
+ * 
+ *             if PyAsyncGen_CheckExact(_value):             # <<<<<<<<<<<<<<
+ *                 # async_meths = <PyAsyncMethods*?>AsyncGeneratorType.async_gen_as_async
+ *                 # _value = async_meths.am_aiter(_value)
+ */
+    __pyx_t_1 = (PyAsyncGen_CheckExact(__pyx_v__value) != 0);
+    if (__pyx_t_1) {
+
+      /* "cy_src/constmeta.pyx":151
+ *                 # _value = loop.run_until_complete(_value)
+ *                 # return _value
+ *                 async_meths = PyAsyncGen_Type.tp_as_async             # <<<<<<<<<<<<<<
+ *                 _value = async_meths.am_aiter(_value)
+ *                 _value = async_meths.am_anext(_value)
+ */
+      __pyx_t_7 = PyAsyncGen_Type.tp_as_async;
+      __pyx_v_async_meths = __pyx_t_7;
+
+      /* "cy_src/constmeta.pyx":152
+ *                 # return _value
+ *                 async_meths = PyAsyncGen_Type.tp_as_async
+ *                 _value = async_meths.am_aiter(_value)             # <<<<<<<<<<<<<<
+ *                 _value = async_meths.am_anext(_value)
+ *                 loop = asyncio.get_event_loop()
+ */
+      __pyx_t_2 = __pyx_v_async_meths->am_aiter(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 152, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
+      __pyx_t_2 = 0;
+
+      /* "cy_src/constmeta.pyx":153
+ *                 async_meths = PyAsyncGen_Type.tp_as_async
+ *                 _value = async_meths.am_aiter(_value)
+ *                 _value = async_meths.am_anext(_value)             # <<<<<<<<<<<<<<
+ *                 loop = asyncio.get_event_loop()
+ *                 _value = loop.run_until_complete(_value)
+ */
+      __pyx_t_2 = __pyx_v_async_meths->am_anext(__pyx_v__value); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
+      __pyx_t_2 = 0;
+
+      /* "cy_src/constmeta.pyx":154
+ *                 _value = async_meths.am_aiter(_value)
+ *                 _value = async_meths.am_anext(_value)
+ *                 loop = asyncio.get_event_loop()             # <<<<<<<<<<<<<<
+ *                 _value = loop.run_until_complete(_value)
+ *                 PyType_Type.tp_setattro(cls, __name, _value)
+ */
+      __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_asyncio); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 154, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_get_event_loop); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 154, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_6 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
+        __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
+        if (likely(__pyx_t_6)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+          __Pyx_INCREF(__pyx_t_6);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_5, function);
+        }
+      }
+      __pyx_t_2 = (__pyx_t_6) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 154, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_v_loop = __pyx_t_2;
+      __pyx_t_2 = 0;
+
+      /* "cy_src/constmeta.pyx":155
+ *                 _value = async_meths.am_anext(_value)
+ *                 loop = asyncio.get_event_loop()
+ *                 _value = loop.run_until_complete(_value)             # <<<<<<<<<<<<<<
+ *                 PyType_Type.tp_setattro(cls, __name, _value)
+ *                 PySet_Discard(cls._lazy, __name)
+ */
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_loop, __pyx_n_s_run_until_complete); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 155, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_6 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
+        __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
+        if (likely(__pyx_t_6)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+          __Pyx_INCREF(__pyx_t_6);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_5, function);
+        }
+      }
+      __pyx_t_2 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_6, __pyx_v__value) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v__value);
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 155, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF_SET(__pyx_v__value, __pyx_t_2);
+      __pyx_t_2 = 0;
+
+      /* "cy_src/constmeta.pyx":156
+ *                 loop = asyncio.get_event_loop()
+ *                 _value = loop.run_until_complete(_value)
+ *                 PyType_Type.tp_setattro(cls, __name, _value)             # <<<<<<<<<<<<<<
+ *                 PySet_Discard(cls._lazy, __name)
+ *         return PyType_Type.tp_getattro(cls, __name)
+ */
+      __pyx_t_4 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v__value); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 156, __pyx_L1_error)
+
+      /* "cy_src/constmeta.pyx":157
+ *                 _value = loop.run_until_complete(_value)
+ *                 PyType_Type.tp_setattro(cls, __name, _value)
+ *                 PySet_Discard(cls._lazy, __name)             # <<<<<<<<<<<<<<
+ *         return PyType_Type.tp_getattro(cls, __name)
+ */
+      __pyx_t_2 = __pyx_v_cls->_lazy;
+      __Pyx_INCREF(__pyx_t_2);
+      __pyx_t_1 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 157, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+      /* "cy_src/constmeta.pyx":144
+ *                 return _value
+ * 
+ *             if PyAsyncGen_CheckExact(_value):             # <<<<<<<<<<<<<<
+ *                 # async_meths = <PyAsyncMethods*?>AsyncGeneratorType.async_gen_as_async
+ *                 # _value = async_meths.am_aiter(_value)
+ */
+    }
+
     /* "cy_src/constmeta.pyx":128
  *                 return _value
  * 
@@ -3405,13 +3535,13 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
   }
   __pyx_L4:;
 
-  /* "cy_src/constmeta.pyx":151
- *                 # _value = loop.run_until_complete(_value)
- *                 # return _value
+  /* "cy_src/constmeta.pyx":158
+ *                 PyType_Type.tp_setattro(cls, __name, _value)
+ *                 PySet_Discard(cls._lazy, __name)
  *         return PyType_Type.tp_getattro(cls, __name)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;

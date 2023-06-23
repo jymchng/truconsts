@@ -141,11 +141,18 @@ cdef class MetaForConstants(type):
                 _value = PyIter_Next(_value)
                 return _value
 
-            # if PyAsyncGen_CheckExact(_value):
+            if PyAsyncGen_CheckExact(_value):
                 # async_meths = <PyAsyncMethods*?>AsyncGeneratorType.async_gen_as_async
                 # _value = async_meths.am_aiter(_value)
                 # _value = async_meths.am_anext(_value)
                 # loop = asyncio.get_event_loop()
                 # _value = loop.run_until_complete(_value)
                 # return _value
+                async_meths = PyAsyncGen_Type.tp_as_async
+                _value = async_meths.am_aiter(_value)
+                _value = async_meths.am_anext(_value)
+                loop = asyncio.get_event_loop()
+                _value = loop.run_until_complete(_value)
+                PyType_Type.tp_setattro(cls, __name, _value)
+                PySet_Discard(cls._lazy, __name)
         return PyType_Type.tp_getattro(cls, __name)
