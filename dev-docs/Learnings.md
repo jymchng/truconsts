@@ -56,8 +56,7 @@ note: This error originates from a subprocess, and is likely not a problem with 
 
 # Learning Four
 
-1. All `.c` files in Python are accessible via
-2. In Cython, when declaring functions, all `PyObject *` can be replaced by `object`, all other pointer objects have to be declared as pointers. E.g.
+1. In Cython, when declaring functions, all `PyObject *` can be replaced by `object`, all other pointer objects have to be declared as pointers. E.g.
 
 In `genobject.pxd`
 ```
@@ -67,7 +66,8 @@ object PyGen_NewWithQualName(PyFrameObject *frame, object name, object qualname)
 # __name__ and __qualname__ set to name and qualname. A reference to frame
 # is stolen by this function. The frame argument must not be NULL.
 ```
-In `genobject.c` (not that it is not `genobject.h`, meaning all functions in a `.c` file are exposed)
+
+Only functions/structs that are in `genobject.h` are exposed
 ```
 PyObject *
 PyGen_NewWithQualName(PyFrameObject *f, PyObject *name, PyObject *qualname)
@@ -217,7 +217,7 @@ Sometimes if no need to declare attributes, can just `pass`, like so:
 If type of argument `Py_UNUSED` declared in function is `void *`, can simple use `NULL` as a parameter.
 
 Example:
-coro_get_cr_await
+`coro_get_cr_await`
 Function definition: https://github.com/python/cpython/blob/13237a2da846efef9ce9b93fd4bcfebd49933568/Objects/genobject.c#L1093
 How it is used: https://github.com/python/cpython/blob/13237a2da846efef9ce9b93fd4bcfebd49933568/Objects/genobject.c#L1093
 
@@ -303,37 +303,56 @@ int sage_all_clique_max(graph_t *g,int **list){
 }
 ```
 
+# Learning Eight
 
-Another Example:
-```
-# because they are `static type func_name` that's why must use `cdef` at front
-    cdef object coro_await(PyCoroObject *coro)
-    cdef object coro_get_cr_await(PyCoroObject *coro, void *unused)
-    cdef object gen_iternext(PyGenObject *gen)
-    cdef int gen_is_coroutine(object o)
-```
+How to declare Python inbuilt types in Cython?
+Encountered this error:
 
 ```
-static int
-gen_is_coroutine(PyObject *o)
-{
-    if (PyGen_CheckExact(o)) {
-        PyCodeObject *code = (PyCodeObject *)((PyGenObject*)o)->gi_code;
-        if (code->co_flags & CO_ITERABLE_COROUTINE) {
-            return 1;
-        }
-    }
-    return 0;
-}
+\truconsts\cy_src\constmeta.c(3051): error C2065: 'PyAsyncGen_TypeType': undeclared identifier
+\truconsts\cy_src\constmeta.c(3051): error C2224: left of '.tp_as_async' must have struct/union type
 ```
 
+It is probably because Python also exposes `PyAsyncGen_Type`, it exposes it as `types.AsyncGeneratorType`, need to write its declaration
+in Cython more carefully.
+
+Reference: https://cython.readthedocs.io/en/latest/src/userguide/extension_types.html#external-extension-types
+
 ```
-static PyObject *
-coro_get_cr_await(PyCoroObject *coro, void *Py_UNUSED(ignored))
-{
-    PyObject *yf = _PyGen_yf((PyGenObject *) coro);
-    if (yf == NULL)
-        Py_RETURN_NONE;
-    return yf;
-}
+from __future__ import print_function
+
+cdef extern from "complexobject.h":
+
+    #    typedef struct {
+    #    double real;
+    #    double imag;
+    #} Py_complex;
+    ctypedef struct Py_complex:
+        double imag
+        double real
+
+    # PyAPI_DATA(PyTypeObject) PyComplex_Type; PyComplexObject
+    ctypedef class __builtin__.complex [object PyComplexObject]:
+        # note the `cdef` declaration because it is a `ctypedef class` declaration
+        cdef Py_complex cval
+
+# A function which uses the above type
+def spam(complex c):
+    print("Real:", c.cval.real)
+    print("Imag:", c.cval.imag)
+```
+
+Reference: https://github.com/python/cpython/blob/3.8/Include/complexobject.h
+```
+typedef struct {
+    double real;
+    double imag;
+} Py_complex;
+
+typedef struct {
+    PyObject_HEAD
+    Py_complex cval;
+} PyComplexObject;
+
+PyAPI_DATA(PyTypeObject) PyComplex_Type;
 ```

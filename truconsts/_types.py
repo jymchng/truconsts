@@ -4,10 +4,10 @@ from types import MethodType
 
 def patch_cls(cls):
     def __cls_getitem__(cls, index):
-        if isinstance(index, (Type, Tuple)) or index == Lazy or index == Async:
+        if isinstance(index, (Type, Tuple)) or index == Lazy or index == Yield:
             res = (cls, *index) if isinstance(index, tuple) else (cls, index)
-            if ((Lazy in res) and (Async in res)):
-                raise Exception(f"Subscripts cannot contain both `Lazy` and `Async`")
+            if ((Lazy in res) and (Yield in res)):
+                raise Exception(f"Subscripts cannot contain both `Lazy` and `Yield`")
             return res
         raise Exception(f"`{index}` is not a type or tuple(type) or `Lazy`")
     def __init__(self, *args, **kwargs):
@@ -44,6 +44,6 @@ class Lazy:
     
     
 @patch_cls
-class Async:
+class Yield:
     ...
 
