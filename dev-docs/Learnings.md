@@ -315,6 +315,9 @@ Encountered this error:
 \truconsts\cy_src\constmeta.c(3051): error C2224: left of '.tp_as_async' must have struct/union type
 ```
 
+Reference: https://cython.readthedocs.io/en/latest/src/userguide/extension_types.html#external-extension-types
+
+Above didn't solve my problem.
 ```
 from __future__ import print_function
 
