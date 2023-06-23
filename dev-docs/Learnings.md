@@ -305,18 +305,13 @@ int sage_all_clique_max(graph_t *g,int **list){
 
 # Learning Eight
 
-How to declare Python inbuilt types in Cython?
+How to declare Python types (e.g. `PyAsyncGen_Type`) in Cython?
 Encountered this error:
 
 ```
 \truconsts\cy_src\constmeta.c(3051): error C2065: 'PyAsyncGen_TypeType': undeclared identifier
 \truconsts\cy_src\constmeta.c(3051): error C2224: left of '.tp_as_async' must have struct/union type
 ```
-
-It is probably because Python also exposes `PyAsyncGen_Type`, it exposes it as `types.AsyncGeneratorType`, need to write its declaration
-in Cython more carefully.
-
-Reference: https://cython.readthedocs.io/en/latest/src/userguide/extension_types.html#external-extension-types
 
 ```
 from __future__ import print_function
@@ -374,7 +369,7 @@ cdef extern from *:
 wrapper_descriptor = <type>(&PyWrapperDescr_Type)
 ```
 
-Seems like can just declare another `type` as `type`
+Can just declare another `ctypedef` as `ctypedef`
 
 Another Example: https://github.com/sagemath/sage/blob/3230f00aeb49802f99b0a3b76e770fa9d628c4e1/src/doc/en/developer/sage_manuals.rst#L240
 
@@ -387,3 +382,36 @@ cdef extern from "descrobject.h":
     void* PyCFunction_GET_FUNCTION(object)
     bint PyCFunction_Check(object)
 ```
+
+# Learning Nine
+
+How to declare a type e.g. `PyComplex_Type` or `PyAsyncGen_Type` in Cython?
+
+These types, `PyComplex_Type` or `PyAsyncGen_Type`, are not `typedef struct` etc, **THEY ARE VALUES OF `PyType_Object`**!
+
+References: https://github.com/python/cpython/blob/d8ca5a11bc55e2a69cab4f8795d0a5aa6932a41b/Objects/genobject.c
+```
+PyTypeObject PyAsyncGen_Type = { # SEE THE `=` EQUAL SIGN!!!
+    PyVarObject_HEAD_INIT(&PyType_Type, 0)
+    "async_generator",                          /* tp_name */
+    offsetof(PyAsyncGenObject, ag_iframe) +
+    offsetof(_PyInterpreterFrame, localsplus),       /* tp_basicsize */
+    sizeof(PyObject *),                         /* tp_itemsize */
+    /* methods */
+    (destructor)gen_dealloc,                    /* tp_dealloc */
+    0,                                          /* tp_vectorcall_offset */
+    0,                                          /* tp_getattr */
+    0,                                          /* tp_setattr */
+    &async_gen_as_async,                        /* tp_as_async */
+    (reprfunc)async_gen_repr,                   /* tp_repr */
+    0,                                          /* tp_as_number */
+    0,                                          /* tp_as_sequence */
+    ...
+    ...
+}    
+```
+
+The way to do this in Cython is:
+1. Declare a `typedef struct` with any name that is NOT `PyAsyncGen_Type`, e.g. `PyAsyncGen_CyType`
+2. Declare a value of the type whose name you declared in `typedef struct` of Step 1 but the name of the
+   value of the type must be the name of the Python type (e.g. `PyAsyncGen_Type`), e.g. `cdef PyAsyncGen_CyType PyAsyncGen_Type`

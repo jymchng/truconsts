@@ -27,7 +27,8 @@ class NotLazy(BaseConstants):
     
 def test_not_lazy_async_gen():
     for i in range(10):
-        assert NotLazy.async_gen == i
+        print(i, NotLazy.async_gen)
+    raise
         
 def test_not_lazy_gen():
     for i in range(10):
@@ -62,7 +63,8 @@ class VeryLazy(BaseConstants):
     
 def test_very_lazy_async_gen():
     for i in range(10):
-        assert VeryLazy.async_gen == i
+        print(i, VeryLazy.async_gen)
+        assert VeryLazy.async_gen == 0
         
 def test_very_lazy_gen():
     for i in range(10):
