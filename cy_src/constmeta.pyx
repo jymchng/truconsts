@@ -52,14 +52,14 @@ cdef class MetaForConstants(type):
                 if PySet_Contains(v, Lazy):
                     PySet_Add(mcls._lazy, k)
                 elif PySet_Contains(v, Yield):
-                    PySet_Add(mcls._async, k)
+                    PySet_Add(mcls._yield, k)
             else:
                 if PyObject_RichCompareBool(v, Immutable, Py_EQ):
                     PySet_Add(mcls._immutable, k)
                 elif PyObject_RichCompareBool(v, Lazy, Py_EQ):
                     PySet_Add(mcls._lazy, k)
                 elif PyObject_RichCompareBool(v, Yield, Py_EQ):
-                    PySet_Add(mcls._async, k)
+                    PySet_Add(mcls._yield, k)
 
         mcls._init = True
         return
@@ -85,7 +85,6 @@ cdef class MetaForConstants(type):
 
     def __getattribute__(cls, __name: str):
         cdef object _value
-        cdef AsyncGeneratorType async_gen_tp
         cdef PyAsyncMethods* async_meths
         
 
@@ -117,7 +116,7 @@ cdef class MetaForConstants(type):
 
             if PyAsyncGen_CheckExact(_value):
                 
-                async_meths = <PyAsyncMethods*?>AsyncGeneratorType.tp_as_async
+                async_meths = <PyAsyncMethods*?>AsyncGeneratorType.async_gen_as_async
                 _value = async_meths.am_aiter(_value)
                 _value = async_meths.am_anext(_value)
                 loop = asyncio.get_event_loop()

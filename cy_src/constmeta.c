@@ -1509,7 +1509,6 @@ static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "name";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_Yield[] = "Yield";
-static const char __pyx_k_async[] = "_async";
 static const char __pyx_k_attrs[] = "attrs";
 static const char __pyx_k_bases[] = "bases";
 static const char __pyx_k_import[] = "__import__";
@@ -1548,7 +1547,6 @@ static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_n_s_Yield;
 static PyObject *__pyx_kp_u__2;
 static PyObject *__pyx_kp_u__3;
-static PyObject *__pyx_n_s_async;
 static PyObject *__pyx_n_s_asyncio;
 static PyObject *__pyx_n_s_asyncio_coroutines;
 static PyObject *__pyx_n_s_asyncio_tasks;
@@ -2115,7 +2113,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  *                 if PySet_Contains(v, Lazy):
  *                     PySet_Add(mcls._lazy, k)             # <<<<<<<<<<<<<<
  *                 elif PySet_Contains(v, Yield):
- *                     PySet_Add(mcls._async, k)
+ *                     PySet_Add(mcls._yield, k)
  */
         __pyx_t_2 = __pyx_v_mcls->_lazy;
         __Pyx_INCREF(__pyx_t_2);
@@ -2136,7 +2134,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  *                 if PySet_Contains(v, Lazy):
  *                     PySet_Add(mcls._lazy, k)
  *                 elif PySet_Contains(v, Yield):             # <<<<<<<<<<<<<<
- *                     PySet_Add(mcls._async, k)
+ *                     PySet_Add(mcls._yield, k)
  *             else:
  */
       __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Yield); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
@@ -2149,12 +2147,12 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
         /* "cy_src/constmeta.pyx":55
  *                     PySet_Add(mcls._lazy, k)
  *                 elif PySet_Contains(v, Yield):
- *                     PySet_Add(mcls._async, k)             # <<<<<<<<<<<<<<
+ *                     PySet_Add(mcls._yield, k)             # <<<<<<<<<<<<<<
  *             else:
  *                 if PyObject_RichCompareBool(v, Immutable, Py_EQ):
  */
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_mcls), __pyx_n_s_async); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_2 = __pyx_v_mcls->_yield;
+        __Pyx_INCREF(__pyx_t_2);
         __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 55, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
@@ -2162,7 +2160,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  *                 if PySet_Contains(v, Lazy):
  *                     PySet_Add(mcls._lazy, k)
  *                 elif PySet_Contains(v, Yield):             # <<<<<<<<<<<<<<
- *                     PySet_Add(mcls._async, k)
+ *                     PySet_Add(mcls._yield, k)
  *             else:
  */
       }
@@ -2179,7 +2177,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
     }
 
     /* "cy_src/constmeta.pyx":57
- *                     PySet_Add(mcls._async, k)
+ *                     PySet_Add(mcls._yield, k)
  *             else:
  *                 if PyObject_RichCompareBool(v, Immutable, Py_EQ):             # <<<<<<<<<<<<<<
  *                     PySet_Add(mcls._immutable, k)
@@ -2206,7 +2204,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
         /* "cy_src/constmeta.pyx":57
- *                     PySet_Add(mcls._async, k)
+ *                     PySet_Add(mcls._yield, k)
  *             else:
  *                 if PyObject_RichCompareBool(v, Immutable, Py_EQ):             # <<<<<<<<<<<<<<
  *                     PySet_Add(mcls._immutable, k)
@@ -2234,7 +2232,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  *                 elif PyObject_RichCompareBool(v, Lazy, Py_EQ):
  *                     PySet_Add(mcls._lazy, k)             # <<<<<<<<<<<<<<
  *                 elif PyObject_RichCompareBool(v, Yield, Py_EQ):
- *                     PySet_Add(mcls._async, k)
+ *                     PySet_Add(mcls._yield, k)
  */
         __pyx_t_2 = __pyx_v_mcls->_lazy;
         __Pyx_INCREF(__pyx_t_2);
@@ -2255,7 +2253,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  *                 elif PyObject_RichCompareBool(v, Lazy, Py_EQ):
  *                     PySet_Add(mcls._lazy, k)
  *                 elif PyObject_RichCompareBool(v, Yield, Py_EQ):             # <<<<<<<<<<<<<<
- *                     PySet_Add(mcls._async, k)
+ *                     PySet_Add(mcls._yield, k)
  * 
  */
       __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Yield); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
@@ -2268,12 +2266,12 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
         /* "cy_src/constmeta.pyx":62
  *                     PySet_Add(mcls._lazy, k)
  *                 elif PyObject_RichCompareBool(v, Yield, Py_EQ):
- *                     PySet_Add(mcls._async, k)             # <<<<<<<<<<<<<<
+ *                     PySet_Add(mcls._yield, k)             # <<<<<<<<<<<<<<
  * 
  *         mcls._init = True
  */
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_mcls), __pyx_n_s_async); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_2 = __pyx_v_mcls->_yield;
+        __Pyx_INCREF(__pyx_t_2);
         __pyx_t_6 = PySet_Add(__pyx_t_2, __pyx_v_k); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 62, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
@@ -2281,7 +2279,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
  *                 elif PyObject_RichCompareBool(v, Lazy, Py_EQ):
  *                     PySet_Add(mcls._lazy, k)
  *                 elif PyObject_RichCompareBool(v, Yield, Py_EQ):             # <<<<<<<<<<<<<<
- *                     PySet_Add(mcls._async, k)
+ *                     PySet_Add(mcls._yield, k)
  * 
  */
       }
@@ -2300,7 +2298,7 @@ static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "cy_src/constmeta.pyx":64
- *                     PySet_Add(mcls._async, k)
+ *                     PySet_Add(mcls._yield, k)
  * 
  *         mcls._init = True             # <<<<<<<<<<<<<<
  *         return
@@ -4006,7 +4004,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Yield, __pyx_k_Yield, sizeof(__pyx_k_Yield), 0, 0, 1, 1},
   {&__pyx_kp_u__2, __pyx_k__2, sizeof(__pyx_k__2), 0, 1, 0, 0},
   {&__pyx_kp_u__3, __pyx_k__3, sizeof(__pyx_k__3), 0, 1, 0, 0},
-  {&__pyx_n_s_async, __pyx_k_async, sizeof(__pyx_k_async), 0, 0, 1, 1},
   {&__pyx_n_s_asyncio, __pyx_k_asyncio, sizeof(__pyx_k_asyncio), 0, 0, 1, 1},
   {&__pyx_n_s_asyncio_coroutines, __pyx_k_asyncio_coroutines, sizeof(__pyx_k_asyncio_coroutines), 0, 0, 1, 1},
   {&__pyx_n_s_asyncio_tasks, __pyx_k_asyncio_tasks, sizeof(__pyx_k_asyncio_tasks), 0, 0, 1, 1},

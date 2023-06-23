@@ -58,7 +58,8 @@ cdef extern from "genobject.h":
 
     # PyAPI_DATA(PyTypeObject) PyComplex_Type; PyComplexObject
     ctypedef class types.AsyncGeneratorType [object PyAsyncGenObject]:
-        cdef PyAsyncMethods* tp_as_async
+        # &async_gen_as_async,    <<< THIS                    /* tp_as_async */ <<< NOT THIS
+        cdef PyAsyncMethods* async_gen_as_async
         
     # ctypedef struct PyAsyncGen_Type :
     #     PyAsyncMethods* tp_as_async
