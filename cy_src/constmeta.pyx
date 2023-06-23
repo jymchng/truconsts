@@ -153,6 +153,5 @@ cdef class MetaForConstants(type):
                 _value = async_meths.am_anext(_value)
                 loop = asyncio.get_event_loop()
                 _value = loop.run_until_complete(_value)
-                PyType_Type.tp_setattro(cls, __name, _value)
-                PySet_Discard(cls._lazy, __name)
+                return _value
         return PyType_Type.tp_getattro(cls, __name)
