@@ -3444,7 +3444,7 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  *                 _value = async_meths.am_anext(_value)
  *                 loop = asyncio.get_event_loop()             # <<<<<<<<<<<<<<
  *                 _value = loop.run_until_complete(_value)
- *                 PyType_Type.tp_setattro(cls, __name, _value)
+ *                 return _value
  */
       __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_asyncio); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 154, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
@@ -3473,8 +3473,8 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
  *                 _value = async_meths.am_anext(_value)
  *                 loop = asyncio.get_event_loop()
  *                 _value = loop.run_until_complete(_value)             # <<<<<<<<<<<<<<
- *                 PyType_Type.tp_setattro(cls, __name, _value)
- *                 PySet_Discard(cls._lazy, __name)
+ *                 return _value
+ *         return PyType_Type.tp_getattro(cls, __name)
  */
       __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_loop, __pyx_n_s_run_until_complete); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 155, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
@@ -3499,22 +3499,13 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
       /* "cy_src/constmeta.pyx":156
  *                 loop = asyncio.get_event_loop()
  *                 _value = loop.run_until_complete(_value)
- *                 PyType_Type.tp_setattro(cls, __name, _value)             # <<<<<<<<<<<<<<
- *                 PySet_Discard(cls._lazy, __name)
+ *                 return _value             # <<<<<<<<<<<<<<
  *         return PyType_Type.tp_getattro(cls, __name)
  */
-      __pyx_t_4 = PyType_Type.tp_setattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name, __pyx_v__value); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 156, __pyx_L1_error)
-
-      /* "cy_src/constmeta.pyx":157
- *                 _value = loop.run_until_complete(_value)
- *                 PyType_Type.tp_setattro(cls, __name, _value)
- *                 PySet_Discard(cls._lazy, __name)             # <<<<<<<<<<<<<<
- *         return PyType_Type.tp_getattro(cls, __name)
- */
-      __pyx_t_2 = __pyx_v_cls->_lazy;
-      __Pyx_INCREF(__pyx_t_2);
-      __pyx_t_1 = PySet_Discard(__pyx_t_2, __pyx_v___name); if (unlikely(__pyx_t_1 == ((int)-1))) __PYX_ERR(0, 157, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_XDECREF(__pyx_r);
+      __Pyx_INCREF(__pyx_v__value);
+      __pyx_r = __pyx_v__value;
+      goto __pyx_L0;
 
       /* "cy_src/constmeta.pyx":144
  *                 return _value
@@ -3535,13 +3526,13 @@ static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute_
   }
   __pyx_L4:;
 
-  /* "cy_src/constmeta.pyx":158
- *                 PyType_Type.tp_setattro(cls, __name, _value)
- *                 PySet_Discard(cls._lazy, __name)
+  /* "cy_src/constmeta.pyx":157
+ *                 _value = loop.run_until_complete(_value)
+ *                 return _value
  *         return PyType_Type.tp_getattro(cls, __name)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_2 = PyType_Type.tp_getattro(((PyTypeObject*)__pyx_v_cls), __pyx_v___name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;

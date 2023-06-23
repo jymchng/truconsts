@@ -27,8 +27,7 @@ class NotLazy(BaseConstants):
     
 def test_not_lazy_async_gen():
     for i in range(10):
-        print(i, NotLazy.async_gen)
-    raise
+        assert i == NotLazy.async_gen
         
 def test_not_lazy_gen():
     for i in range(10):
