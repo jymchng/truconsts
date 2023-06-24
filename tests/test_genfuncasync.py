@@ -1,6 +1,6 @@
 import pytest
 from cy_src.constmeta import MetaForConstants
-from truconsts._types import Immutable, Mutable, Lazy, Yield
+from truconsts._types import Immutable, Mutable, Cache, Yield
 from truconsts._base_const import BaseConstants
 from types import AsyncGeneratorType
 
@@ -19,7 +19,7 @@ def func():
     return 'func'
 
 
-class NotLazy(BaseConstants):
+class NotCache(BaseConstants):
     async_gen: Yield = async_gen()
     gen: Yield = gen()
     coro: Yield = coro()
@@ -27,17 +27,17 @@ class NotLazy(BaseConstants):
     
 def test_not_lazy_async_gen():
     for i in range(10):
-        assert i == NotLazy.async_gen
+        assert i == NotCache.async_gen
         
 def test_not_lazy_gen():
     for i in range(10):
-        assert NotLazy.gen == i
+        assert NotCache.gen == i
         
 def test_not_lazy_coro():
-    assert NotLazy.coro == 'coro'
+    assert NotCache.coro == 'coro'
     
 def test_not_lazy_func():
-    assert NotLazy.func == 'func'
+    assert NotCache.func == 'func'
     
 async def async_gen():
     for i in range(10):
@@ -54,25 +54,25 @@ def func():
     return 'func'
 
 
-class VeryLazy(BaseConstants):
-    async_gen: Lazy = async_gen()
-    gen: Lazy = gen()
-    coro: Lazy = coro()
-    func: Lazy = func
+class VeryCache(BaseConstants):
+    async_gen: Cache = async_gen()
+    gen: Cache = gen()
+    coro: Cache = coro()
+    func: Cache = func
     
 def test_very_lazy_async_gen():
     for i in range(10):
-        print(i, VeryLazy.async_gen)
-        assert VeryLazy.async_gen == 0
+        print(i, VeryCache.async_gen)
+        assert VeryCache.async_gen == 0
         
 def test_very_lazy_gen():
     for i in range(10):
-        assert VeryLazy.gen == 0
+        assert VeryCache.gen == 0
         
 def test_very_lazy_coro():
     for i in range(10):
-        assert VeryLazy.coro == 'coro'
+        assert VeryCache.coro == 'coro'
     
 def test_very_lazy_func():
     for i in range(10):
-        assert VeryLazy.func == 'func'
+        assert VeryCache.func == 'func'

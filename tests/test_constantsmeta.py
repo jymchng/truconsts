@@ -1,6 +1,6 @@
 import pytest
 from cy_src.constmeta import MetaForConstants
-from truconsts._types import Immutable, Mutable, Lazy, Yield
+from truconsts._types import Immutable, Mutable, Cache, Yield
 from truconsts._base_const import BaseConstants
 
 # class BaseConstants(metaclass=MetaForConstants):
@@ -9,7 +9,7 @@ from truconsts._base_const import BaseConstants
 def get_root_dir():
     return 'THIS_IS_A_ROOT_DIR'
 
-async def get_async_root_dir():
+async def get_yield_root_dir():
     return 'THIS_IS_AN_ASYNC_ROOT_DIR'
 
 # to avoid RuntimeError: cannot reuse already awaited coroutine
@@ -27,11 +27,11 @@ class Constants(BaseConstants):
     OLD = 'OLD' # Mutable
     GOOD = 'YES' # Mutable
     # Impossible to call in pure python, recursion error
-    NEW_ROOT_DIR: Immutable[Lazy[str]] = get_root_dir 
+    NEW_ROOT_DIR: Immutable[Cache[str]] = get_root_dir 
     # Call it once and still can mutate thereafter
-    ONLY_LAZY: Lazy[str] = get_root_dir 
-    # Call it once and never mutate it, Lazy[Immutable] is same as Immutable[Lazy]
-    LAZY_IMMUTABLE_STR: Lazy[Immutable[str]] = get_root_dir
+    ONLY_LAZY: Cache[str] = get_root_dir 
+    # Call it once and never mutate it, Cache[Immutable] is same as Immutable[Cache]
+    LAZY_IMMUTABLE_STR: Cache[Immutable[str]] = get_root_dir
     NUMBER: Immutable[int] = 123456
     
 class ConstantsWithoutAnnotations(BaseConstants): # behaves like your regular class
@@ -91,8 +91,8 @@ def test_constants_cannot_assign_new_class_variable():
 def test_constants_attrs():
     assert Constants._attrs == set(('ONLY_LAZY', 'LAZY_IMMUTABLE_STR', 'GOOD', 'NEW', 'OLD', 'ROOT_DIR', 'NEW_ROOT_DIR', 'YAY', "NUMBER"))
     
-def test_constants_lazy():
-    assert Constants._lazy == set(('ONLY_LAZY', 'LAZY_IMMUTABLE_STR', 'NEW_ROOT_DIR', ))
+def test_constants_cache():
+    assert Constants._cache == set(('ONLY_LAZY', 'LAZY_IMMUTABLE_STR', 'NEW_ROOT_DIR', ))
     
 def test_constants_immutable():
     assert Constants._immutable == set(('YAY', 'LAZY_IMMUTABLE_STR', 'ROOT_DIR', 'NEW_ROOT_DIR', "NUMBER"))
@@ -104,8 +104,8 @@ def test_consts_wo_anno_attrs():
 def test_consts_wo_anno_immutable():
     assert ConstantsWithoutAnnotations._immutable == set()
     
-def test_consts_wo_anno_lazy():
-    assert ConstantsWithoutAnnotations._lazy == set()
+def test_consts_wo_anno_cache():
+    assert ConstantsWithoutAnnotations._cache == set()
 
 @pytest.mark.skip
 def test_consts_wo_anno_cache():
@@ -114,7 +114,7 @@ def test_consts_wo_anno_cache():
 def test_two_classes_dont_share_same_class_vars():
     assert Constants._attrs != ConstantsWithoutAnnotations._attrs
     assert Constants._immutable != ConstantsWithoutAnnotations._immutable
-    assert Constants._lazy != ConstantsWithoutAnnotations._lazy
+    assert Constants._cache != ConstantsWithoutAnnotations._cache
     # assert Constants._cache != ConstantsWithoutAnnotations._cache # .cache removed
     
 def test_cannot_add_to_consts_tp_dict():
@@ -122,7 +122,7 @@ def test_cannot_add_to_consts_tp_dict():
         Constants.__dict__['SUB_DIR'] = 'GOOD_SUB_DIR'
         Constants.__dict__.update({'HI': 'BYE'})
     
-def test_consts_lazy():
+def test_consts_cache():
     # _cache removed
     # assert 'LAZY_IMMUTABLE_STR' not in Constants._cache
     for _ in range(200):
@@ -131,8 +131,8 @@ def test_consts_lazy():
         assert Constants.NEW_ROOT_DIR == 'THIS_IS_A_ROOT_DIR'
         
         for s in ('LAZY_IMMUTABLE_STR', 'ONLY_LAZY', 'NEW_ROOT_DIR'):
-            # once initialized, remove from `_lazy`
-            assert (s not in Constants._lazy)
+            # once initialized, remove from `_cache`
+            assert (s not in Constants._cache)
         
         with pytest.raises(AttributeError):    
             Constants.LAZY_IMMUTABLE_STR = 'HOW ARE YOU'
@@ -142,7 +142,7 @@ def test_consts_lazy():
             Constants.NEW_ROOT_DIR = 'HOW ARE YOU'
             assert Constants.NEW_ROOT_DIR == 'HOW ARE YOU'
             
-        assert Constants._lazy == set()
+        assert Constants._cache == set()
             
     for _ in range(200):
         Constants.ONLY_LAZY = 'HOW ARE YOU'
@@ -161,28 +161,28 @@ def test_constants_meta_can_be_inherited():
             ...
         
 class AsyncConstants(BaseConstants):
-    ASYNC_STR: Async[str] = get_async_root_dir
-    ASYNC_IMMU_STR: Async[Immutable[str]] = another_coroutine
+    ASYNC_STR: Yield[str] = get_yield_root_dir()
+    ASYNC_IMMU_STR: Yield[Immutable[str]] = another_coroutine()
     
-def test_async_immutable_sets():
-    assert AsyncConstants._async == set(('ASYNC_STR', 'ASYNC_IMMU_STR'))
+def test_yield_immutable_sets():
+    assert AsyncConstants._yield == set(('ASYNC_STR', 'ASYNC_IMMU_STR'))
     assert AsyncConstants._immutable == set(('ASYNC_IMMU_STR', ))
-    assert AsyncConstants._lazy == set()
+    assert AsyncConstants._cache == set()
     
-def test_async_consts_correct():
+def test_yield_consts_correct():
     assert AsyncConstants.ASYNC_STR == 'THIS_IS_AN_ASYNC_ROOT_DIR'
     
-def test_async_consts_correct_two():
+def test_yield_consts_correct_two():
     assert AsyncConstants.ASYNC_IMMU_STR == 'THIS_IS_AN_ASYNC_ROOT_DIR'
     
-def test_async_consts_mutability():
+def test_yield_consts_mutability():
     for _ in range(2000):
         with pytest.raises(AttributeError):
             AsyncConstants.ASYNC_IMMU_STR = 'NEW_ASYNC_ROOT_DIR'
             assert AsyncConstants.ASYNC_IMMU_STR == 'NEW_ASYNC_ROOT_DIR'
             
-        AsyncConstants.ASYNC_STR = 'NEW_ASYNC_ROOT_DIR'
-        assert AsyncConstants.ASYNC_STR == 'NEW_ASYNC_ROOT_DIR'
+    AsyncConstants.ASYNC_STR = 'NEW_ASYNC_ROOT_DIR'
+    assert AsyncConstants.ASYNC_STR == 'NEW_ASYNC_ROOT_DIR'
         
 def test_subclass_instance_can_be_mutated_but_not_the_class():
     for i in range(1000):
@@ -193,32 +193,27 @@ def test_subclass_instance_can_be_mutated_but_not_the_class():
         
 def test_subclass_instance_has_no_dict_two():
     # refresh the class to avoid RuntimeError: cannot reuse already awaited coroutine
+    class AsyncConstants(BaseConstants):
+        ASYNC_STR: Yield[str] = get_yield_root_dir()
+        ASYNC_IMMU_STR: Yield[Immutable[str]] = another_coroutine()
+        
     for i in range(10):
         inst = AsyncConstants()
         inst.ASYNC_IMMU_STR = '555'
         assert inst.ASYNC_IMMU_STR == '555'
-        assert AsyncConstants.ASYNC_IMMU_STR == 'THIS_IS_AN_ASYNC_ROOT_DIR'
+    assert AsyncConstants.ASYNC_IMMU_STR == 'THIS_IS_AN_ASYNC_ROOT_DIR'
         
-class LazyAsyncConstants(BaseConstants):
-    LAZY_CONST: Lazy = get_root_dir
-    ASYNC_CONST: Async = get_async_root_dir
+class CacheAsyncConstants(BaseConstants):
+    LAZY_CONST: Cache = get_root_dir
+    ASYNC_CONST: Yield = get_yield_root_dir()
     
-def test_switch_async_and_lazy():
+def test_switch_yield_and_cache():
     
-    assert LazyAsyncConstants._lazy == set(('LAZY_CONST', ))
-    assert LazyAsyncConstants._async == set(('ASYNC_CONST', ))
+    assert CacheAsyncConstants._cache == set(('LAZY_CONST', ))
+    assert CacheAsyncConstants._yield == set(('ASYNC_CONST', ))
     
-    assert LazyAsyncConstants.LAZY_CONST == 'THIS_IS_A_ROOT_DIR'
-    assert LazyAsyncConstants.ASYNC_CONST == 'THIS_IS_AN_ASYNC_ROOT_DIR'
+    assert CacheAsyncConstants.LAZY_CONST == 'THIS_IS_A_ROOT_DIR'
+    assert CacheAsyncConstants.ASYNC_CONST == 'THIS_IS_AN_ASYNC_ROOT_DIR'
     
-    assert LazyAsyncConstants._lazy == set()
-    assert LazyAsyncConstants._async == set(('ASYNC_CONST',))
-    
-    LazyAsyncConstants.ASYNC_CONST = get_root_dir
-    LazyAsyncConstants.LAZY_CONST = get_async_root_dir
-    
-    # assert LazyAsyncConstants._async == set(('LAZY_CONST', ))
-    assert LazyAsyncConstants._lazy == set(('ASYNC_CONST', 'LAZY_CONST'))
-    
-    assert LazyAsyncConstants.LAZY_CONST == 'THIS_IS_AN_ASYNC_ROOT_DIR'
-    assert LazyAsyncConstants.ASYNC_CONST == 'THIS_IS_A_ROOT_DIR'
+    assert CacheAsyncConstants._cache == set()
+    assert CacheAsyncConstants._yield == set(('ASYNC_CONST',))

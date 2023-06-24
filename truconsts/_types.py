@@ -4,12 +4,12 @@ from types import MethodType
 
 def patch_cls(cls):
     def __cls_getitem__(cls, index):
-        if isinstance(index, (Type, Tuple)) or index == Lazy or index == Yield:
+        if isinstance(index, (Type, Tuple)) or index == Cache or index == Yield:
             res = (cls, *index) if isinstance(index, tuple) else (cls, index)
-            if ((Lazy in res) and (Yield in res)):
-                raise Exception(f"Subscripts cannot contain both `Lazy` and `Yield`")
+            if ((Cache in res) and (Yield in res)):
+                raise Exception(f"Subscripts cannot contain both `Cache` and `Yield`")
             return res
-        raise Exception(f"`{index}` is not a type or tuple(type) or `Lazy`")
+        raise Exception(f"`{index}` is not a type or tuple(type) or `Cache`")
     def __init__(self, *args, **kwargs):
         raise Exception(f"`{self.__name__}` cannot be instantiated")
     # def __init_subclass__(self, *args, **kwargs):
@@ -39,7 +39,7 @@ class Mutable:
 
 
 @patch_cls
-class Lazy:
+class Cache:
     ...
     
     
