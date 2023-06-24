@@ -20,14 +20,17 @@ def func():
 
 
 class NotCache(BaseConstants):
-    async_gen: Yield = async_gen()
-    gen: Yield = gen()
-    coro: Yield = coro()
+    async_gen: Yield = async_gen
+    gen: Yield = gen
+    coro: Yield = coro
     func: Yield = func
-    
-def test_not_lazy_async_gen():
-    for i in range(10):
-        assert i == NotCache.async_gen
+
+@pytest.mark.asyncio
+async def test_not_lazy_async_gen():
+    gen_ = gen()
+    async for i in NotCache.async_gen:
+        # print(i, NotCache.async_gen)
+        assert i == next(gen_)
         
 def test_not_lazy_gen():
     for i in range(10):
@@ -55,9 +58,9 @@ def func():
 
 
 class VeryCache(BaseConstants):
-    async_gen: Cache = async_gen()
-    gen: Cache = gen()
-    coro: Cache = coro()
+    async_gen: Cache = async_gen
+    gen: Cache = gen
+    coro: Cache = coro
     func: Cache = func
     
 def test_very_lazy_async_gen():
@@ -67,10 +70,12 @@ def test_very_lazy_async_gen():
         
 def test_very_lazy_gen():
     for i in range(10):
+        print(i, VeryCache.gen)
         assert VeryCache.gen == 0
         
 def test_very_lazy_coro():
     for i in range(10):
+        print(i, VeryCache.coro)
         assert VeryCache.coro == 'coro'
     
 def test_very_lazy_func():

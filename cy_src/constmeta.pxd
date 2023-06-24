@@ -2,9 +2,10 @@
 from cpython cimport PyTypeObject
 
 cdef class MetaForConstants(type):
-    cdef readonly set _immutable
-    cdef readonly set _attrs
-    cdef readonly set _cache
-    cdef readonly set _yield
+    # cdef readonly set _immutable
+    # cdef readonly set _attrs
+    # cdef readonly set _cache
+    # cdef readonly set _yield
     cdef readonly bint _init
+    cdef readonly dict _map
     cdef PyTypeObject * pytype_ptr
