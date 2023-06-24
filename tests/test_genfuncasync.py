@@ -67,10 +67,12 @@ def test_very_lazy_async_gen():
         
 def test_very_lazy_gen():
     for i in range(10):
+        print(i, VeryCache.gen)
         assert VeryCache.gen == 0
         
 def test_very_lazy_coro():
     for i in range(10):
+        print(i, VeryCache.coro)
         assert VeryCache.coro == 'coro'
     
 def test_very_lazy_func():
