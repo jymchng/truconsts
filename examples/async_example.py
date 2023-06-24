@@ -1,5 +1,5 @@
 from truconsts._base_const import BaseConstants
-from truconsts._types import Lazy, Async, Immutable, MethodType
+from truconsts._types import Cache, Yield, Immutable, MethodType
 import httpx
 from httpx import Response
 from pydantic import BaseModel
@@ -24,7 +24,7 @@ async def network_getter(url: str, headers: Dict[str, str], method_name: MethodN
     async with httpx.AsyncClient(base_url=url, headers=headers) as client:
         data = orjson.dumps(SuiGetRequest(method=method_name).dict())
         response: Response = await client.post(url='/', data=data)
-    return response.json()['result']
+    yield response.json()['result']
 
 
 class AsyncConstants(BaseConstants):
@@ -42,8 +42,7 @@ class AsyncConstants(BaseConstants):
     # you'll have to use `partial` because an exhausted coroutine cannot be reused
     # so you'll need something that always gives you a fresh coroutine when
     # called
-    LATEST_CHECKPOINT_SEQUENCE_NUMBER: Async[str] = partial(
-        network_getter,
+    LATEST_CHECKPOINT_SEQUENCE_NUMBER: Yield[str] = network_getter(
         SUI_FULL_NODE_URL.format(NETWORK),
         HEADERS,
         MethodNames.sui_getLatestCheckpointSequenceNumber,
