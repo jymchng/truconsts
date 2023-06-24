@@ -124,77 +124,89 @@ cdef class MetaForConstants(type):
         prebitflag = PyDict_GetItem(cls._map, __name)
         if prebitflag == NULL:
             return PyType_Type.tp_getattro(cls, __name)
-            # raise KeyError(f"Unable to get the key {__name} from `{Py_TYPE(cls).tp_name}._map`")
         bitflag = PyNumber_Int(<object>prebitflag)
         print(f"{bitflag:0b}")
 
         if (bitflag & _CACHE_) == _CACHE_:
+            print(f"bitflag={bitflag} & _CACHE_={_CACHE_} = {bitflag & _CACHE_:b}", bitflag & _CACHE_ == _CACHE_)
             _value = PyType_Type.tp_getattro(cls, __name)
-
+            print(f"PyCallable_Check(_value)={PyCallable_Check(_value)}")
             if PyCallable_Check(_value):
                 _value = PyObject_CallFunction(_value, NULL)
+                if PyCoro_CheckExact(_value):
+                    print(f"PyCoro_CheckExact(_value)={PyCoro_CheckExact(_value)}")
+                    loop = asyncio.get_event_loop()
+                    _value = loop.run_until_complete(_value)
+                    PyType_Type.tp_setattro(cls, __name, _value)
+                    bitflag &= _DISCARD_CACHE_
+                    PyDict_SetItem(cls._map, __name, bitflag)
+                    return _value
+                if PyGen_CheckExact(_value):
+                    print(f"PyGen_CheckExact(_value)={PyGen_CheckExact(_value)}")
+                    _value = PyObject_GetIter(_value)
+                    _value = PyIter_Next(_value)
+                    PyType_Type.tp_setattro(cls, __name, _value)
+                    bitflag &= _DISCARD_CACHE_
+                    PyDict_SetItem(cls._map, __name, bitflag)
+                    return _value
+                if PyAsyncGen_CheckExact(_value):
+                    print(f"PyAsyncGen_CheckExact(_value)={PyAsyncGen_CheckExact(_value)}")
+                    async_meths = PyAsyncGen_Type.tp_as_async
+                    _value = async_meths.am_aiter(_value)
+                    _value = async_meths.am_anext(_value)
+                    loop = asyncio.get_event_loop()
+                    _value = loop.run_until_complete(_value)
+                    PyType_Type.tp_setattro(cls, __name, _value)
+                    bitflag &= _DISCARD_CACHE_
+                    PyDict_SetItem(cls._map, __name, bitflag)
+                    return _value
                 PyType_Type.tp_setattro(cls, __name, _value)
                 bitflag &= _DISCARD_CACHE_
                 PyDict_SetItem(cls._map, __name, bitflag)
                 return _value
-
-            if PyCoro_CheckExact(_value):
-                loop = asyncio.get_event_loop()
-                _value = loop.run_until_complete(_value)
-                PyType_Type.tp_setattro(cls, __name, _value)
-                bitflag &= _DISCARD_CACHE_
-                PyDict_SetItem(cls._map, __name, bitflag)
-                return _value
-
-            if PyGen_CheckExact(_value):
-                _value = PyObject_GetIter(_value)
-                _value = PyIter_Next(_value)
-                PyType_Type.tp_setattro(cls, __name, _value)
-                bitflag &= _DISCARD_CACHE_
-                PyDict_SetItem(cls._map, __name, bitflag)
-                return _value
-
-            if PyAsyncGen_CheckExact(_value):
-                # value_type = Py_TYPE(_value)[0]
-                # async_gen_type = <PyAsyncGen_Type?>value_type
-                async_meths = PyAsyncGen_Type.tp_as_async
-                _value = async_meths.am_aiter(_value)
-                _value = async_meths.am_anext(_value)
-                loop = asyncio.get_event_loop()
-                _value = loop.run_until_complete(_value)
-                PyType_Type.tp_setattro(cls, __name, _value)
-                bitflag &= _DISCARD_CACHE_
-                PyDict_SetItem(cls._map, __name, bitflag)
-                return _value
+            PyType_Type.tp_setattro(cls, __name, _value)
+            bitflag &= _DISCARD_CACHE_
+            PyDict_SetItem(cls._map, __name, bitflag)
+            return _value
 
         elif (bitflag & _YIELD_) == _YIELD_:
-            print("bitflag & _YIELD_ = ", bitflag & _YIELD_, bitflag & _YIELD_ == _YIELD_)
+            print(f"bitflag={bitflag} & _YIELD_={_YIELD_} = {bitflag & _YIELD_:b}", bitflag & _YIELD_ == _YIELD_)
             _value = PyType_Type.tp_getattro(cls, __name)
+            print(f"PyCallable_Check(_value)={PyCallable_Check(_value)}")
             if PyCallable_Check(_value):
+                _func = _value
                 _value = PyObject_CallFunction(_value, NULL)
-                return _value
-
-            if PyCoro_CheckExact(_value):
-                loop = asyncio.get_event_loop()
-                _value = loop.run_until_complete(_value)
-                return _value
-
-            if PyGen_CheckExact(_value):
-                _value = PyObject_GetIter(_value)
+                if PyAsyncGen_CheckExact(_value):
+                    print(f"PyAsyncGen_CheckExact(_value)={PyAsyncGen_CheckExact(_value)}")
+                    # If see AsyncGenerator, just return it because it is meant for use in `async for` loop
+                    # save the function
+                    # PyType_Type.tp_setattro(cls, __name, _func)
+                    # async_meths = PyAsyncGen_Type.tp_as_async
+                    # _value = async_meths.am_aiter(_value)
+                    # _value = async_meths.am_anext(_value)
+                    # loop = asyncio.get_event_loop()
+                    # _value = loop.run_until_complete(_value)
+                    return _value
+                if PyCoro_CheckExact(_value):
+                    print(f"PyCoro_CheckExact(_value)={PyCoro_CheckExact(_value)}")
+                    loop = asyncio.get_event_loop()
+                    _value = loop.run_until_complete(_value)
+                    return _value
+                if PyGen_CheckExact(_value):
+                    print(f"PyGen_CheckExact(_value)={PyGen_CheckExact(_value)}")
+                    _value = PyObject_GetIter(_value)
+                    # save the iterator
+                    PyType_Type.tp_setattro(cls, __name, _value)
+                    _value = PyIter_Next(_value)
+                    return _value
+                print("Not Async Generator, Not Generator and Not Coroutine")
+                # check for iterator
+            elif PyGen_CheckExact(_value):
+                print(f"PyGen_CheckExact(_value)={PyGen_CheckExact(_value)}")
+                # _value = PyObject_GetIter(_value)
+                # save the iterator
                 _value = PyIter_Next(_value)
                 return _value
-
-            if PyAsyncGen_CheckExact(_value):
-                # async_meths = <PyAsyncMethods*?>AsyncGeneratorType.async_gen_as_async
-                # _value = async_meths.am_aiter(_value)
-                # _value = async_meths.am_anext(_value)
-                # loop = asyncio.get_event_loop()
-                # _value = loop.run_until_complete(_value)
-                # return _value
-                async_meths = PyAsyncGen_Type.tp_as_async
-                _value = async_meths.am_aiter(_value)
-                _value = async_meths.am_anext(_value)
-                loop = asyncio.get_event_loop()
-                _value = loop.run_until_complete(_value)
-                return _value
+                # elif check for AsyncASend Generator
+            return _value
         return PyType_Type.tp_getattro(cls, __name)
