@@ -2,7 +2,7 @@
 # cython: c_string_type=unicode, c_string_encoding=ascii
 # Py_TPFLAGS_BASETYPE
 
-from truconsts._types import Immutable, Cache, Yield
+from truconsts.annotations import Immutable, Cache, Yield
 from libc.stdlib cimport free
 from cpython cimport \
     PyObject_HasAttrString, \

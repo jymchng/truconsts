@@ -1568,13 +1568,13 @@ static const char __pyx_k_get_event_loop[] = "get_event_loop";
 static const char __pyx_k_bitflag_Line_92[] = "bitflag Line 92=";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_MetaForConstants[] = "MetaForConstants";
-static const char __pyx_k_truconsts__types[] = "truconsts._types";
 static const char __pyx_k_cannot_be_mutated[] = "` cannot be mutated";
 static const char __pyx_k_class_variable_to[] = "` class variable to `";
 static const char __pyx_k_asyncio_coroutines[] = "asyncio.coroutines";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_run_until_complete[] = "run_until_complete";
 static const char __pyx_k_Unable_to_get_the_key[] = "Unable to get the key `";
+static const char __pyx_k_truconsts_annotations[] = "truconsts.annotations";
 static const char __pyx_k_PyCallable_Check__value[] = "PyCallable_Check(_value)=";
 static const char __pyx_k_PyGen_CheckExact__value[] = "PyGen_CheckExact(_value)=";
 static const char __pyx_k_PyCoro_CheckExact__value[] = "PyCoro_CheckExact(_value)=";
@@ -1636,7 +1636,7 @@ static PyObject *__pyx_n_s_run_until_complete;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_n_s_truconsts__types;
+static PyObject *__pyx_n_s_truconsts_annotations;
 static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants___cinit__(struct __pyx_obj_6cy_src_9constmeta_MetaForConstants *__pyx_v_mcls, CYTHON_UNUSED PyObject *__pyx_v_name, CYTHON_UNUSED PyObject *__pyx_v_bases, PyObject *__pyx_v_attrs); /* proto */
 static int __pyx_pf_6cy_src_9constmeta_16MetaForConstants_2__setattr__(struct __pyx_obj_6cy_src_9constmeta_MetaForConstants *__pyx_v_cls, PyObject *__pyx_v___name, PyObject *__pyx_v___value); /* proto */
 static PyObject *__pyx_pf_6cy_src_9constmeta_16MetaForConstants_4__getattribute__(struct __pyx_obj_6cy_src_9constmeta_MetaForConstants *__pyx_v_cls, PyObject *__pyx_v___name); /* proto */
@@ -4953,7 +4953,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
-  {&__pyx_n_s_truconsts__types, __pyx_k_truconsts__types, sizeof(__pyx_k_truconsts__types), 0, 0, 1, 1},
+  {&__pyx_n_s_truconsts_annotations, __pyx_k_truconsts_annotations, sizeof(__pyx_k_truconsts_annotations), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
@@ -5322,7 +5322,7 @@ if (!__Pyx_RefNanny) {
   /* "cy_src/constmeta.pyx":5
  * # Py_TPFLAGS_BASETYPE
  * 
- * from truconsts._types import Immutable, Cache, Yield             # <<<<<<<<<<<<<<
+ * from truconsts.annotations import Immutable, Cache, Yield             # <<<<<<<<<<<<<<
  * from libc.stdlib cimport free
  * from cpython cimport \
  */
@@ -5337,7 +5337,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_n_s_Yield);
   __Pyx_GIVEREF(__pyx_n_s_Yield);
   PyList_SET_ITEM(__pyx_t_1, 2, __pyx_n_s_Yield);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_truconsts__types, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_truconsts_annotations, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Immutable); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)

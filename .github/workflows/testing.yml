@@ -37,7 +37,7 @@ jobs:
           
       - name: Run tests
         run: |
-          python -m pytest -vv .
+          python -c "import truconsts; print("`truconsts.__VERSION__` = ", truconsts.__VERSION__); truconsts.does_it_work(); from truconsts.constants import BaseConstants"
 
   test-local-pip-install:
     continue-on-error: True
@@ -56,15 +56,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          pip install pytest
           
       - name: Run tests
         run: |
           pip install --use-pep517 .
-          python -c "import truconsts; print(truconsts.__VERSION__)"
+          python -c "import truconsts; print("`truconsts.__VERSION__` = ", truconsts.__VERSION__); truconsts.does_it_work(); from truconsts.constants import BaseConstants"
 
   test-testpypi-install:
     continue-on-error: True
@@ -93,6 +89,7 @@ jobs:
       - name: Run tests
         run: |
           cd ${{ github.workspace }}
+          python -c "import truconsts; print("`truconsts.__VERSION__` = ", truconsts.__VERSION__); truconsts.does_it_work(); from truconsts.constants import BaseConstants"
           python -m pytest -vv .
 
   test-pypi-install:
@@ -122,4 +119,5 @@ jobs:
       - name: Run tests
         run: |
           cd ${{ github.workspace }}
+          python -c "import truconsts; print("`truconsts.__VERSION__` = ", truconsts.__VERSION__); truconsts.does_it_work(); from truconsts.constants import BaseConstants"
           python -m pytest -vv .

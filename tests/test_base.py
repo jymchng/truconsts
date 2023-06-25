@@ -1,4 +1,4 @@
-from truconsts._types import Cache, Mutable, Immutable, Yield
+from truconsts.annotations import Cache, Mutable, Immutable, Yield
 import pytest
 
 # def test_unable_to_inherit():

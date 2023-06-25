@@ -1,5 +1,5 @@
-from truconsts._base_const import BaseConstants
-from truconsts._types import Cache, Yield, Immutable, MethodType
+from truconsts.constants import BaseConstants
+from truconsts.annotations import Cache, Yield, Immutable, MethodType
 import httpx
 from httpx import Response
 from pydantic import BaseModel
