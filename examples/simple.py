@@ -45,10 +45,10 @@ except AttributeError as err:
 
 # test subsequent class attribute access is way faster because it is cached
 start = datetime.now()
-for _ in range(10000):
+for _ in range(1_000_000):
     g = Constants.IMMU_FUNC
 end = datetime.now()
-print(f"Subsequent 10000 accesses took: {end-start} seconds.")
+print(f"Subsequent 1_000_000 accesses took: {end-start} seconds.")
 
 # ... First time class attribute is accessed took: 0:00:05.002227 seconds.
 # ... `Constants.IMMU_FUNC` cannot be mutated
@@ -75,7 +75,7 @@ for _ in range(1_000_000):
     assert Constants.JUST_CACHE == rand_int
 end = datetime.now()
 print(f"Subsequent 1_000_000 accesses took: {end-start} seconds.")
-# ... First time class attribute is accessed took: 0:00:05.005433 seconds.
-# ... Subsequent 1_000_000 accesses took: 0:00:00.484105 seconds.
-# ... Subsequent 1_000_000 accesses took: 0:00:02.052256 seconds.
+# ... First time class attribute is accessed took: 0:00:05.013457 seconds.
+# ... Subsequent 1_000_000 accesses took: 0:00:00.236997 seconds.
+# ... Subsequent 1_000_000 accesses took: 0:00:01.953030 seconds.
 ##############################################################################
