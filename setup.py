@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+
+# https://github.com/ionelmc/python-nameless/blob/main/setup.py
 import os
 from pathlib import Path
 
