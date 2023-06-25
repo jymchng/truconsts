@@ -58,13 +58,13 @@ class DataFilePaths(BaseConstants):
 ```
 
 We first import `BaseConstants` from `truconsts.constants`.
-A new class `DataFilePaths` is defined which inherits from `BaseConstants`. This class defines two class-level constants. `DATA_ROOT` is defined as an immutable `Path` object initialized with the string 'data'. The `Immutable` annotation indicates that the value of the constant cannot be changed after Python reads the class definition. `TESTING` is defined as a mutable `Path` object obtained by appending the string 'testing' to the `DATA_ROOT` path.
+A new class `DataFilePaths` is defined which inherits from `BaseConstants`. This class defines two class-level constants. `DATA_ROOT` is defined as an immutable `Path` object initialized with the string `'data'`. The `Immutable` annotation indicates that the value of the constant cannot be changed after Python reads the class definition. `TESTING` is defined as a mutable `Path` object obtained by appending the string `'testing'` to the `DATA_ROOT` path.
 
 ```python
 class GLOBALS(BaseConstants):
     DataFilePaths: Immutable[DataFilePaths] = DataFilePaths
 ```
-In this code, a new class `GLOBALS` is defined that also inherits from `BaseConstants`. This class defines a single class-level constant `DataFilePaths`. The `Immutable` annotation is used to indicate that this constant cannot be reassigned to a new value. The type of this constant is `Immutable[DataFilePaths]`, which means it is an immutable instance of the `DataFilePaths` class defined earlier.
+In this code, a new class `GLOBALS` is defined that also inherits from `BaseConstants`. This class defines a single class-level constant `DataFilePaths`. The `Immutable` annotation is used to indicate that this constant cannot be reassigned to a new value. The type of this constant is `Immutable[DataFilePaths]`, which means it is an immutable class variable of the `DataFilePaths` class defined earlier.
 
 The value assigned to `DataFilePaths` is the class itself, i.e., `DataFilePaths`. This means that `DataFilePaths` is now available as a constant within the `GLOBALS` class and can be accessed as `GLOBALS.DataFilePaths`.
 ```python
@@ -88,9 +88,9 @@ except AttributeError as err:
 ```
 This code tries to modify the values of the `DATA_ROOT` and `TESTING` constants defined in the `DataFilePaths` class and demonstrates the immutability of `DATA_ROOT` and mutability of `TESTING`.
 
-In the first try block, an attempt is made to reassign the value of `DATA_ROOT` to 'another_data_path'. Since `DATA_ROOT` is defined as immutable with the Immutable annotation, the assignment operation raises an AttributeError with the message "`DataFilePaths.DATA_ROOT` cannot be mutated". This error is caught and printed to the console.
+In the first try block, an attempt is made to reassign the value of `DATA_ROOT` to `'another_data_path'`. Since `DATA_ROOT` is defined as immutable with the Immutable annotation, the assignment operation raises an AttributeError with the message "`DataFilePaths.DATA_ROOT` cannot be mutated".
 
-In the second try block, an attempt is made to reassign the value of `TESTING` to 'another_testing'. Since `TESTING` is not annotated with `Immutable`, it is mutable and the assignment operation succeeds. The new value of `TESTING` is then asserted and printed to the console.
+In the second try block, an attempt is made to reassign the value of `TESTING` to `'another_testing'`. Since `TESTING` is not annotated with `Immutable`, it is mutable and the assignment operation succeeds. The new value of `TESTING` is then asserted and printed to the console.
 
 ## Yielding From An Asynchronous Generator
 Next, we look at an example where an asynchronous generator is assigned to a class variable and is annotated with the `Yield` type hint.
@@ -145,8 +145,8 @@ for _ in range(10):
     print(AsyncConstants.LATEST_CHECKPOINT_SEQUENCE_NUMBER, end="; ")
 # prints: 6052440; 6052440; 6052441; 6052442; 6052443; 6052444; 6052445; 6052446; 6052447; 6052447; 
 ```
-This code defines a generator that asynchronously retrieves data from a server and a class `AsyncConstants` that stores constants related to the SUI network. It uses the network_getter() function to define an asynchronous generator that yields the latest checkpoint sequence number from the SUI network.
+This code defines a generator that asynchronously retrieves data from a server and a class `AsyncConstants` that stores constants related to the SUI network. It uses the `network_getter()` function to define an asynchronous generator that yields the latest checkpoint sequence number from the SUI network.
 
-A new `AsyncConstants` class is also defined which inherits from BaseConstants. This class defines four class-level constants: `NETWORK` which is an immutable string with the value "mainnet", `HEADERS` which is a dictionary of headers with the value {'Content-Type': 'application/json'}, `SUI_FULL_NODE_URL` which is an immutable string with the value `"https://fullnode.{}.sui.io:443"`, where `{}` is replaced by the value of `NETWORK`, and `LATEST_CHECKPOINT_SEQUENCE_NUMBER` which is an asynchronous generator that yields the result of calling the `network_getter()` function with the appropriate arguments. The `Yield` annotation is used to indicate that this constant is an asynchronous generator that yields strings.
+A new `AsyncConstants` class is also defined which inherits from BaseConstants. This class defines four class-level constants: `NETWORK` which is an immutable string with the value `"mainnet"`, `HEADERS` which is a dictionary of headers with the value `{'Content-Type': 'application/json'}`, `SUI_FULL_NODE_URL` which is an immutable string with the value `"https://fullnode.{}.sui.io:443"`, where `{}` is replaced by the value of `NETWORK`, and `LATEST_CHECKPOINT_SEQUENCE_NUMBER` which is an asynchronous generator that yields the result of calling the `network_getter()` function with the appropriate arguments. The `Yield` annotation is used to indicate that this constant is an asynchronous generator that yields strings.
 
-Finally, the `LATEST_CHECKPOINT_SEQUENCE_NUMBER` generator is printed to the console 10 times using a for loop. The output of the generator should be a sequence of strings representing the latest checkpoint sequence numbers from the SUI network.
+Finally, the value of the `LATEST_CHECKPOINT_SEQUENCE_NUMBER` class variable is printed to the console 10 times using a for loop. The output of the asynchronous generator should be a sequence of strings representing the latest checkpoint sequence numbers from the SUI network.
