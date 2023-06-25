@@ -150,3 +150,6 @@ This code defines a generator that asynchronously retrieves data from a server a
 A new `AsyncConstants` class is also defined which inherits from BaseConstants. This class defines four class-level constants: `NETWORK` which is an immutable string with the value `"mainnet"`, `HEADERS` which is a dictionary of headers with the value `{'Content-Type': 'application/json'}`, `SUI_FULL_NODE_URL` which is an immutable string with the value `"https://fullnode.{}.sui.io:443"`, where `{}` is replaced by the value of `NETWORK`, and `LATEST_CHECKPOINT_SEQUENCE_NUMBER` which is an asynchronous generator that yields the result of calling the `network_getter()` function with the appropriate arguments. The `Yield` annotation is used to indicate that this constant is an asynchronous generator that yields strings.
 
 Finally, the value of the `LATEST_CHECKPOINT_SEQUENCE_NUMBER` class variable is printed to the console 10 times using a for loop. The output of the asynchronous generator should be a sequence of strings representing the latest checkpoint sequence numbers from the SUI network.
+
+# Contributing
+Contributions are welcome! Let me know if you need help with anything else.
