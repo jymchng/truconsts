@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "truconsts"
-version = "0.0.6"
+version = "0.0.7"
 authors = [
     { name = "Jim Chng", email = "jimchng@outlook.com" },
 ]
@@ -31,7 +31,7 @@ dependencies = [
 [project.urls]
 
 [tool.bumpver]
-current_version = "0.0.6"
+current_version = "0.0.7"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true
@@ -48,10 +48,6 @@ push = true
     "Version: {version}",
 ]
 
-"setup.py" = [
-    'version="{version}"',
-]
-
-"truconsts/__init__.py" = [
+"src/truconsts/__init__.py" = [
     '__VERSION__ = version = Version = __version__ = "{version}"',
 ]
