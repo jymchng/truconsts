@@ -1,9 +1,6 @@
 import pytest
 from truconsts.annotations import Immutable, Mutable, Cache, Yield
-from truconsts.constants import BaseConstants, MetaForConstants
-
-# class BaseConstants(metaclass=MetaForConstants):
-#     ...
+from truconsts.constants import BaseConstants
 
 
 def get_root_dir():

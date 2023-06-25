@@ -1,11 +1,6 @@
 from truconsts.annotations import Cache, Mutable, Immutable, Yield
 import pytest
 
-# def test_unable_to_inherit():
-#     with pytest.raises(Exception):
-#         class ChildCache(Cache):
-#             pass
-
 
 def test_cannot_subscript_lazy_async_together():
     with pytest.raises(Exception):
