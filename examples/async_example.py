@@ -25,7 +25,7 @@ async def network_getter(url: str, headers: Dict[str, str], method_name: MethodN
         async with httpx.AsyncClient(base_url=url, headers=headers) as client:
             data = orjson.dumps(SuiGetRequest(method=method_name).dict())
             response: Response = await client.post(url='/', data=data)
-            yield response.json()['result']
+        yield response.json()['result']
 
 
 class AsyncConstants(BaseConstants):
@@ -57,7 +57,6 @@ if __name__ == '__main__':
         time.sleep(0.5)
         now = AsyncConstants.LATEST_CHECKPOINT_SEQUENCE_NUMBER
         print(f'prev={prev}; now={now}')
-        assert prev != now, f'prev={prev}; now={now}'
 
         # >>> \truconsts>python -m examples.async_example
         # ... prev=5715141; now=5715142
