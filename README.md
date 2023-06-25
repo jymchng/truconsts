@@ -152,4 +152,4 @@ A new `AsyncConstants` class is also defined which inherits from BaseConstants. 
 Finally, the value of the `LATEST_CHECKPOINT_SEQUENCE_NUMBER` class variable is printed to the console 10 times using a for loop. The output of the asynchronous generator should be a sequence of strings representing the latest checkpoint sequence numbers from the SUI network.
 
 # Contributing
-Contributions are welcome! Let me know if you need help with anything else.
+Contributions are welcome!
