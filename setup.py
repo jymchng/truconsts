@@ -1,4 +1,4 @@
-from setuptools import Extension, setup
+from setuptools import Extension, setup, find_packages
 import os
 import sys
 
@@ -29,7 +29,6 @@ ext_modules = generate_extensions(PACKAGE_NAME, C_FILES_DIRECTORY)
 print("Extension modules are: ", ext_modules)
 
 setup(
-    packages=['truconsts', 'cy_src'],
     package_dir={
         'truconsts': 'truconsts',
         'cy_src': 'cy_src'
