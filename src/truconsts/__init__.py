@@ -7,6 +7,7 @@ __all__ = [
     'Cache',
 ]
 
+
 def does_it_work():
     print("Does it work?")
     print("Yes, it does!")

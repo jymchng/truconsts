@@ -32,7 +32,7 @@ jobs:
           pip install cython
           pip install pytest
           pip install mypy
-          find . | grep -E "(/*.pyx)" | xargs cythonize -i
+          find . | grep -E "(\.pyx$)" | xargs cythonize -i
           python -m setup clean --all
           
       - name: Run tests
