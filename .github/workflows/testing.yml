@@ -37,7 +37,7 @@ jobs:
           
       - name: Run tests
         run: |
-          python -c "import truconsts; print("`truconsts.__VERSION__` = ", truconsts.__VERSION__); truconsts.does_it_work(); from truconsts.constants import BaseConstants"
+          python -c "import truconsts; print(truconsts.__VERSION__); from truconsts.constants import BaseConstants; truconsts.does_it_work()"
 
   test-local-pip-install:
     continue-on-error: True
@@ -60,7 +60,7 @@ jobs:
       - name: Run tests
         run: |
           pip install --use-pep517 .
-          python -c "import truconsts; print("`truconsts.__VERSION__` = ", truconsts.__VERSION__); truconsts.does_it_work(); from truconsts.constants import BaseConstants"
+          python -c "import truconsts; print(truconsts.__VERSION__); from truconsts.constants import BaseConstants; truconsts.does_it_work()"
 
   test-testpypi-install:
     continue-on-error: True
@@ -89,7 +89,7 @@ jobs:
       - name: Run tests
         run: |
           cd ${{ github.workspace }}
-          python -c "import truconsts; print("`truconsts.__VERSION__` = ", truconsts.__VERSION__); truconsts.does_it_work(); from truconsts.constants import BaseConstants"
+          python -c "import truconsts; print(truconsts.__VERSION__); from truconsts.constants import BaseConstants; truconsts.does_it_work()"
           python -m pytest -vv .
 
   test-pypi-install:
