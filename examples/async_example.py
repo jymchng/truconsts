@@ -3,7 +3,7 @@ from truconsts._types import Cache, Yield, Immutable, MethodType
 import httpx
 from httpx import Response
 from pydantic import BaseModel
-from typing import List, Dict, Coroutine
+from typing import List, Dict, AsyncGenerator
 import orjson
 from functools import partial
 import time
@@ -20,11 +20,12 @@ class MethodNames(BaseConstants):
     sui_getLatestCheckpointSequenceNumber: Immutable = 'sui_getLatestCheckpointSequenceNumber'
 
 
-async def network_getter(url: str, headers: Dict[str, str], method_name: MethodNames, params: List[str]) -> Coroutine:
-    async with httpx.AsyncClient(base_url=url, headers=headers) as client:
-        data = orjson.dumps(SuiGetRequest(method=method_name).dict())
-        response: Response = await client.post(url='/', data=data)
-    yield response.json()['result']
+async def network_getter(url: str, headers: Dict[str, str], method_name: MethodNames, params: List[str]) -> AsyncGenerator[None, str]:
+    while True:
+        async with httpx.AsyncClient(base_url=url, headers=headers) as client:
+            data = orjson.dumps(SuiGetRequest(method=method_name).dict())
+            response: Response = await client.post(url='/', data=data)
+            yield response.json()['result']
 
 
 class AsyncConstants(BaseConstants):

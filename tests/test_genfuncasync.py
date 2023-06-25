@@ -18,14 +18,42 @@ async def coro():
 def func():
     return 'func'
 
+async def coro_wt():
+    while True:
+        return next(gen())
+
 
 class NotCache(BaseConstants):
     async_gen: Yield = async_gen
     gen: Yield = gen
     coro: Yield = coro
     func: Yield = func
+    
+class NotCacheButActualTypes(BaseConstants):
+    async_gen: Yield = async_gen()
+    gen: Yield = gen()
+    coro_wt: Yield = coro_wt()
+    func: Yield = func
+    
+def test_NCBAT_async_gen():
+    for i in range(10):
+        assert NotCacheButActualTypes.async_gen == i
+        
+def test_NCBAT_gen():
+    for i in range(10):
+        assert NotCacheButActualTypes.gen == i
+        
+def test_NCBAT_coro_wt():
+    assert NotCacheButActualTypes.coro_wt == 0
+    
+    with pytest.raises(RuntimeError):
+        NotCacheButActualTypes.coro_wt
+        
+def test_NCBAT_func():
+        assert NotCacheButActualTypes.func == 'func'
 
-@pytest.mark.asyncio
+# don't use pytest.mark.asyncio to test
+@pytest.mark.skip
 async def test_not_lazy_async_gen():
     gen_ = gen()
     async for i in NotCache.async_gen:

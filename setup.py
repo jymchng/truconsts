@@ -29,36 +29,12 @@ ext_modules = generate_extensions(PACKAGE_NAME, C_FILES_DIRECTORY)
 print("Extension modules are: ", ext_modules)
 
 setup(
-    # name='truconsts',
-    # version="0.0.6",
-    # description='Manage all your constants in your Python application',
-    # author='Jim Chng',
-    # author_email='jimchng@outlook.com',
-    # url='http://github.com/jymchng/truconsts',
     packages=['truconsts', 'cy_src'],
     package_dir={
         'truconsts': 'truconsts',
         'cy_src': 'cy_src'
     },
-    # package_data={"truconsts": ["py.typed", "secrets.pyi"]},
-    # include_package_data=True,
     ext_modules=ext_modules,
-    # long_description=open('README.md').read(),
-    # long_description_content_type='text/markdown',
-    # classifiers=[
-    #     "Development Status :: 3 - Alpha",
-    #     "License :: OSI Approved :: MIT License",
-    #     "Programming Language :: Python",
-    #     "Programming Language :: Python :: 3.8",
-    #     "Programming Language :: Python :: 3.9",
-    #     "Programming Language :: Python :: 3.10",
-    #     "Programming Language :: Python :: 3.11",
-    #     "Programming Language :: Python :: Implementation :: CPython",
-    #     "Programming Language :: Cython",
-    #     "Operating System :: POSIX :: Linux",
-    #     "Operating System :: Microsoft :: Windows",
-    # ],
-    # keywords="truconsts, truly constants, constants",
 )
 
 

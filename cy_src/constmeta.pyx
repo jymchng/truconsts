@@ -7,15 +7,13 @@ from libc.stdlib cimport free
 from cpython cimport \
     PyObject_HasAttrString, \
     PyObject_GetAttrString, PyObject_CallFunction, PyObject_IsInstance, \
-    Py_TYPE, PySet_Add, PySet_New, PyTuple_New, PyMem_Free, \
-    PySet_Contains, Py_EQ, PyObject_RichCompareBool, PyDict_Items, PySet_Discard, PyMapping_HasKeyString, \
+    Py_TYPE, PySet_New, PyTuple_New, Py_EQ, PyObject_RichCompareBool, PyDict_Items, PyMapping_HasKeyString, \
     Py_TPFLAGS_BASETYPE, PyCallable_Check, PyMapping_Keys, PyIter_Next, PyObject_GetIter, PySequence_Contains, \
     PyDict_SetItem, PyDict_GetItem, PyObject, PyDict_Contains, PyNumber_Int
 from cpython.genobject cimport PyGen_CheckExact
 import asyncio
 from .cpy cimport PyCoro_CheckExact, PyType_Type, PyAsyncGen_CheckExact, \
     PyAsyncMethods, PyAsyncGen_Type
-    # gen_is_coroutine, coro_get_cr_await, PyCoroObject, coro_await, gen_iternext
 
 DEF _CACHE_ = 0b1100000
 DEF _DISCARD_CACHE_ = 0b1011111
@@ -178,14 +176,14 @@ cdef class MetaForConstants(type):
                 _value = PyObject_CallFunction(_value, NULL)
                 if PyAsyncGen_CheckExact(_value):
                     print(f"PyAsyncGen_CheckExact(_value)={PyAsyncGen_CheckExact(_value)}")
-                    # If see AsyncGenerator, just return it because it is meant for use in `async for` loop
-                    # save the function
-                    # PyType_Type.tp_setattro(cls, __name, _func)
-                    # async_meths = PyAsyncGen_Type.tp_as_async
-                    # _value = async_meths.am_aiter(_value)
-                    # _value = async_meths.am_anext(_value)
-                    # loop = asyncio.get_event_loop()
-                    # _value = loop.run_until_complete(_value)
+                    # save the function to generate a new 
+                    PyType_Type.tp_setattro(cls, __name, _func)
+                    async_meths = PyAsyncGen_Type.tp_as_async
+                    # probably doesn't need to get the aiter(asyncGen) first
+                    _value = async_meths.am_aiter(_value)
+                    _value = async_meths.am_anext(_value)
+                    loop = asyncio.get_event_loop()
+                    _value = loop.run_until_complete(_value)
                     return _value
                 if PyCoro_CheckExact(_value):
                     print(f"PyCoro_CheckExact(_value)={PyCoro_CheckExact(_value)}")
@@ -200,13 +198,25 @@ cdef class MetaForConstants(type):
                     _value = PyIter_Next(_value)
                     return _value
                 print("Not Async Generator, Not Generator and Not Coroutine")
-                # check for iterator
+            if PyAsyncGen_CheckExact(_value):
+                print(f"PyAsyncGen_CheckExact(_value)={PyAsyncGen_CheckExact(_value)}")
+                # If see AsyncGenerator, just return it because it is meant for use in `async for` loop
+                # save the function
+                async_meths = PyAsyncGen_Type.tp_as_async
+                _value = async_meths.am_aiter(_value)
+                _value = async_meths.am_anext(_value)
+                loop = asyncio.get_event_loop()
+                _value = loop.run_until_complete(_value)
+                return _value
+            if PyCoro_CheckExact(_value):
+                    print(f"PyCoro_CheckExact(_value)={PyCoro_CheckExact(_value)}")
+                    loop = asyncio.get_event_loop()
+                    _value = loop.run_until_complete(_value)
+                    return _value
             elif PyGen_CheckExact(_value):
                 print(f"PyGen_CheckExact(_value)={PyGen_CheckExact(_value)}")
-                # _value = PyObject_GetIter(_value)
-                # save the iterator
+                # next(generator) works, no need iter(generator) first
                 _value = PyIter_Next(_value)
                 return _value
-                # elif check for AsyncASend Generator
             return _value
         return PyType_Type.tp_getattro(cls, __name)

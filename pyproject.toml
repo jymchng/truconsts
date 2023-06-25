@@ -29,6 +29,9 @@ dependencies = [
 [tool.setuptools]
 packages = ["truconsts", "cy_src"]
 
+[tool.setuptools.exclude-package-data]
+"*" = ['LICENSE', 'README.md', '**/*.html', 'tests/']
+
 
 [project.optional-dependencies]
 
