@@ -119,5 +119,5 @@ jobs:
       - name: Run tests
         run: |
           cd ${{ github.workspace }}
-          python -c "import truconsts; print("`truconsts.__VERSION__` = ", truconsts.__VERSION__); truconsts.does_it_work(); from truconsts.constants import BaseConstants"
+          python -c "import truconsts; print('`truconsts.__VERSION__` = ', truconsts.__VERSION__); truconsts.does_it_work(); from truconsts.constants import BaseConstants"
           python -m pytest -vv .
