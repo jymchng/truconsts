@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [],
-        "name": "cy_src.cpy",
+        "name": "truconsts.cpy",
         "sources": [
-            "F:\\py_projects\\truconsts\\cy_src\\cpy.pyx"
+            "F:\\py_projects\\truconsts\\src\\truconsts\\cpy.pyx"
         ]
     },
-    "module_name": "cy_src.cpy"
+    "module_name": "truconsts.cpy"
 }
 END: Cython Metadata */
 
@@ -755,8 +755,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__cy_src__cpy
-#define __PYX_HAVE_API__cy_src__cpy
+#define __PYX_HAVE__truconsts__cpy
+#define __PYX_HAVE_API__truconsts__cpy
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -971,7 +971,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "cy_src\\cpy.pyx",
+  "src\\truconsts\\cpy.pyx",
   "type.pxd",
   "bool.pxd",
   "complex.pxd",
@@ -1274,12 +1274,12 @@ static PyTypeObject *__pyx_ptype_7cpython_7complex_complex = 0;
 
 /* Module declarations from 'cpython.pystate' */
 
-/* Module declarations from 'cy_src.cpy' */
-#define __Pyx_MODULE_NAME "cy_src.cpy"
-extern int __pyx_module_is_main_cy_src__cpy;
-int __pyx_module_is_main_cy_src__cpy = 0;
+/* Module declarations from 'truconsts.cpy' */
+#define __Pyx_MODULE_NAME "truconsts.cpy"
+extern int __pyx_module_is_main_truconsts__cpy;
+int __pyx_module_is_main_truconsts__cpy = 0;
 
-/* Implementation of 'cy_src.cpy' */
+/* Implementation of 'truconsts.cpy' */
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
@@ -1622,14 +1622,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_cy_src__cpy) {
+  if (__pyx_module_is_main_truconsts__cpy) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "cy_src.cpy")) {
-      if (unlikely(PyDict_SetItemString(modules, "cy_src.cpy", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "truconsts.cpy")) {
+      if (unlikely(PyDict_SetItemString(modules, "truconsts.cpy", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -1650,7 +1650,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "cy_src/cpy.pyx":1
+  /* "truconsts/cpy.pyx":1
  * #cython: language_level=3             # <<<<<<<<<<<<<<
  * # cython: c_string_type=unicode, c_string_encoding=ascii
  * # Py_TPFLAGS_BASETYPE
@@ -1667,11 +1667,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init cy_src.cpy", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init truconsts.cpy", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init cy_src.cpy");
+    PyErr_SetString(PyExc_ImportError, "init truconsts.cpy");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

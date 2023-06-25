@@ -26,9 +26,6 @@ keywords = ["truconsts", "truly constants", "constants"]
 dependencies = [
 ]
 
-[tool.setuptools]
-packages = ["truconsts", "cy_src"]
-
 [project.optional-dependencies]
 
 [project.urls]

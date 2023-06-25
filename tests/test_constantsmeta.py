@@ -1,7 +1,6 @@
 import pytest
-from cy_src.constmeta import MetaForConstants
 from truconsts.annotations import Immutable, Mutable, Cache, Yield
-from truconsts.constants import BaseConstants
+from truconsts.constants import BaseConstants, MetaForConstants
 
 # class BaseConstants(metaclass=MetaForConstants):
 #     ...
