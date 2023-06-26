@@ -22,11 +22,12 @@ cdef extern from "Python.h":
     ctypedef object (*unaryfunc)(object)
 
     # No need the `ctypedef struct PyTypeObject_PythonType:`
-    ctypedef struct PyTypeObject_PythonType:
+    ctypedef struct PyTypeObject:
         setattrofunc tp_setattro
         getattrofunc tp_getattro
 
-    cdef PyTypeObject_PythonType PyType_Type
+    # just declare `cdef PyTypeObject PyType_Type` no need to declare another name for the struct above
+    cdef PyTypeObject PyType_Type
 
 cdef extern from "genobject.h":
     int PyCoro_CheckExact(object o)

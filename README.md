@@ -19,7 +19,7 @@
 <img src="assets/truconsts_logo.png"  width="60%" height="30%">
 </div>
 
-## Version: 0.0.7
+## Version: 0.0.8
 
 `truconsts` is a constants management package for Python applications.
 

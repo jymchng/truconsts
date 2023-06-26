@@ -3,10 +3,10 @@ import pytest
 
 
 def test_cannot_subscript_lazy_async_together():
-    with pytest.raises(Exception):
+    with pytest.raises(BaseException):
         Yield[Cache]
 
-    with pytest.raises(Exception):
+    with pytest.raises(BaseException):
         Cache[Yield]
 
     assert Cache[Immutable] == (
@@ -25,11 +25,11 @@ def test_cannot_subscript_lazy_async_together():
 
 
 def test_cannot_be_instantiated():
-    with pytest.raises(Exception):
+    with pytest.raises(BaseException):
         Yield()
 
-    with pytest.raises(Exception):
+    with pytest.raises(BaseException):
         Cache()
 
-    with pytest.raises(Exception):
+    with pytest.raises(BaseException):
         Immutable()

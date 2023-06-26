@@ -1652,7 +1652,7 @@ if (!__Pyx_RefNanny) {
 
   /* "truconsts/cpy.pyx":1
  * #cython: language_level=3             # <<<<<<<<<<<<<<
- * # cython: c_string_type=unicode, c_string_encoding=ascii
+ * #cython: c_string_type=unicode, c_string_encoding=ascii
  * # Py_TPFLAGS_BASETYPE
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
