@@ -5,7 +5,7 @@
 from truconsts.annotations import Immutable, Cache, Yield
 from libc.stdlib cimport free
 from cpython cimport \
-    PyObject_HasAttrString, \
+    PyObject_HasAttrString, PyTypeObject, \
     PyObject_GetAttrString, PyObject_CallFunction, PyObject_IsInstance, \
     Py_TYPE, PySet_New, PyTuple_New, Py_EQ, PyObject_RichCompareBool, PyDict_Items, PyMapping_HasKeyString, \
     Py_TPFLAGS_BASETYPE, PyCallable_Check, PyMapping_Keys, PyIter_Next, PyObject_GetIter, PySequence_Contains, \
@@ -31,6 +31,7 @@ cdef class MetaForConstants(type):
         cdef str k
         cdef dict annotations
         cdef int initial_bitflag
+        cdef PyTypeObject* pytype_ptr
 
         mcls._attrs = PySet_New(PyTuple_New(set_init_size))
         mcls._init = False
