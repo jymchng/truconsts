@@ -36,6 +36,7 @@ jobs:
           find . | grep -E "(\.pyx$)" | xargs cythonize -i
           python -m setup clean --all
           python -m build
+          pip install --use-pep517 .
           
       - name: Run tests
         run: |
