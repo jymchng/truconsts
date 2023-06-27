@@ -105,7 +105,7 @@ from typing import List, Dict
 import orjson
 ```
 
-```
+```python
 class SUIPostRequest(BaseModel):
     jsonrpc: str = "2.0"
     method: str
@@ -125,7 +125,7 @@ A new `MethodNames` class is also defined which inherits from `BaseConstants`. T
 
 Finally, the value of `MethodNames.sui_getLatestCheckpointSequenceNumber` is printed to the console, which should output the string `'sui_getLatestCheckpointSequenceNumber'`.
 
-```
+```python
 async def network_getter(url: str, headers: Dict[str, str], method_name: MethodNames, params: List[str]):
     # using the asynchronous client of `httpx` to get the result from a json RPC call
     while True:
