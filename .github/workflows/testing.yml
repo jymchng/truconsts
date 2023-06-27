@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - dirtydev
+      - master
+      - dev
   pull_request:
     branches:
-      - dirtydev
+      - master
 
 jobs:
   test-local-build:

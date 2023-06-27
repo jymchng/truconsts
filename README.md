@@ -16,6 +16,7 @@
 
 
 <div align="center" height=1000, width=200>
+<img src="assets/truconstscirlogo.png"  width="15%" height="30%"><br>
 <img src="assets/truconsts_logo.png"  width="60%" height="30%">
 </div>
 
@@ -40,116 +41,112 @@ You can use pip to install this package
 pip install -U truconsts
 ```
 
-# Usage Examples
+# Usage
 
-## Immutability of Class Variables
-
+## If you want immutable constants
 ```python
-from pathlib import Path
-from random import randint
 from truconsts.constants import BaseConstants
 from truconsts.annotations import Immutable
 
-class DataFilePaths(BaseConstants):
-    # these annotated as immutable
-    DATA_ROOT: Immutable[Path, str] = Path('data')
-    # not annotated at all implies mutable
-    TESTING = DATA_ROOT / "testing"
-```
-
-We first import `BaseConstants` from `truconsts.constants`.
-A new class `DataFilePaths` is defined which inherits from `BaseConstants`. This class defines two class-level constants. `DATA_ROOT` is defined as an immutable `Path` object initialized with the string `'data'`. The `Immutable` annotation indicates that the value of the constant cannot be changed after Python reads the class definition. `TESTING` is defined as a mutable `Path` object obtained by appending the string `'testing'` to the `DATA_ROOT` path.
-
-```python
-class GLOBALS(BaseConstants):
-    DataFilePaths: Immutable[DataFilePaths] = DataFilePaths
-```
-In this code, a new class `GLOBALS` is defined that also inherits from `BaseConstants`. This class defines a single class-level constant `DataFilePaths`. The `Immutable` annotation is used to indicate that this constant cannot be reassigned to a new value. The type of this constant is `Immutable[DataFilePaths]`, which means it is an immutable class variable of the `DataFilePaths` class defined earlier.
-
-The value assigned to `DataFilePaths` is the class itself, i.e., `DataFilePaths`. This means that `DataFilePaths` is now available as a constant within the `GLOBALS` class and can be accessed as `GLOBALS.DataFilePaths`.
-```python
-# not possible to mutate
+class MyConstants(BaseConstants):
+    # annotate with `Immutable`
+    MyImmutable: Immutable = "Cannot Be Changed"
+    
 try:
-    DataFilePaths.DATA_ROOT = 'another_data_path'
-    assert DataFilePaths.DATA_ROOT == "another_data_path"
-    print(DataFilePaths.DATA_ROOT)
+    MyConstants.MyImmutable = "Let's change"
 except AttributeError as err:
     print(err)
-# prints: `DataFilePaths.DATA_ROOT` cannot be mutated
-
-# unannotated means can mutate
-try:
-    DataFilePaths.TESTING = "another_testing"
-    assert DataFilePaths.TESTING == "another_testing"
-    print(DataFilePaths.TESTING)
-except AttributeError as err:
-    print(err)
-# prints: another_testing
-```
-This code tries to modify the values of the `DATA_ROOT` and `TESTING` constants defined in the `DataFilePaths` class and demonstrates the immutability of `DATA_ROOT` and mutability of `TESTING`.
-
-In the first try block, an attempt is made to reassign the value of `DATA_ROOT` to `'another_data_path'`. Since `DATA_ROOT` is defined as immutable with the Immutable annotation, the assignment operation raises an AttributeError with the message "`DataFilePaths.DATA_ROOT` cannot be mutated".
-
-In the second try block, an attempt is made to reassign the value of `TESTING` to `'another_testing'`. Since `TESTING` is not annotated with `Immutable`, it is mutable and the assignment operation succeeds. The new value of `TESTING` is then asserted and printed to the console.
-
-## Yielding From An Asynchronous Generator
-Next, we look at an example where an asynchronous generator is assigned to a class variable and is annotated with the `Yield` type hint.
-
-```
-from truconsts.constants import BaseConstants
-from truconsts.annotations import Yield, Immutable
-import httpx
-from httpx import Response
-from pydantic import BaseModel
-from typing import List, Dict
-import orjson
+# prints `MyConstants.MyImmutable` cannot be mutated
 ```
 
+## If you want cached constants
+'cached' constants refer to constants which are first 'gotten' through a function call and subsequent use of these constants need not be accessed through that function call.
 ```python
-class SUIPostRequest(BaseModel):
-    jsonrpc: str = "2.0"
-    method: str
-    params: List[str] = []
-    id: int = 1
+import time
+import datetime
+
+def get_from_network():
+    time.sleep(2)
+    return 'Going to cache'
+
+class MyConstants(BaseConstants):
+    # annotate with `Cache`
+    MyCache: Cache = get_from_network
     
-class MethodNames(BaseConstants):
-    sui_getLatestCheckpointSequenceNumber: Immutable = 'sui_getLatestCheckpointSequenceNumber'
-    
-print(MethodNames.sui_getLatestCheckpointSequenceNumber)
-# prints: 'sui_getLatestCheckpointSequenceNumber'
+start = datetime.datetime.now()
+MyConstants.MyCache
+end = datetime.datetime.now()
+print(f"Time taken to access the variable: {end-start}")
+
+start = datetime.datetime.now()
+MyConstants.MyCache
+end = datetime.datetime.now()
+print(f"Time taken to access the variable after caching: {end-start}")
 ```
 
-In this code, a new `SUIPostRequest` class is defined which inherits from `pydantic`'s `BaseModel`. This class is used to define the structure of a JSON-RPC request that will be sent to a server.
-
-A new `MethodNames` class is also defined which inherits from `BaseConstants`. This class defines a single class-level constant `sui_getLatestCheckpointSequenceNumber`. The Immutable annotation is used, this constant is defined as immutable. The value of this constant is the string `'sui_getLatestCheckpointSequenceNumber'`.
-
-Finally, the value of `MethodNames.sui_getLatestCheckpointSequenceNumber` is printed to the console, which should output the string `'sui_getLatestCheckpointSequenceNumber'`.
-
+## If you want 'yielding' constants
+'yielding' constants refer to constants (which are not 'really' constants in the strictest sense, but it's Python yeah...) to always generate a new value whenever you access them.
 ```python
-async def network_getter(url: str, headers: Dict[str, str], method_name: MethodNames, params: List[str]):
-    # using the asynchronous client of `httpx` to get the result from a json RPC call
+import random
+
+def gen():
+    while True: # this while loop is import 
+        # if you always want a random number
+        # to be generate from this generator
+        num = random.randint(0, 100)
+        yield num
+    
+class MyConstants(BaseConstants):
+    # annotate with `Yield`
+    RANDOM_INT: Yield = gen 
+    
+print(MyConstants.RANDOM_INT) # 23
+print(MyConstants.RANDOM_INT) # 88
+```
+
+## If you want 'yielding' constants from an asynchronous generator
+Same as the above, but now with asynchronous generator. It makes your generators run as if they are synchronous.
+```python
+async def gen():
+    i = 1
+    while i:
+        yield i
+        i += 1
+
+async def getter():
+    async_asend_gen = gen()
     while True:
-        async with httpx.AsyncClient(base_url=url, headers=headers) as client:
-            data = orjson.dumps(SUIPostRequest(method=method_name).dict())
-            response: Response = await client.post(url='/', data=data)
-        yield response.json()['result']
-
-class AsyncConstants(BaseConstants):
-    NETWORK: Immutable[str] = "mainnet"
-    HEADERS = {'Content-Type': 'application/json'}
-    SUI_FULL_NODE_URL: Immutable[str] = "https://fullnode.{}.sui.io:443"
-    # value of `LATEST_CHECKPOINT_SEQUENCE_NUMBER` is an asynchrous generator
-    LATEST_CHECKPOINT_SEQUENCE_NUMBER: Yield[str] =  network_getter(SUI_FULL_NODE_URL.format(NETWORK), HEADERS, MethodNames.sui_getLatestCheckpointSequenceNumber, list())
+        num = await async_asend_gen.asend(None)
+        yield num
     
-for _ in range(10):
-    print(AsyncConstants.LATEST_CHECKPOINT_SEQUENCE_NUMBER, end="; ")
-# prints: 6052440; 6052440; 6052441; 6052442; 6052443; 6052444; 6052445; 6052446; 6052447; 6052447; 
+class MyConstants(BaseConstants):
+    COUNT_UP: Yield = getter()
+    
+print(MyConstants.COUNT_UP) # 1
+print(MyConstants.COUNT_UP) # 2
+print(MyConstants.COUNT_UP) # 3
+print(MyConstants.COUNT_UP) # 4
 ```
-This code defines a generator that asynchronously retrieves data from a server and a class `AsyncConstants` that stores constants related to the SUI network. It uses the `network_getter()` function to define an asynchronous generator that yields the latest checkpoint sequence number from the SUI network.
 
-A new `AsyncConstants` class is also defined which inherits from BaseConstants. This class defines four class-level constants: `NETWORK` which is an immutable string with the value `"mainnet"`, `HEADERS` which is a dictionary of headers with the value `{'Content-Type': 'application/json'}`, `SUI_FULL_NODE_URL` which is an immutable string with the value `"https://fullnode.{}.sui.io:443"`, where `{}` is replaced by the value of `NETWORK`, and `LATEST_CHECKPOINT_SEQUENCE_NUMBER` which is an asynchronous generator that yields the result of calling the `network_getter()` function with the appropriate arguments. The `Yield` annotation is used to indicate that this constant is an asynchronous generator that yields strings.
-
-Finally, the value of the `LATEST_CHECKPOINT_SEQUENCE_NUMBER` class variable is printed to the console 10 times using a for loop. The output of the asynchronous generator should be a sequence of strings representing the latest checkpoint sequence numbers from the SUI network.
+## If you want a mix of constants
+```python
+# Simple API, just subclass `BaseConstants`
+class Constants(BaseConstants):
+    # `NUM` is an immutable `int`, i.e. Constants.NUM will always be 123
+    NUM: Immutable[int] = 123
+    # No `Immutable` annotation implies Constants.STR is mutable
+    STR: str = "Hello"
+    # Constants.IMMU_FUNC will call `get_constant` function; the returned value is cached
+    # and it is immutable
+    IMMU_FUNC: Cache[Immutable] = get_constant
+    # Order/Subscripting of annotation does not matter
+    MUT_FUNC: Immutable[Cache] = get_constant
+    # Only `Cache` annotation without `Immutable` means it is mutable even after
+    # the returned value is cached after being called for the first time
+    JUST_CACHE: Cache[str] = get_constant
+    # No annotation means it is neither `Cache` nor `Immutable`
+    NO_ANNO = "NO_ANNO"
+```
 
 # Contributing
 Contributions are welcome!

@@ -9,7 +9,7 @@ def get_constant(what='Hey'):
     return what
 
 
-# simple API, just subclass `BaseConstants`
+# Simple API, just subclass `BaseConstants`
 class Constants(BaseConstants):
     # `NUM` is an immutable `int`, i.e. Constants.NUM will always be 123
     NUM: Immutable[int] = 123
