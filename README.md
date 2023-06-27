@@ -178,15 +178,18 @@ print(await MyConstants.INT.asend(None)) # 4
 print(await MyConstants.INT.asend(True)) # Someone asked me to stop!;
 # Raises `RuntimeError: async generator raised StopAsyncIteration``
 ```
+There are more examples in the `examples` folder on Github.
 
 # Roadmap
 
 |Description|Progress|Code Sample|
 |:--|:--:|:--:|
-|Subclassing e.g. `Immutables` make all subclass' class variables immutable||[1]|
-|Able to define inner class in outer class definition and declare annotation through parameters passed into class call||[1]|
+|Subclassing e.g. `Immutables` make all subclass' class variables immutable|![](https://img.shields.io/badge/Status-UNCOMPLETED-red)|[1]|
+|Able to define inner class in outer class definition and declare annotation through parameters passed into class call|![](https://img.shields.io/badge/Status-UNCOMPLETED-red)|[1]|
 
 ## Samples
+
+### [1]
 ```python
 # Future APIs
 
