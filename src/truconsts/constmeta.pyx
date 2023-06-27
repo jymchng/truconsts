@@ -33,7 +33,6 @@ cdef class MetaForConstants(type):
         cdef int initial_bitflag
         cdef PyTypeObject* pytype_ptr
 
-        mcls._attrs = PySet_New(PyTuple_New(set_init_size))
         mcls._init = False
         mcls._map = {}
         
