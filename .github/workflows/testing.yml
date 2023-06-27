@@ -32,6 +32,7 @@ jobs:
           pip install cython
           pip install pytest
           pip install mypy
+          pip install build
           find . | grep -E "(\.pyx$)" | xargs cythonize -i
           python -m setup clean --all
           python -m build
