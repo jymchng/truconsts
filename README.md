@@ -77,11 +77,13 @@ start = datetime.datetime.now()
 MyConstants.MyCache
 end = datetime.datetime.now()
 print(f"Time taken to access the variable: {end-start}")
+# Time taken to access the variable: 0:00:02.000991
 
 start = datetime.datetime.now()
 MyConstants.MyCache
 end = datetime.datetime.now()
 print(f"Time taken to access the variable after caching: {end-start}")
+# Time taken to access the variable after caching: 0:00:00.000999
 ```
 
 ## If you want 'yielding' constants
@@ -148,5 +150,60 @@ class Constants(BaseConstants):
     NO_ANNO = "NO_ANNO"
 ```
 
+## Finally, if you want to manage your own asynchronous generator but want the 'reference' to it to be immutable
+```python
+async def gen():
+    i = 1
+    while i:
+        stop = yield i
+        if stop == True:
+            print("Someone asked me to stop!")
+            return
+        i += 1
+
+async def getter():
+    async_asend_gen = gen()
+    num = None
+    while True:
+        i = await async_asend_gen.asend(num)
+        num = yield i
+
+class MyConstants(BaseConstants):
+    INT: Immutable = getter()
+    
+print(await MyConstants.INT.asend(None)) # 1
+print(await MyConstants.INT.asend(None)) # 2
+print(await MyConstants.INT.asend(None)) # 3
+print(await MyConstants.INT.asend(None)) # 4
+print(await MyConstants.INT.asend(True)) # Someone asked me to stop!;
+# Raises `RuntimeError: async generator raised StopAsyncIteration``
+```
+
+# Roadmap
+
+|Description|Progress|Code Sample|
+|:--|:--:|:--:|
+|Subclassing e.g. `Immutables` make all subclass' class variables immutable||[1]|
+|Able to define inner class in outer class definition and declare annotation through parameters passed into class call||[1]|
+
+## Samples
+```python
+# Future APIs
+
+class MyConstants(BaseConstants):
+    
+    class FilePaths(Immutables, this_class_as=(Immutable,)):
+        # All `TRAINING`, `TESTING` class variables will be `Immutable`.
+        # The class variable `FilePaths` of `MyConstants`
+        # will be immutable as well.
+        TRAINING = "."
+        TESTING = ".."
+        VALIDATION = "..."
+        
+    class Yielders(Yields):
+        # Same as above just that all class variables will be
+        # `Yield` annotated but `Yielders` will be mutable
+        FIRST = gen
+```
 # Contributing
 Contributions are welcome!
