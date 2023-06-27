@@ -1,4 +1,4 @@
-__VERSION__ = version = Version = __version__ = "0.0.8"
+__VERSION__ = version = Version = __version__ = "0.0.9"
 
 
 def does_it_work():
