@@ -8,7 +8,6 @@
 [![Python Versions](https://img.shields.io/pypi/pyversions/truconsts.svg?style=flat-square&maxAge=600)](https://pypi.org/project/truconsts/#files)
 [![Python Implementations](https://img.shields.io/pypi/implementation/truconsts.svg?style=flat-square&maxAge=600&label=impl)](https://pypi.org/project/truconsts/#files)
 [![Source](https://img.shields.io/badge/source-GitHub-303030.svg?maxAge=2678400&style=flat-square)](https://github.com/jymchng/truconsts/)
-[![Mirror](https://img.shields.io/badge/mirror-EMBL-009f4d?style=flat-square&maxAge=2678400)](https://git.embl.de/larralde/truconsts/)
 [![Issues](https://img.shields.io/github/issues/jymchng/truconsts.svg?style=flat-square&maxAge=600)](https://github.com/jymchng/truconsts/issues)
 [![Docs](https://img.shields.io/readthedocs/truconsts/latest?style=flat-square&maxAge=600)](https://truconsts.readthedocs.io)
 [![Changelog](https://img.shields.io/badge/keep%20a-changelog-8A0707.svg?maxAge=2678400&style=flat-square)](https://github.com/jymchng/truconsts/blob/master/CHANGELOG.md)
@@ -180,12 +179,38 @@ print(await MyConstants.INT.asend(True)) # Someone asked me to stop!;
 ```
 There are more examples in the `examples` folder on Github.
 
+# Note
+If you previously annotate a class variable as `Yield` but **NOT** `Immutable` and you re-assign another value to that variable, it will no longer be `Yield`.
+
+```python
+import random
+
+def gen():
+    while True: # this while loop is import 
+        # if you always want a random number
+        # to be generate from this generator
+        num = random.randint(0, 100)
+        yield num
+    
+class MyConstants(BaseConstants):
+    # annotate with `Yield`
+    RANDOM_INT: Yield = gen 
+    
+print(MyConstants.RANDOM_INT) # 23
+
+MyConstants.RANDOM_INT = gen # re-assign the same function `gen`
+print(MyConstants.RANDOM_INT) # <function gen at 0x0000023E8CD72820>
+# does not 'yield'
+```
+
 # Roadmap
 
-|Description|Progress|Code Sample|
-|:--|:--:|:--:|
-|Subclassing e.g. `Immutables` make all subclass' class variables immutable|![](https://img.shields.io/badge/Status-UNCOMPLETED-red)|[1]|
-|Able to define inner class in outer class definition and declare annotation through parameters passed into class call|![](https://img.shields.io/badge/Status-UNCOMPLETED-red)|[1]|
+|ID|Description|Progress|Code Sample|
+|:--:|:--|:--:|:--:|
+|0|Subclassing e.g. `Immutables` make all subclass' class variables immutable|![](https://img.shields.io/badge/Status-UNCOMPLETED-red)|[1]|
+|1|Able to define inner class in outer class definition and declare annotation through parameters passed into class call|![](https://img.shields.io/badge/Status-UNCOMPLETED-red)|[1]|
+|2|Use `Annotated[int, Cache]` as type hints for compatibility|![](https://img.shields.io/badge/Status-UNCOMPLETED-red)|[NA]|
+|3|Allow for mutable class variables to be annotated in some ways (?) when being assigned (difficult)|![](https://img.shields.io/badge/Status-UNCOMPLETED-red)|[NA]|
 
 ## Samples
 

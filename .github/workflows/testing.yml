@@ -31,10 +31,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install cython
-          pip install pytest
-          pip install mypy
-          pip install build
+          pip install cython, pytest, build
           find . | grep -E "(\.pyx$)" | xargs cythonize -i
           python -m setup clean --all
           python -m build
@@ -43,6 +40,10 @@ jobs:
       - name: Run tests
         run: |
           python -c "import truconsts; print(truconsts.__VERSION__); from truconsts.constants import BaseConstants; truconsts.does_it_work()"
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env: CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   test-local-pip-install:
     continue-on-error: True
@@ -67,6 +68,10 @@ jobs:
           pip install --use-pep517 .
           python -c "import truconsts; print(truconsts.__VERSION__); from truconsts.constants import BaseConstants; truconsts.does_it_work()"
 
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env: CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
   test-testpypi-install:
     continue-on-error: True
     strategy:
@@ -87,7 +92,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install cython
           pip install pytest
           pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple truconsts
           
@@ -96,6 +100,10 @@ jobs:
           cd ${{ github.workspace }}
           python -c "import truconsts; print(truconsts.__VERSION__); from truconsts.constants import BaseConstants; truconsts.does_it_work()"
           python -m pytest -vv .
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env: CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   test-pypi-install:
     continue-on-error: True
@@ -117,7 +125,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install cython
           pip install pytest
           pip install truconsts
           
@@ -126,3 +133,7 @@ jobs:
           cd ${{ github.workspace }}
           python -c "import truconsts; print(truconsts.__VERSION__); from truconsts.constants import BaseConstants; truconsts.does_it_work()"
           python -m pytest -vv .
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env: CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
