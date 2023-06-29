@@ -31,7 +31,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install cython, pytest, build
+          pip install cython
+          pip install pytest
+          pip install build
           find . | grep -E "(\.pyx$)" | xargs cythonize -i
           python -m setup clean --all
           python -m build
