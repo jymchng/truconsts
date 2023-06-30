@@ -7,7 +7,7 @@ from libc.stdlib cimport free
 from cpython cimport \
     PyObject_HasAttrString, PyTypeObject, \
     PyObject_GetAttrString, PyObject_CallFunction, PyObject_IsInstance, \
-    Py_TYPE, PySet_New, PyTuple_New, Py_EQ, PyObject_RichCompareBool, PyDict_Items, PyMapping_HasKeyString, \
+    Py_TYPE, Py_EQ, PyObject_RichCompareBool, PyDict_Items, PyMapping_HasKeyString, \
     Py_TPFLAGS_BASETYPE, PyCallable_Check, PyMapping_Keys, PyIter_Next, PyObject_GetIter, PySequence_Contains, \
     PyDict_SetItem, PyDict_GetItem, PyObject, PyDict_Contains, PyNumber_Int
 from cpython.genobject cimport PyGen_CheckExact
@@ -27,7 +27,6 @@ cdef class MetaForConstants(type):
 
     def __cinit__(mcls, str name, tuple bases, dict attrs):
         cdef const char* ANNOTATION_STRING = '__annotations__'
-        cdef Py_ssize_t set_init_size = 0
         cdef str k
         cdef dict annotations
         cdef int initial_bitflag
@@ -85,7 +84,7 @@ cdef class MetaForConstants(type):
         
         prebitflag = PyDict_GetItem(cls._map, __name)
         if prebitflag == NULL:
-            raise RuntimeError(f"Unable to get the key `{__name}` from `{Py_TYPE(cls).tp_name, Py_TYPE(cls).tp_name}._map`")
+            raise RuntimeError(f"Unable to get the key `{__name}` from `{Py_TYPE(cls).tp_name}._map`")
         bitflag = PyNumber_Int(<object>prebitflag)
 
         # basic checks
